@@ -1,0 +1,75 @@
+.wrapper {
+  box-sizing: border-box;
+  border: 2px solid #4C4CFF;
+  border-top: none;
+  color: #F2F2F3;
+}
+
+.ingredientsContainer {
+  display: flex;
+  flex-direction: column;
+  gap:40px;
+  overflow-y: auto;
+  max-height: 745px;
+  max-width: 600px;
+}
+
+
+.ingredientsContainer::-webkit-scrollbar {
+  width: 8px;
+}
+
+.ingredientsContainer::-webkit-scrollbar-track {
+  background-color: #2F2F37;
+}
+
+.ingredientsContainer::-webkit-scrollbar-thumb {
+  height: 492px;
+  background-color: #8585AD;
+}
+
+.cardsList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 0;
+}
+
+.card {
+  position: relative;
+  list-style-type: none;
+  max-width: 272px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px dotted #4C4CFF;
+}
+
+.cardImage {
+  max-width: 240px;
+  width: 100%;
+  object-fit: cover;
+  border: inherit;
+  border-top: none;
+}
+
+.price {
+  border: inherit;
+  margin: 4px 0;
+  display: flex;
+}
+
+.name {
+  border-top: inherit;
+  align-self: stretch;
+  text-align: center;
+  margin: 0 0 24px 0;
+}
+
+.ingredientsName {
+  border: 1px dotted #4C4CFF;
+  border-left: none;
+  border-right: none;
+}
+
