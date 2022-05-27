@@ -1,10 +1,10 @@
 import React from "react";
 import burgerIngredientsStyles from "./burgerIngredients.module.css";
-import PropTypes from 'prop-types'; 
+import PropTypes from "prop-types";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Counter } from "@ya.praktikum/react-developer-burger-ui-components";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { dataPropTypes } from '../../utils/data.jsx';
+import { dataPropTypes } from "../../utils/data.jsx";
 
 function scroll(id) {
   const element = document.getElementById(id);
@@ -129,7 +129,7 @@ class BurgerIngredients extends React.Component {
 }
 
 BurgerIngredients.propTypes = {
-  cards : PropTypes.arrayOf(dataPropTypes.isRequired)
-}
+  cards: PropTypes.arrayOf(dataPropTypes.isRequired),
+};
 
 export default BurgerIngredients;

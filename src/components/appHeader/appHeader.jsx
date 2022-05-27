@@ -13,7 +13,8 @@ class Link extends React.Component {
       <a
         href={this.props.href}
         className={`${appHeaderStyles.link} text text_type_main-default
-          text_color_inactive mb-3 mt-4 pb-4 pt-4 pl-5 pr-5 ${this.props.addClass}`}>
+          text_color_inactive mb-3 mt-4 pb-4 pt-4 pl-5 pr-5 ${this.props.addClass}`}
+      >
         {this.props.children}
       </a>
     );

@@ -4,8 +4,8 @@ import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-comp
 import { DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from 'prop-types';
-import {dataPropTypes} from '../../utils/data.jsx';
+import PropTypes from "prop-types";
+import { dataPropTypes } from "../../utils/data.jsx";
 
 class IngredientsCard extends React.Component {
   render() {
@@ -79,7 +79,7 @@ class BurgerConstructor extends React.Component {
 }
 
 BurgerConstructor.propTypes = {
-  data : PropTypes.arrayOf(dataPropTypes)
-}
+  data: PropTypes.arrayOf(dataPropTypes),
+};
 
 export default BurgerConstructor;

@@ -1,8 +1,8 @@
 .container {
   box-sizing: border-box;
-  border: 2px solid #4C4CFF;
+  border: 2px solid #4c4cff;
   border-top: none;
-  color: #F2F2F3;
+  color: #f2f2f3;
 }
 
 .wrapper {
@@ -14,7 +14,7 @@
 }
 
 .ingredientsList {
-  overflow-y:auto;
+  overflow-y: auto;
   max-height: 500px;
   padding: 0;
   padding-right: 8px;
@@ -25,12 +25,12 @@
 }
 
 .ingredientsList::-webkit-scrollbar-track {
-  background-color: #2F2F37;
+  background-color: #2f2f37;
 }
 
 .ingredientsList::-webkit-scrollbar-thumb {
   height: 292px;
-  background-color: #8585AD;
+  background-color: #8585ad;
 }
 
 .ingredient {
@@ -54,5 +54,5 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  border: 1px dotted #4C4CFF;
+  border: 1px dotted #4c4cff;
 }
