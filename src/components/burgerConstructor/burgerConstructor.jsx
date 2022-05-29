@@ -22,6 +22,14 @@ class IngredientsCard extends React.Component {
   }
 }
 
+IngredientsCard.propTypes = {
+  ingredient: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    image: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired
+  }),
+}
+
 class FinalPrice extends React.Component {
   render() {
     return (
@@ -33,6 +41,12 @@ class FinalPrice extends React.Component {
       </p>
     );
   }
+}
+
+FinalPrice.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.shape({
+    price: PropTypes.number.isRequired,
+}))
 }
 
 class BurgerConstructor extends React.Component {
@@ -79,7 +93,7 @@ class BurgerConstructor extends React.Component {
 }
 
 BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(dataPropTypes),
+  data: PropTypes.arrayOf(dataPropTypes.isRequired)
 };
 
 export default BurgerConstructor;

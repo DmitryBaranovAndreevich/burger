@@ -1,7 +1,6 @@
 .header {
   max-width: 1920px;
   width: 100%;
-  border: 2px solid #4c4cff;
   box-sizing: border-box;
   box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.04), 0 4px 8px 0 rgba(0, 0, 0, 0.04),
     0 16px 24px 0 rgba(0, 0, 0, 0.04), 0 24px 32px 0 rgba(0, 0, 0, 0.04);
@@ -30,7 +29,6 @@
   display: flex;
   gap: 8px;
   text-decoration: none;
-  border: 1px dotted #4c4cff;
   border-radius: 40px;
 }
 
