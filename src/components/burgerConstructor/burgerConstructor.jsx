@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import burgerConstructorStyles from "./burgerConstructor.module.css";
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
 import { DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -49,9 +49,9 @@ FinalPrice.propTypes = {
 }))
 }
 
-class BurgerConstructor extends React.Component {
-  render() {
-    const ingredientTypeBun = this.props.data.find(
+function BurgerConstructor(props) {
+   
+    const ingredientTypeBun = props.data.find(
       (ingredient) => ingredient.type === "bun"
     );
 
@@ -66,7 +66,7 @@ class BurgerConstructor extends React.Component {
             price={ingredientTypeBun.price}
           />
           <ul className={burgerConstructorStyles.ingredientsList}>
-            {this.props.data.map(
+            {props.data.map(
               (ingredient, index) =>
                 ingredient.type !== "bun" && (
                   <IngredientsCard ingredient={ingredient} key={index} />
@@ -82,15 +82,15 @@ class BurgerConstructor extends React.Component {
           />
         </div>
         <div className={`${burgerConstructorStyles.priceWrapper} mr-4 mt-10`}>
-          <FinalPrice data={this.props.data} />
-          <Button type="primary" size="medium">
+          <FinalPrice data={props.data} />
+          <Button type="primary" size="medium" onClick={props.openPopup}>
             Оформить заказ
           </Button>
         </div>
       </div>
     );
   }
-}
+
 
 BurgerConstructor.propTypes = {
   data: PropTypes.arrayOf(dataPropTypes.isRequired)

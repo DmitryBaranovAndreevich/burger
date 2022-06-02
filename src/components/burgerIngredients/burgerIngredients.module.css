@@ -42,6 +42,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  cursor: pointer;
 }
 
 .cardImage {
@@ -70,6 +71,6 @@
   border-right: none;
 }
 
-.test {
-  overflow: -moz-hidden-unscrollable;
+.tabContainer {
+  display: flex;
 }

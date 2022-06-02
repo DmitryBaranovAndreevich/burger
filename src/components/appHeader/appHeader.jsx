@@ -21,8 +21,7 @@ class Link extends React.Component {
   }
 }
 
-class AppHeader extends React.Component {
-  render() {
+function AppHeader() {
     return (
       <header className={appHeaderStyles.header}>
         <div className={appHeaderStyles.wrapper}>
@@ -45,6 +44,6 @@ class AppHeader extends React.Component {
       </header>
     );
   }
-}
+
 
 export default AppHeader;
