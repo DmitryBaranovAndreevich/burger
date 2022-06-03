@@ -93,7 +93,8 @@ function BurgerConstructor(props) {
 
 
 BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(dataPropTypes.isRequired)
+  data: PropTypes.arrayOf(dataPropTypes.isRequired),
+  openPopup: PropTypes.func
 };
 
 export default BurgerConstructor;

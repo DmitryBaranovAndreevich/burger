@@ -1,4 +1,5 @@
-import modalOverlayStyles from './modalOverlayStyles.module.css'
+import modalOverlayStyles from './modalOverlayStyles.module.css';
+import PropTypes from "prop-types";
 
 function ModalOverlay(props) {
   return (
@@ -6,6 +7,10 @@ function ModalOverlay(props) {
       {props.children}
     </div>
   )
+}
+
+ModalOverlay.propTypes = {
+  closePopup : PropTypes.func.isRequired
 }
 
 export { ModalOverlay}; 

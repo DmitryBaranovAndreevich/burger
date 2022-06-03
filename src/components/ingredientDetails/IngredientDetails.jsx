@@ -1,6 +1,5 @@
-import { Modal } from "../modal/modal";
 import ingredientDetailsStyles from './ingredientDetails.module.css';
-
+import PropTypes from "prop-types";
 
 
 const  IngredientDetails = ({name,image,proteins,calories,fat,carbohydrates}) => {
@@ -29,6 +28,15 @@ const  IngredientDetails = ({name,image,proteins,calories,fat,carbohydrates}) =>
       </div>
     </div>
   )
+}
+
+IngredientDetails.propTypes = {
+  name : PropTypes.string.isRequired,
+  image : PropTypes.string.isRequired,
+  proteins: PropTypes.number.isRequired,
+  calories: PropTypes.number.isRequired,
+  fat: PropTypes.number.isRequired,
+  carbohydrates: PropTypes.number.isRequired
 }
 
 export default IngredientDetails

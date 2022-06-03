@@ -5,7 +5,6 @@ import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Counter } from "@ya.praktikum/react-developer-burger-ui-components";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { dataPropTypes } from "../../utils/data.jsx";
-import { useState } from 'react';
  
 
 
@@ -86,6 +85,8 @@ class Ingredient extends React.Component {
 
 Ingredient.propTypes = {
   productCard: dataPropTypes.isRequired,
+  onClick: PropTypes.func,
+  productCard:  dataPropTypes
 };
 
 const TypesIngredients = (props) => {
@@ -118,6 +119,7 @@ TypesIngredients.propTypes = {
   link: PropTypes.shape({
     current: PropTypes.instanceOf(Element),
   }).isRequired,
+  dataForModal: PropTypes.func
 };
 
 function BurgerIngredients(props) {
@@ -170,6 +172,7 @@ function BurgerIngredients(props) {
 
 BurgerIngredients.propTypes = {
   cards: PropTypes.arrayOf(dataPropTypes.isRequired),
+  modalState: PropTypes.func
 };
 
 export default BurgerIngredients;

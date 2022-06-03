@@ -1,6 +1,7 @@
 import orderDetailsStyle from "./orderDetails.module.css";
 import checkIcon from "../../images/checkIcon.jpg";
 
+
 const OrderDetails = () => {
   return (
     <div className={orderDetailsStyle.wrapper}>
