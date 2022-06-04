@@ -1,42 +1,69 @@
-import ingredientDetailsStyles from './ingredientDetails.module.css';
-import PropTypes from "prop-types";
+import ingredientDetailsStyles from "./ingredientDetails.module.css";
+import { dataPropTypes } from "../../utils/data.jsx";
 
-
-const  IngredientDetails = ({name,image,proteins,calories,fat,carbohydrates}) => {
+const IngredientDetails = ({
+  name,
+  image,
+  proteins,
+  calories,
+  fat,
+  carbohydrates,
+}) => {
   return (
     <div className={ingredientDetailsStyles.wrapper}>
-      <p className={`${ingredientDetailsStyles.title} text text_type_main-large`}>Детали ингредиента</p>
+      <p
+        className={`${ingredientDetailsStyles.title} text text_type_main-large`}
+      >
+        Детали ингредиента
+      </p>
       <img className={ingredientDetailsStyles.image} src={image} alt="" />
       <p className="text text_type_main-medium mt-7">{name}</p>
       <div className={ingredientDetailsStyles.container}>
         <div className={ingredientDetailsStyles.component}>
-        <p className="text text_type_main-default text_color_inactive">Каллории,ккал</p>
-        <p className={`${ingredientDetailsStyles.value} text text_type_digits-default  text_color_inactive`}>{calories}</p>
+          <p className="text text_type_main-default text_color_inactive">
+            Каллории,ккал
+          </p>
+          <p
+            className={`${ingredientDetailsStyles.value} text text_type_digits-default  text_color_inactive`}
+          >
+            {calories}
+          </p>
         </div>
         <div className={ingredientDetailsStyles.component}>
-        <p className="text text_type_main-default text_color_inactive">Белки, г</p>
-        <p className={`${ingredientDetailsStyles.value} text text_type_digits-default  text_color_inactive`}>{proteins}</p>
+          <p className="text text_type_main-default text_color_inactive">
+            Белки, г
+          </p>
+          <p
+            className={`${ingredientDetailsStyles.value} text text_type_digits-default  text_color_inactive`}
+          >
+            {proteins}
+          </p>
         </div>
         <div className={ingredientDetailsStyles.component}>
-        <p className="text text_type_main-default text_color_inactive">Жиры, г</p>
-        <p className={`${ingredientDetailsStyles.value} text text_type_digits-default  text_color_inactive`}>{fat}</p>
+          <p className="text text_type_main-default text_color_inactive">
+            Жиры, г
+          </p>
+          <p
+            className={`${ingredientDetailsStyles.value} text text_type_digits-default  text_color_inactive`}
+          >
+            {fat}
+          </p>
         </div>
         <div className={ingredientDetailsStyles.component}>
-        <p className="text text_type_main-default text_color_inactive">Углеводы, г</p>
-        <p className={`${ingredientDetailsStyles.value} text text_type_digits-default  text_color_inactive`}>{carbohydrates}</p>
+          <p className="text text_type_main-default text_color_inactive">
+            Углеводы, г
+          </p>
+          <p
+            className={`${ingredientDetailsStyles.value} text text_type_digits-default  text_color_inactive`}
+          >
+            {carbohydrates}
+          </p>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-IngredientDetails.propTypes = {
-  name : PropTypes.string.isRequired,
-  image : PropTypes.string.isRequired,
-  proteins: PropTypes.number.isRequired,
-  calories: PropTypes.number.isRequired,
-  fat: PropTypes.number.isRequired,
-  carbohydrates: PropTypes.number.isRequired
-}
+IngredientDetails.propTypes = dataPropTypes.isRequired;
 
-export default IngredientDetails
+export default IngredientDetails;

@@ -9,19 +9,18 @@ import OrderDetails from "../orderDetails/orderDetails";
 
 function App() {
   const API_INGREDIENTS = "https://norma.nomoreparties.space/api/ingredients";
-  const [data, setState] = useState();
+  const [data, setState] = useState(null);
   const [isModal, setModal] = useState(false);
-  const [modalScreen, setModalScreen] = useState();
-  const [modalState, setModalState] = useState();
-
+  const [modalScreen, setModalScreen] = useState(null);
+  const [modalState, setModalState] = useState(null);
 
   const changeModalState = (data) => {
     setModalState(data);
-  }
+  };
 
   const isOpen = (data) => {
-    setModal(true)
-    changeModalState(data)
+    setModal(true);
+    changeModalState(data);
   };
 
   const isClose = () => {
@@ -32,15 +31,14 @@ function App() {
   const isOpenIngredient = (card) => {
     isOpen();
     changeModalState(card);
-    setModalScreen('IngredientDetails');
-  }
+    setModalScreen("IngredientDetails");
+  };
 
   const isOpenOrder = () => {
     isOpen();
-    setModalScreen('OrderDetails');
-  }
-   
-  
+    setModalScreen("OrderDetails");
+  };
+
   useEffect(() => {
     fetch(API_INGREDIENTS)
       .then((res) => {
@@ -53,22 +51,25 @@ function App() {
       .catch((err) => console.log(err));
   }, []);
 
-
   return (
     data && (
       <div className={`${appStyles.body} pt-10 pr-10 pl-10`}>
         <AppHeader />
         <div className={appStyles.main}>
-          <BurgerIngredients cards={data} modalState={isOpenIngredient}/>
-          <BurgerConstructor data={data} openPopup={isOpenOrder}/>
+          <BurgerIngredients cards={data} modalState={isOpenIngredient} />
+          <BurgerConstructor data={data} openPopup={isOpenOrder} />
         </div>
-       {isModal&&<Modal handelCloseModal={isClose} >
-         {modalScreen==='IngredientDetails'&&(<IngredientDetails {...modalState}/>)}
-         {modalScreen==='OrderDetails'&&(<OrderDetails/>)}
-         </Modal>}
+        {isModal && (
+          <Modal handelCloseModal={isClose}>
+            {modalScreen === "IngredientDetails" && (
+              <IngredientDetails {...modalState} />
+            )}
+            {modalScreen === "OrderDetails" && <OrderDetails />}
+          </Modal>
+        )}
       </div>
     )
-  )
+  );
 }
 
 export default App;
