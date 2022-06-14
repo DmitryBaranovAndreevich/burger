@@ -1,0 +1,20 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 120px 100px 120px;
+  color: #F2F2F3;
+}
+
+.title {
+  text-shadow: 0 4px 32px  rgba(51, 51, 255, .5),
+               0 0 8px  rgba(51,51,255,.25),
+               0 0 16px rgba(51,51,255,.25) ;
+}
+
+.iconContainer {
+  background-color: #1C1C21;
+  background: url('../../images/test.jpg') no-repeat center/cover;
+  width: 120px;
+  height: 120px; 
+}

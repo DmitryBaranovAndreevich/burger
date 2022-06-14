@@ -15,7 +15,7 @@ const Tabs = (props) => {
   };
 
   return (
-    <div style={{ display: "flex" }}>
+    <div className={burgerIngredientsStyles.tabContainer}>
       <Tab
         value="bun"
         active={current === "one"}
@@ -51,76 +51,86 @@ const Tabs = (props) => {
 };
 
 Tabs.propTypes = {
-  links: PropTypes.objectOf(PropTypes.shape({ current: PropTypes.node, })).isRequired,
+  links: PropTypes.objectOf(
+    PropTypes.shape({ current: PropTypes.instanceOf(Element) })
+  ).isRequired,
 };
 
-class Ingredient extends React.Component {
-  render() {
-    return (
-      <li className={`${burgerIngredientsStyles.card} mt-6`}>
-        <Counter count={1} size="default" />
-        <img
-          src={this.props.productCard.image_large}
-          alt=""
-          className={burgerIngredientsStyles.cardImage}
-        />
-        <p
-          className={`${burgerIngredientsStyles.price} text text_type_digits-default`}
-        >
-          {this.props.productCard.price}
-          <CurrencyIcon type="primary" />
-        </p>
-        <p
-          className={`${burgerIngredientsStyles.name} text text_type_main-default`}
-        >
-          {this.props.productCard.name}
-        </p>
-      </li>
-    );
-  }
+function Ingredient(props) {
+  return (
+    <li
+      className={`${burgerIngredientsStyles.card} mt-6`}
+      onClick={() => props.onClick(props.productCard)}
+    >
+      <Counter count={1} size="default" />
+      <img
+        src={props.productCard.image_large}
+        alt=""
+        className={burgerIngredientsStyles.cardImage}
+      />
+      <p
+        className={`${burgerIngredientsStyles.price} text text_type_digits-default`}
+      >
+        {props.productCard.price}
+        <CurrencyIcon type="primary" />
+      </p>
+      <p
+        className={`${burgerIngredientsStyles.name} text text_type_main-default`}
+      >
+        {props.productCard.name}
+      </p>
+    </li>
+  );
 }
 
 Ingredient.propTypes = {
   productCard: dataPropTypes.isRequired,
+  onClick: PropTypes.func.isRequired,
+  productCard: dataPropTypes.isRequired,
 };
 
-class TypesIngredients extends React.Component {
-  render() {
-    return (
-      <div className={burgerIngredientsStyles.test}>
-        <h3
-          ref={this.props.link}
-          className={`${burgerIngredientsStyles.ingredientsName} text text_type_main-medium `}
-        >
-          {this.props.translate}
-        </h3>
-        <ul className={`${burgerIngredientsStyles.cardsList} pl-4 pr-2`}>
-          {this.props.cards.map(
-            (card) =>
-              card.type === this.props.typeIngredients && (
-                <Ingredient productCard={card} key={card._id} />
-              )
-          )}
-        </ul>
-      </div>
-    );
-  }
-}
+const TypesIngredients = (props) => {
+  return (
+    <div className={burgerIngredientsStyles.test}>
+      <h3
+        ref={props.link}
+        className={`${burgerIngredientsStyles.ingredientsName} text text_type_main-medium `}
+      >
+        {props.translate}
+      </h3>
+      <ul className={`${burgerIngredientsStyles.cardsList} pl-4 pr-2`}>
+        {props.cards.map(
+          (card) =>
+            card.type === props.typeIngredients && (
+              <Ingredient
+                productCard={card}
+                key={card._id}
+                onClick={props.dataForModal}
+              />
+            )
+        )}
+      </ul>
+    </div>
+  );
+};
 
 TypesIngredients.propTypes = {
   typeIngredients: PropTypes.string.isRequired,
   translate: PropTypes.string.isRequired,
   cards: PropTypes.arrayOf(dataPropTypes.isRequired).isRequired,
   link: PropTypes.shape({
-    current: PropTypes.node,
+    current: PropTypes.instanceOf(Element),
   }).isRequired,
+  dataForModal: PropTypes.func.isRequired,
 };
 
 function BurgerIngredients(props) {
   const refBun = useRef(null);
   const refSauce = useRef(null);
   const refMain = useRef(null);
+
   const scrollContainer = useRef(null);
+
   const state = {
     linkToBun: refBun,
     linkToSauce: refSauce,
@@ -137,18 +147,21 @@ function BurgerIngredients(props) {
         className={`${burgerIngredientsStyles.ingredientsContainer} mt-10`}
       >
         <TypesIngredients
+          dataForModal={props.modalState}
           typeIngredients={"bun"}
           translate={"Булки"}
           cards={props.cards}
           link={refBun}
         />
         <TypesIngredients
+          dataForModal={props.modalState}
           typeIngredients={"sauce"}
           translate={"Соусы"}
           cards={props.cards}
           link={refSauce}
         />
         <TypesIngredients
+          dataForModal={props.modalState}
           typeIngredients={"main"}
           translate={"Начинка"}
           cards={props.cards}
@@ -161,6 +174,7 @@ function BurgerIngredients(props) {
 
 BurgerIngredients.propTypes = {
   cards: PropTypes.arrayOf(dataPropTypes.isRequired),
+  modalState: PropTypes.func.isRequired,
 };
 
 export default BurgerIngredients;
