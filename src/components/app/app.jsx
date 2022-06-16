@@ -6,10 +6,10 @@ import IngredientDetails from "../ingredientDetails/IngredientDetails";
 import Modal from "../modal/modal";
 import { useEffect, useState } from "react";
 import OrderDetails from "../orderDetails/orderDetails";
-import { Order } from "../../utils/order";
+import { Order } from "../../services/order";
+import  {API_INGREDIENTS} from '../../utils/config';
 
 function App() {
-  const API_INGREDIENTS = "https://norma.nomoreparties.space/api/ingredients";
   const [data, setState] = useState(null);
   const [isModal, setModal] = useState(false);
   const [modalScreen, setModalScreen] = useState(null);

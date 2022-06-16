@@ -5,8 +5,8 @@ import { DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
-// import { dataPropTypes } from "../../utils/data.jsx";
-import { Order } from "../../utils/order";
+import { Order } from "../../services/order";
+import  {API_ORDERS} from '../../utils/config';
 
 function IngredientsCard(props) {
   return (
@@ -36,10 +36,7 @@ function FinalPrice() {
     <p
       className={`${burgerConstructorStyles.price} text text_type_digits-medium`}
     >
-      {data.reduce((priv, elem) => {
-        if (elem.type === "bun") return priv + elem.price * 2;
-        return priv + elem.price;
-      }, 0)}
+      {data.reduce((priv, { type, price }) => type === "bun" ? priv + price * 2 : priv + price, 0)}
       <CurrencyIcon type="primary" />
     </p>
   );
@@ -47,7 +44,6 @@ function FinalPrice() {
 
 function BurgerConstructor(props) {
   const data = useContext(Order);
-  const API_ORDERS = "https://norma.nomoreparties.space/api/orders";
 
   const buttonOnClick = () => {
     fetch(API_ORDERS, {
@@ -83,9 +79,9 @@ function BurgerConstructor(props) {
         />
         <ul className={burgerConstructorStyles.ingredientsList}>
           {data.map(
-            (ingredient, index) =>
+            (ingredient) =>
               ingredient.type !== "bun" && (
-                <IngredientsCard ingredient={ingredient} key={index} />
+                <IngredientsCard ingredient={ingredient} key={ingredient._id} />
               )
           )}
         </ul>
