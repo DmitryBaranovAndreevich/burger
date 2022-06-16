@@ -6,6 +6,7 @@ import IngredientDetails from "../ingredientDetails/IngredientDetails";
 import Modal from "../modal/modal";
 import { useEffect, useState } from "react";
 import OrderDetails from "../orderDetails/orderDetails";
+import { Order } from "../../utils/order";
 
 function App() {
   const API_INGREDIENTS = "https://norma.nomoreparties.space/api/ingredients";
@@ -25,7 +26,7 @@ function App() {
 
   const isClose = () => {
     setModal(false);
-    changeModalState();
+    changeModalState(null);
   };
 
   const isOpenIngredient = (card) => {
@@ -34,8 +35,8 @@ function App() {
     setModalScreen("IngredientDetails");
   };
 
-  const isOpenOrder = () => {
-    isOpen();
+  const isOpenOrder = (data) => {
+    isOpen(data);
     setModalScreen("OrderDetails");
   };
 
@@ -57,14 +58,16 @@ function App() {
         <AppHeader />
         <div className={appStyles.main}>
           <BurgerIngredients cards={data} modalState={isOpenIngredient} />
-          <BurgerConstructor data={data} openPopup={isOpenOrder} />
+          <Order.Provider value={data}>
+            <BurgerConstructor openPopup={isOpenOrder} />
+          </Order.Provider>
         </div>
         {isModal && (
           <Modal handelCloseModal={isClose}>
             {modalScreen === "IngredientDetails" && (
               <IngredientDetails {...modalState} />
             )}
-            {modalScreen === "OrderDetails" && <OrderDetails />}
+              {modalScreen === "OrderDetails" && <OrderDetails {...modalState}/>}
           </Modal>
         )}
       </div>
