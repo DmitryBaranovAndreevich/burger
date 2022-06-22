@@ -5,6 +5,7 @@ import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Counter } from "@ya.praktikum/react-developer-burger-ui-components";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { dataPropTypes } from "../../utils/data.jsx";
+import { useSelector } from 'react-redux';
 
 const Tabs = (props) => {
   const [current, setCurrent] = React.useState("one");
@@ -57,10 +58,14 @@ Tabs.propTypes = {
 };
 
 function Ingredient(props) {
+  
   return (
     <li
       className={`${burgerIngredientsStyles.card} mt-6`}
-      onClick={() => props.onClick(props.productCard)}
+      onClick={() => {
+       
+        props.onClick(props.productCard)}
+    }
     >
       <Counter count={1} size="default" />
       <img
@@ -125,6 +130,10 @@ TypesIngredients.propTypes = {
 };
 
 function BurgerIngredients(props) {
+  const  cards  = useSelector(
+    (store) => store.ingredientsList.items
+  );
+ 
   const refBun = useRef(null);
   const refSauce = useRef(null);
   const refMain = useRef(null);
@@ -150,21 +159,21 @@ function BurgerIngredients(props) {
           dataForModal={props.modalState}
           typeIngredients={"bun"}
           translate={"Булки"}
-          cards={props.cards}
+          cards={cards}
           link={refBun}
         />
         <TypesIngredients
           dataForModal={props.modalState}
           typeIngredients={"sauce"}
           translate={"Соусы"}
-          cards={props.cards}
+          cards={cards}
           link={refSauce}
         />
         <TypesIngredients
           dataForModal={props.modalState}
           typeIngredients={"main"}
           translate={"Начинка"}
-          cards={props.cards}
+          cards={cards}
           link={refMain}
         />
       </div>
@@ -173,7 +182,6 @@ function BurgerIngredients(props) {
 }
 
 BurgerIngredients.propTypes = {
-  cards: PropTypes.arrayOf(dataPropTypes.isRequired),
   modalState: PropTypes.func.isRequired,
 };
 

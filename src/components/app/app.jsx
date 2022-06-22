@@ -6,72 +6,78 @@ import IngredientDetails from "../ingredientDetails/IngredientDetails";
 import Modal from "../modal/modal";
 import { useEffect, useState } from "react";
 import OrderDetails from "../orderDetails/orderDetails";
-import { Order } from "../../services/order";
-import  {API_INGREDIENTS} from '../../utils/config';
+import { useDispatch, useSelector } from "react-redux";
+import { getItems } from "../../services/actions/burgerIngredients";
+import { GET_ITEMS_BURGER_CONSTRUCTOR } from "../../services/actions/burgerConstructor";
+import { getOrderNumber } from "../../services/actions/orderDetals";
+import {
+  GET_INGREDIENT_DETALS,
+  DELETE_INGREDIENT_DETALS,
+} from "../../services/actions/ingredientsDetals";
+import { DELETE_ORDER_NUMBER } from "../../services/actions/orderDetals";
 
 function App() {
-  const [data, setState] = useState(null);
   const [isModal, setModal] = useState(false);
-  const [modalScreen, setModalScreen] = useState(null);
-  const [modalState, setModalState] = useState(null);
 
-  const changeModalState = (data) => {
-    setModalState(data);
-  };
+  const dispatch = useDispatch();
 
-  const isOpen = (data) => {
+  const { items, itemsFailed } = useSelector((store) => store.ingredientsList);
+  
+  const { constructorItems, constructorItemsFailed } = useSelector(
+    (store) => store.burgerConstructorList
+  );
+
+  const { isOpenIngredienDetals } = useSelector(
+    (store) => store.ingredienDetals
+  );
+
+  const { isOpenOrderDetals } = useSelector((store) => store.orderNumber);
+
+  const isOpen = () => {
     setModal(true);
-    changeModalState(data);
   };
 
   const isClose = () => {
     setModal(false);
-    changeModalState(null);
+    isOpenIngredienDetals && dispatch({ type: DELETE_INGREDIENT_DETALS });
+    isOpenOrderDetals && dispatch({ type: DELETE_ORDER_NUMBER });
   };
 
-  const isOpenIngredient = (card) => {
+  const isOpenIngredient = (cart) => {
+    dispatch({ type: GET_INGREDIENT_DETALS, data: cart });
     isOpen();
-    changeModalState(card);
-    setModalScreen("IngredientDetails");
   };
 
-  const isOpenOrder = (data) => {
-    isOpen(data);
-    setModalScreen("OrderDetails");
+  const isOpenOrder = () => {
+    dispatch(getOrderNumber(constructorItems));
+    isOpen();
   };
 
   useEffect(() => {
-    fetch(API_INGREDIENTS)
-      .then((res) => {
-        if (res.ok) return res.json();
-        return Promise.reject(`Ошибка: ${res.status}`);
-      })
-      .then((dataFromServer) => {
-        setState(dataFromServer.data);
-      })
-      .catch((err) => console.log(err));
+    dispatch(getItems());
   }, []);
 
+  useEffect(() => {
+    !itemsFailed &&
+      dispatch({ type: GET_ITEMS_BURGER_CONSTRUCTOR, data: items });
+  }, [items]);
+
   return (
-    data && (
-      <div className={`${appStyles.body} pt-10 pr-10 pl-10`}>
-        <AppHeader />
-        <div className={appStyles.main}>
-          <BurgerIngredients cards={data} modalState={isOpenIngredient} />
-          <Order.Provider value={data}>
-            <BurgerConstructor openPopup={isOpenOrder} />
-          </Order.Provider>
-        </div>
-        {isModal && (
-          <Modal handelCloseModal={isClose}>
-            {modalScreen === "IngredientDetails" && (
-              <IngredientDetails {...modalState} />
-            )}
-              {modalScreen === "OrderDetails" && <OrderDetails {...modalState}/>}
-          </Modal>
+    <div className={`${appStyles.body} pt-10 pr-10 pl-10`}>
+      <AppHeader />
+      <div className={appStyles.main}>
+        {!itemsFailed && <BurgerIngredients modalState={isOpenIngredient} />}
+        {!constructorItemsFailed && (
+          <BurgerConstructor openPopup={isOpenOrder} />
         )}
       </div>
-    )
+      {isModal && (
+        <Modal handelCloseModal={isClose}>
+          {isOpenIngredienDetals && <IngredientDetails />}
+          {isOpenOrderDetals && <OrderDetails />}
+        </Modal>
+      )}
+    </div>
   );
 }
 

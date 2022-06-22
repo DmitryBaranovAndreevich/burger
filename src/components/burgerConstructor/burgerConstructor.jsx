@@ -1,12 +1,11 @@
-import React, { useContext } from "react";
 import burgerConstructorStyles from "./burgerConstructor.module.css";
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
 import { DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
-import { Order } from "../../services/order";
-import  {API_ORDERS} from '../../utils/config';
+import { useSelector } from 'react-redux';
+
 
 function IngredientsCard(props) {
   return (
@@ -30,8 +29,7 @@ IngredientsCard.propTypes = {
 };
 
 function FinalPrice() {
-  const data = useContext(Order);
-
+  const data = useSelector(store => store.burgerConstructorList.constructorItems);
   return (
     <p
       className={`${burgerConstructorStyles.price} text text_type_digits-medium`}
@@ -43,25 +41,7 @@ function FinalPrice() {
 }
 
 function BurgerConstructor(props) {
-  const data = useContext(Order);
-
-  const buttonOnClick = () => {
-    fetch(API_ORDERS, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ ingredients: data.map((elem) => elem._id) }),
-    })
-      .then((res) => {
-        if (res.ok) return res.json();
-        return Promise.reject(`Ошибка: ${res.status}`);
-      })
-      .then((dataFromServer) => {
-        props.openPopup(dataFromServer.order);
-      })
-      .catch((err) => console.log(err));
-  };
+  const data = useSelector(store => store.burgerConstructorList.constructorItems);  
 
   const ingredientTypeBun = data.find(
     (ingredient) => ingredient.type === "bun"
@@ -95,13 +75,14 @@ function BurgerConstructor(props) {
       </div>
       <div className={`${burgerConstructorStyles.priceWrapper} mr-4 mt-10`}>
         <FinalPrice />
-        <Button type="primary" size="medium" onClick={buttonOnClick}>
+        <Button type="primary" size="medium" onClick={props.openPopup}>
           Оформить заказ
         </Button>
       </div>
     </div>
   );
 }
+
 
 BurgerConstructor.propTypes = {
   openPopup: PropTypes.func.isRequired,

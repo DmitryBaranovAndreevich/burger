@@ -1,7 +1,10 @@
 import orderDetailsStyle from "./orderDetails.module.css";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 
-const OrderDetails = ({number}) => {
+const OrderDetails = () => {
+  const number = useSelector(store => store.orderNumber.orderNumber);
+  
   return (
     <div className={orderDetailsStyle.wrapper}>
       <h3 className={`${orderDetailsStyle.title} text text_type_digits-large`}>
