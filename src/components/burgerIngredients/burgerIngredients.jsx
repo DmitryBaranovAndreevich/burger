@@ -5,11 +5,11 @@ import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Counter } from "@ya.praktikum/react-developer-burger-ui-components";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { dataPropTypes } from "../../utils/data.jsx";
-import { useSelector } from 'react-redux';
+import { useSelector} from "react-redux";
+import { useDrag } from "react-dnd";
+
 
 const Tabs = (props) => {
-  const [current, setCurrent] = React.useState("one");
-
   const scroll = (element, container) => {
     container.current.scrollTop =
       element.current.offsetTop - container.current.offsetTop;
@@ -19,9 +19,9 @@ const Tabs = (props) => {
     <div className={burgerIngredientsStyles.tabContainer}>
       <Tab
         value="bun"
-        active={current === "one"}
+        active={props.current === "one"}
         onClick={() => {
-          setCurrent("one");
+          props.setCurrent("one");
           scroll(props.links.linkToBun, props.links.container);
         }}
       >
@@ -29,9 +29,9 @@ const Tabs = (props) => {
       </Tab>
       <Tab
         value="sauce"
-        active={current === "two"}
+        active={props.current === "two"}
         onClick={() => {
-          setCurrent("two");
+          props.setCurrent("two");
           scroll(props.links.linkToSauce, props.links.container);
         }}
       >
@@ -39,9 +39,9 @@ const Tabs = (props) => {
       </Tab>
       <Tab
         value="main"
-        active={current === "three"}
+        active={props.current === "three"}
         onClick={() => {
-          setCurrent("three");
+          props.setCurrent("three");
           scroll(props.links.linkToMain, props.links.container);
         }}
       >
@@ -57,32 +57,41 @@ Tabs.propTypes = {
   ).isRequired,
 };
 
-function Ingredient(props) {
+function Ingredient({onClick,productCard}) {
+  const { constructorItems } = useSelector(
+    (store) => store.burgerConstructorList
+  );
+
+  const counter = constructorItems.find(el => el._id == productCard._id);
   
+  const [,dragRef] = useDrag({
+    type: 'ingredients',
+    item: productCard,
+  });
+
   return (
-    <li
+    <li ref={dragRef}
       className={`${burgerIngredientsStyles.card} mt-6`}
       onClick={() => {
-       
-        props.onClick(props.productCard)}
-    }
+        onClick(productCard);
+      }}
     >
-      <Counter count={1} size="default" />
+      {counter&&<Counter count={counter.count} size="default" />}
       <img
-        src={props.productCard.image_large}
+        src={productCard.image_large}
         alt=""
         className={burgerIngredientsStyles.cardImage}
       />
       <p
         className={`${burgerIngredientsStyles.price} text text_type_digits-default`}
       >
-        {props.productCard.price}
+        {productCard.price}
         <CurrencyIcon type="primary" />
       </p>
       <p
         className={`${burgerIngredientsStyles.name} text text_type_main-default`}
       >
-        {props.productCard.name}
+        {productCard.name}
       </p>
     </li>
   );
@@ -130,14 +139,12 @@ TypesIngredients.propTypes = {
 };
 
 function BurgerIngredients(props) {
-  const  cards  = useSelector(
-    (store) => store.ingredientsList.items
-  );
- 
+  const [current, setCurrent] = React.useState("one");
+  const cards = useSelector((store) => store.ingredientsList.items);
+
   const refBun = useRef(null);
   const refSauce = useRef(null);
   const refMain = useRef(null);
-
   const scrollContainer = useRef(null);
 
   const state = {
@@ -147,13 +154,24 @@ function BurgerIngredients(props) {
     container: scrollContainer,
   };
 
+  const handelScroll = (e) => {
+    let containerScroll = e.target.scrollTop;
+    let sauceScroll = refSauce.current.offsetTop-scrollContainer.current.offsetTop -1 ;
+    let mainScroll = refMain.current.offsetTop-scrollContainer.current.offsetTop -1;
+    
+   if(containerScroll<sauceScroll) setCurrent('one');
+    if(sauceScroll<=containerScroll&&containerScroll< mainScroll) setCurrent('two');
+    if(containerScroll>= mainScroll) setCurrent('three');
+  }
+
   return (
     <div className={`${burgerIngredientsStyles.wrapper} pt-10`}>
       <h2 className="text text_type_main-large mb-5">Соберите бургер</h2>
-      <Tabs links={state} />
+      <Tabs links={state} current={current} setCurrent={setCurrent}/>
       <div
         ref={scrollContainer}
         className={`${burgerIngredientsStyles.ingredientsContainer} mt-10`}
+        onScroll={handelScroll}
       >
         <TypesIngredients
           dataForModal={props.modalState}
@@ -179,6 +197,7 @@ function BurgerIngredients(props) {
       </div>
     </div>
   );
+
 }
 
 BurgerIngredients.propTypes = {

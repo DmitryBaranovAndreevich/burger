@@ -1,11 +1,15 @@
-import {GET_ITEMS_REQUEST,GET_ITEMS_SUCCESS,GET_ITEMS_FAILED} from '../actions/burgerIngredients';
+import {
+  GET_ITEMS_REQUEST,
+  GET_ITEMS_SUCCESS,
+  GET_ITEMS_FAILED,
+} from "../actions/burgerIngredients";
 
 
 
 const ingredients = {
   items: null,
-  // itemsRequest: false,
   itemsFailed: true,
+  count: [],
 };
 
 export const burgerIngredientsReducer = (state = ingredients,action) => {
@@ -20,7 +24,6 @@ export const burgerIngredientsReducer = (state = ingredients,action) => {
       return {
         ...state,
         items: action.items,
-        // itemsRequest: false,
         itemsFailed: false,
       };
     }
@@ -30,7 +33,7 @@ export const burgerIngredientsReducer = (state = ingredients,action) => {
         itemsFailed: false,
       };
     }
-
+   
     default:
       return state;
   }

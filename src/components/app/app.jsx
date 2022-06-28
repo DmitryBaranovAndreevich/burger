@@ -8,13 +8,15 @@ import { useEffect, useState } from "react";
 import OrderDetails from "../orderDetails/orderDetails";
 import { useDispatch, useSelector } from "react-redux";
 import { getItems } from "../../services/actions/burgerIngredients";
-import { GET_ITEMS_BURGER_CONSTRUCTOR } from "../../services/actions/burgerConstructor";
+import { GET_ITEMS_BURGER_CONSTRUCTOR,INCREASE_COUNT,CHANGE_INGREDIENT } from "../../services/actions/burgerConstructor";
 import { getOrderNumber } from "../../services/actions/orderDetals";
 import {
   GET_INGREDIENT_DETALS,
   DELETE_INGREDIENT_DETALS,
 } from "../../services/actions/ingredientsDetals";
 import { DELETE_ORDER_NUMBER } from "../../services/actions/orderDetals";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 function App() {
   const [isModal, setModal] = useState(false);
@@ -57,19 +59,22 @@ function App() {
     dispatch(getItems());
   }, []);
 
-  useEffect(() => {
-    !itemsFailed &&
-      dispatch({ type: GET_ITEMS_BURGER_CONSTRUCTOR, data: items });
-  }, [items]);
+  const handleDrop = (item) => {
+    const isBun = constructorItems.some(element => element.type === 'bun')
+    if(item.type === 'bun'&&!isBun) dispatch({type: GET_ITEMS_BURGER_CONSTRUCTOR, data:item})
+    else if(item.type === 'bun'&&isBun) dispatch({type: CHANGE_INGREDIENT, data: item})
+    else if(constructorItems.some(element => element._id == item._id))dispatch({type: INCREASE_COUNT, data:item})
+    else dispatch({ type: GET_ITEMS_BURGER_CONSTRUCTOR, data: item });
+  }
 
   return (
     <div className={`${appStyles.body} pt-10 pr-10 pl-10`}>
       <AppHeader />
       <div className={appStyles.main}>
+        <DndProvider backend={HTML5Backend}>
         {!itemsFailed && <BurgerIngredients modalState={isOpenIngredient} />}
-        {!constructorItemsFailed && (
-          <BurgerConstructor openPopup={isOpenOrder} />
-        )}
+        <BurgerConstructor openPopup={isOpenOrder} handleDrop={handleDrop}/>       
+        </DndProvider>
       </div>
       {isModal && (
         <Modal handelCloseModal={isClose}>

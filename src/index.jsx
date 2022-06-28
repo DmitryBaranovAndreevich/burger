@@ -4,8 +4,7 @@ import App from './components/app/app.jsx';
 import {rootReducer} from './services/reducers/index';
 // import { compose,  applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import { configureStore } from '@reduxjs/toolkit'
-
+import { configureStore } from '@reduxjs/toolkit';
 
 const store = configureStore({reducer: rootReducer});
 const root = createRoot(document.querySelector('#root'));
