@@ -9,78 +9,90 @@ import { useDrop, useDrag } from "react-dnd";
 import {
   DECREASE_COUNT,
   SORT_INGREDIENTS,
-  SET_CURRENT_CARD,
 } from "../../services/actions/burgerConstructor";
+import { useRef } from "react";
 
-function IngredientsCard(props) {
+function IngredientsCard({ ingredient, index, id }) {
   const dispatch = useDispatch();
-  const { constructorItems, currentCard } = useSelector(
+  const { constructorItems } = useSelector(
     (store) => store.burgerConstructorList
   );
   const deleteIngredient = () => {
-    dispatch({ type: DECREASE_COUNT, data: props.ingredient });
+    dispatch({ type: DECREASE_COUNT, data: ingredient });
   };
 
-  const [, dragRef] = useDrag({
-    type: "ingredients",
-    item: props.ingredient,
+  const ref = useRef(null);
+  const [{ handlerId }, drop] = useDrop({
+    accept: "ingredient",
+    collect(monitor) {
+      return {
+        handlerId: monitor.getHandlerId(),
+      };
+    },
+    hover(item, monitor) {
+      if (!ref.current) {
+        return;
+      }
+      const dragIndex = item.index;
+      const hoverIndex = index;
+
+      if (dragIndex === hoverIndex) {
+        return;
+      }
+
+      const hoverBoundingRect = ref.current?.getBoundingClientRect();
+
+      const hoverMiddleY =
+        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+
+      const clientOffset = monitor.getClientOffset();
+
+      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+
+      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+        return;
+      }
+
+      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+        return;
+      }
+
+      const myItem = [...constructorItems];
+      myItem.splice(dragIndex, 1, constructorItems[hoverIndex]);
+      myItem.splice(hoverIndex, 1, constructorItems[dragIndex]);
+
+      dispatch({ type: SORT_INGREDIENTS, newList: myItem });
+
+      item.index = hoverIndex;
+    },
   });
 
-  const sortCard = (a, b) => {
-    if (a.order > b.order) return 1;
-    else return -1;
-  };
+  const [{ isDragging }, drag] = useDrag({
+    type: "ingredient",
+    item: () => {
+      return { id, index };
+    },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
 
-  const dragStartHandler = (card) => {
-    dispatch({ type: SET_CURRENT_CARD, data: card });
-  };
+  const opacity = isDragging ? 0 : 1;
 
-  const dragEndHandler = (e) => {
-    e.target.style.opacity = "1";
-  };
-
-  const dragOverHandler = (e) => {
-    e.preventDefault();
-    e.target.style.opacity = "0.5";
-  };
-
-  const dropHandler = (e, card) => {
-    e.preventDefault();
-    const sortList = constructorItems
-      .map((element) => {
-        if (element._id === card._id)
-          return {
-            ...element,
-            order: currentCard.order,
-          };
-        if (element._id === currentCard._id)
-          return {
-            ...element,
-            order: card.order,
-          };
-        return { ...element };
-      })
-      .sort(sortCard);
-    e.target.style.opacity = "1";
-    dispatch({ type: SORT_INGREDIENTS, newList: sortList });
-  };
+  drag(drop(ref));
 
   return (
     <li
       className={burgerConstructorStyles.ingredient}
-      ref={dragRef}
-      draggable={true}
-      onDragStart={() => dragStartHandler(props.ingredient)}
-      onDragLeave={(e) => dragEndHandler(e)}
-      onDragEnd={(e) => dragEndHandler(e)}
-      onDragOver={(e) => dragOverHandler(e)}
-      onDrop={(e) => dropHandler(e, props.ingredient)}
+      ref={ref}
+      style={{ opacity }}
+      data-handler-id={handlerId}
     >
       <DragIcon type="primary" />
       <ConstructorElement
-        text={props.ingredient.name}
-        thumbnail={props.ingredient.image}
-        price={props.ingredient.price}
+        text={ingredient.name}
+        thumbnail={ingredient.image}
+        price={ingredient.price}
         handleClose={deleteIngredient}
       />
     </li>
@@ -93,6 +105,8 @@ IngredientsCard.propTypes = {
     image: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
   }),
+  index: PropTypes.number.isRequired,
+  id: PropTypes.string.isRequired,
 };
 
 function FinalPrice() {
@@ -140,7 +154,7 @@ function BurgerConstructor(props) {
       ref={dropTarget}
       style={{ borderColor }}
     >
-      {data.length != 0 && (
+      {data.length !== 0 && (
         <div className={burgerConstructorStyles.wrapper}>
           {ingredientTypeBun && (
             <ConstructorElement
@@ -153,11 +167,13 @@ function BurgerConstructor(props) {
           )}
           <ul className={burgerConstructorStyles.ingredientsList}>
             {data.map(
-              (ingredient) =>
+              (ingredient, index) =>
                 ingredient.type !== "bun" && (
                   <IngredientsCard
                     ingredient={ingredient}
                     key={ingredient._id}
+                    index={index}
+                    id={ingredient._id}
                   />
                 )
             )}
@@ -186,6 +202,7 @@ function BurgerConstructor(props) {
 
 BurgerConstructor.propTypes = {
   openPopup: PropTypes.func.isRequired,
+  handleDrop: PropTypes.func.isRequired,
 };
 
 export default BurgerConstructor;

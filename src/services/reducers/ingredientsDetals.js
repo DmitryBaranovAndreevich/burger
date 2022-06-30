@@ -5,7 +5,7 @@ import {
 
 const dataForModal = {
   ingredient: {},
-  isOpenIngredienDetals: false 
+  isOpenIngredienDetals: false,
 };
 
 export const ingredienDetalsReducer = (state = dataForModal, action) => {
@@ -24,7 +24,7 @@ export const ingredienDetalsReducer = (state = dataForModal, action) => {
         isOpenIngredienDetals: false,
       };
     }
-    default : 
-    return state
+    default:
+      return state;
   }
 };

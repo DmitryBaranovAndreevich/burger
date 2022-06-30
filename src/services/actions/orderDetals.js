@@ -1,11 +1,14 @@
-import {API_ORDERS} from '../../utils/config';
-import { checkResponce } from '../../utils/checkResponce';
+import { API_ORDERS } from "../../utils/config";
+import { checkResponce } from "../../utils/checkResponce";
 
+export const GET_ORDER_NUMBER_REQUEST = "GET_ORDER_NUMBER_REQUEST";
 export const GET_ORDER_NUMBER = "GET_ORDER_NUMBER";
+export const GET_ORDER_NUMBER_FAILED = "GET_ORDER_NUMBER_FAILED";
 export const DELETE_ORDER_NUMBER = "DELETE_ORDER_NUMBER";
 
 export function getOrderNumber(data) {
   return function (dispatch) {
+     dispatch({ type: GET_ORDER_NUMBER_REQUEST });
     fetch(API_ORDERS, {
       method: "POST",
       headers: {
@@ -17,6 +20,8 @@ export function getOrderNumber(data) {
       .then((dataFromServer) => {
         dispatch({ type: GET_ORDER_NUMBER, data: dataFromServer.order.number });
       })
-      .catch(err => console.log(err))
+      .catch((err) =>{ 
+        dispatch({ type: GET_ORDER_NUMBER_FAILED });
+        console.log(err)});
   };
 }

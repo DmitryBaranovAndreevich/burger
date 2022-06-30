@@ -5,11 +5,12 @@ import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Counter } from "@ya.praktikum/react-developer-burger-ui-components";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { dataPropTypes } from "../../utils/data.jsx";
-import { useSelector} from "react-redux";
+import { useSelector } from "react-redux";
 import { useDrag } from "react-dnd";
 
+const Tabs = ({ current, links, setCurrent }) => {
+  const { linkToBun, container, linkToSauce, linkToMain } = links;
 
-const Tabs = (props) => {
   const scroll = (element, container) => {
     container.current.scrollTop =
       element.current.offsetTop - container.current.offsetTop;
@@ -19,30 +20,30 @@ const Tabs = (props) => {
     <div className={burgerIngredientsStyles.tabContainer}>
       <Tab
         value="bun"
-        active={props.current === "one"}
+        active={current === "one"}
         onClick={() => {
-          props.setCurrent("one");
-          scroll(props.links.linkToBun, props.links.container);
+          setCurrent("one");
+          scroll(linkToBun, container);
         }}
       >
         Булки
       </Tab>
       <Tab
         value="sauce"
-        active={props.current === "two"}
+        active={current === "two"}
         onClick={() => {
-          props.setCurrent("two");
-          scroll(props.links.linkToSauce, props.links.container);
+          setCurrent("two");
+          scroll(linkToSauce, container);
         }}
       >
         Соусы
       </Tab>
       <Tab
         value="main"
-        active={props.current === "three"}
+        active={current === "three"}
         onClick={() => {
-          props.setCurrent("three");
-          scroll(props.links.linkToMain, props.links.container);
+          setCurrent("three");
+          scroll(linkToMain, container);
         }}
       >
         Начинки
@@ -55,28 +56,31 @@ Tabs.propTypes = {
   links: PropTypes.objectOf(
     PropTypes.shape({ current: PropTypes.instanceOf(Element) })
   ).isRequired,
+  current: PropTypes.string.isRequired,
+  setCurrent: PropTypes.func.isRequired
 };
 
-function Ingredient({onClick,productCard}) {
+function Ingredient({ onClick, productCard }) {
   const { constructorItems } = useSelector(
     (store) => store.burgerConstructorList
   );
 
-  const counter = constructorItems.find(el => el._id == productCard._id);
-  
-  const [,dragRef] = useDrag({
-    type: 'ingredients',
+  const counter = constructorItems.find((el) => el._id === productCard._id);
+
+  const [, dragRef] = useDrag({
+    type: "ingredients",
     item: productCard,
   });
 
   return (
-    <li ref={dragRef}
+    <li
+      ref={dragRef}
       className={`${burgerIngredientsStyles.card} mt-6`}
       onClick={() => {
         onClick(productCard);
       }}
     >
-      {counter&&<Counter count={counter.count} size="default" />}
+      {counter && <Counter count={counter.count} size="default" />}
       <img
         src={productCard.image_large}
         alt=""
@@ -100,7 +104,6 @@ function Ingredient({onClick,productCard}) {
 Ingredient.propTypes = {
   productCard: dataPropTypes.isRequired,
   onClick: PropTypes.func.isRequired,
-  productCard: dataPropTypes.isRequired,
 };
 
 const TypesIngredients = (props) => {
@@ -156,18 +159,31 @@ function BurgerIngredients(props) {
 
   const handelScroll = (e) => {
     let containerScroll = e.target.scrollTop;
-    let sauceScroll = refSauce.current.offsetTop-scrollContainer.current.offsetTop -1 ;
-    let mainScroll = refMain.current.offsetTop-scrollContainer.current.offsetTop -1;
-    
-   if(containerScroll<sauceScroll) setCurrent('one');
-    if(sauceScroll<=containerScroll&&containerScroll< mainScroll) setCurrent('two');
-    if(containerScroll>= mainScroll) setCurrent('three');
-  }
+    let bunScroll = Math.abs(
+      refBun.current.offsetTop -
+        scrollContainer.current.offsetTop +
+        containerScroll
+    );
+    let sauceScroll = Math.abs(
+      containerScroll -
+        (refSauce.current.offsetTop - scrollContainer.current.offsetTop)
+    );
+    let mainScroll = Math.abs(
+      containerScroll -
+        (refMain.current.offsetTop - scrollContainer.current.offsetTop)
+    );
+
+    const arr = [bunScroll, sauceScroll, mainScroll];
+
+    if (bunScroll === Math.min(...arr)) setCurrent("one");
+    if (sauceScroll === Math.min(...arr)) setCurrent("two");
+    if (mainScroll === Math.min(...arr)) setCurrent("three");
+  };
 
   return (
     <div className={`${burgerIngredientsStyles.wrapper} pt-10`}>
       <h2 className="text text_type_main-large mb-5">Соберите бургер</h2>
-      <Tabs links={state} current={current} setCurrent={setCurrent}/>
+      <Tabs links={state} current={current} setCurrent={setCurrent} />
       <div
         ref={scrollContainer}
         className={`${burgerIngredientsStyles.ingredientsContainer} mt-10`}
@@ -197,7 +213,6 @@ function BurgerIngredients(props) {
       </div>
     </div>
   );
-
 }
 
 BurgerIngredients.propTypes = {

@@ -1,8 +1,10 @@
 import { createAction } from "@reduxjs/toolkit";
 
-export const GET_ITEMS_BURGER_CONSTRUCTOR = 'GET_ITEMS_BURGER_CONSTRUCTOR';
+export const GET_ITEMS_BURGER_CONSTRUCTOR = "GET_ITEMS_BURGER_CONSTRUCTOR";
 
-export const getItemsBurgerConstructor = createAction("GET_ITEMS_BURGER_CONSTRUCTOR");
+export const getItemsBurgerConstructor = createAction(
+  "GET_ITEMS_BURGER_CONSTRUCTOR"
+);
 
 export const CHANGE_INGREDIENT = "CHANGE_INGREDIENT";
 

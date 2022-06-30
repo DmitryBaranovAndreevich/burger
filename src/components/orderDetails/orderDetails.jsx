@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 
 const OrderDetails = () => {
-  const number = useSelector(store => store.orderNumber.orderNumber);
-  
+  const number = useSelector((store) => store.orderNumber.orderNumber);
+
   return (
     <div className={orderDetailsStyle.wrapper}>
       <h3 className={`${orderDetailsStyle.title} text text_type_digits-large`}>
@@ -23,8 +23,7 @@ const OrderDetails = () => {
 };
 
 OrderDetails.propTypes = PropTypes.shape({
-  number: PropTypes.number.isRequired
-}).isRequired
-
+  number: PropTypes.number.isRequired,
+}).isRequired;
 
 export default OrderDetails;
