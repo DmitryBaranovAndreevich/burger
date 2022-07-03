@@ -173,7 +173,6 @@ function BurgerConstructor(props) {
                     key={ingredient.key}
                     index={index}
                     id={ingredient._id}
-                    visible={ingredient.key}
                   />
                 )
               );
