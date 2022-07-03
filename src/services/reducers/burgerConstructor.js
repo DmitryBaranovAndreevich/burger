@@ -5,6 +5,7 @@ import {
   SORT_INGREDIENTS,
   DELETE_ORDER,
 } from "../actions/burgerConstructor";
+import { v4 as uuidv4 } from "uuid";
 
 const ingredients = {
   constructorItems: [],
@@ -19,7 +20,7 @@ export const burgerConstructorReducer = (state = ingredients, action) => {
         constructorItems: [
           ...state.constructorItems,
           {
-            ...action.data,
+            ...action.data,['key']: uuidv4()
           },
         ],
         visible: { ...state.visible, [action.data.key]: true },

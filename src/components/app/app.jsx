@@ -21,7 +21,6 @@ import {
 import { getOrderNumberFailed } from "../../services/actions/orderDetals";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { v4 as uuidv4 } from "uuid";
 import Spinner from "../spinner/spinner";
 
 function App() {
@@ -71,11 +70,10 @@ function App() {
   }, []);
 
   const handleDrop = (item) => {
-    const newItem = { ...item, ["key"]: uuidv4() };
     const isBun = constructorItems.some((element) => element.type === "bun");
     if (item.type === "bun" && !isBun) dispatch(addItemBurgerConstructor(item));
     else if (item.type === "bun" && isBun) dispatch(changeIngredient(item));
-    else dispatch(addItemBurgerConstructor(newItem));
+    else dispatch(addItemBurgerConstructor(item));
   };
   const visible = getOrderNumberRequest?false:true
 
