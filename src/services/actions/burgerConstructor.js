@@ -1,17 +1,15 @@
-export const GET_ITEMS_BURGER_CONSTRUCTOR = "GET_ITEMS_BURGER_CONSTRUCTOR";
+import { v4 as uuidv4 } from "uuid";
 
+export const GET_ITEMS_BURGER_CONSTRUCTOR = "GET_ITEMS_BURGER_CONSTRUCTOR"
 export const CHANGE_INGREDIENT = "CHANGE_INGREDIENT";
-
 export const SORT_INGREDIENTS = "SORT_INGREDIENTS";
-
 export const DELETE_COUNT = "DELETE_COUNT";
-
 export const DELETE_ORDER = "DELETE_ORDER";
 
 export function addItemBurgerConstructor(item) {
   return {
     type: GET_ITEMS_BURGER_CONSTRUCTOR,
-    data: item,
+    payload: { ...item, ["key"]: uuidv4() },
   };
 }
 

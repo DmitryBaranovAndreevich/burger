@@ -1,6 +1,5 @@
-import { baseUrl } from "../../utils/config";
+import { API_ORDERS } from "../../utils/config";
 import { checkResponce } from "../../utils/checkResponce";
-import { DELETE_ORDER } from "./burgerConstructor";
 
 export const GET_ORDER_NUMBER_REQUEST = "GET_ORDER_NUMBER_REQUEST";
 export const GET_ORDER_NUMBER = "GET_ORDER_NUMBER";
@@ -10,7 +9,7 @@ export const DELETE_ORDER_NUMBER = "DELETE_ORDER_NUMBER";
 export function getOrderNumber(data) {
   return function (dispatch) {
     dispatch({ type: GET_ORDER_NUMBER_REQUEST });
-    fetch(`${baseUrl}/orders`, {
+    fetch(API_ORDERS, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
