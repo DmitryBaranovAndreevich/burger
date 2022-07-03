@@ -37,6 +37,13 @@ export const orderDetalsReducer = (state = initialData, action) => {
         getOrderNumberRequest: false,
       };
     }
+    // case DELETE_ORDER_NUMBER: {
+    //   return {
+    //     ...state,
+    //     orderNumber: null,
+
+    //   };
+    // }
     default:
       return state;
   }

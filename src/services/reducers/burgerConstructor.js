@@ -1,9 +1,9 @@
 import {
   GET_ITEMS_BURGER_CONSTRUCTOR,
-  INCREASE_COUNT,
-  DECREASE_COUNT,
+  DELETE_COUNT,
   CHANGE_INGREDIENT,
   SORT_INGREDIENTS,
+  DELETE_ORDER,
 } from "../actions/burgerConstructor";
 
 const ingredients = {
@@ -20,40 +20,23 @@ export const burgerConstructorReducer = (state = ingredients, action) => {
           ...state.constructorItems,
           {
             ...action.data,
-            count: action.data.type === "bun" ? 2 : 1,
-            order: state.constructorItems.length,
           },
         ],
+        visible: { ...state.visible, [action.data.key]: true },
         constructorItemsFailed: false,
       };
 
-    case INCREASE_COUNT:
+    case DELETE_COUNT:
+      const deleteElement = state.constructorItems.find(
+        (element) => element._id === action.data._id
+      );
+
+      const deleteIndex = state.constructorItems.indexOf(deleteElement);
       return {
         ...state,
-        constructorItems: state.constructorItems.map((element) => {
-          if (element._id === action.data._id) {
-            return { ...element, count: element.count + 1 };
-          }
-          return element;
-        }),
-      };
-    case DECREASE_COUNT:
-      if (action.data.count === 1) {
-        return {
-          ...state,
-          constructorItems: state.constructorItems.filter(
-            (element) => element._id !== action.data._id
-          ),
-        };
-      }
-      return {
-        ...state,
-        constructorItems: state.constructorItems.map((element) => {
-          if (element._id === action.data._id) {
-            return { ...element, count: element.count - 1 };
-          }
-          return element;
-        }),
+        constructorItems: state.constructorItems.filter(
+          (el, index) => index !== deleteIndex
+        ),
       };
     case CHANGE_INGREDIENT:
       return {
@@ -70,9 +53,13 @@ export const burgerConstructorReducer = (state = ingredients, action) => {
     case SORT_INGREDIENTS:
       return {
         ...state,
-        constructorItems: action.newList,
+        constructorItems: action.data,
       };
-
+    case DELETE_ORDER:
+      return {
+        ...state,
+        constructorItems: ingredients.constructorItems,
+      };
     default:
       return state;
   }

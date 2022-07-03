@@ -7,8 +7,8 @@ import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 import { useDrop, useDrag } from "react-dnd";
 import {
-  DECREASE_COUNT,
-  SORT_INGREDIENTS,
+  deleteIngredientBurgerConstructor,
+  sortIngredintsBurgerConstructor,
 } from "../../services/actions/burgerConstructor";
 import { useRef } from "react";
 
@@ -18,7 +18,7 @@ function IngredientsCard({ ingredient, index, id }) {
     (store) => store.burgerConstructorList
   );
   const deleteIngredient = () => {
-    dispatch({ type: DECREASE_COUNT, data: ingredient });
+    dispatch(deleteIngredientBurgerConstructor(ingredient));
   };
 
   const ref = useRef(null);
@@ -42,26 +42,23 @@ function IngredientsCard({ ingredient, index, id }) {
 
       const hoverBoundingRect = ref.current?.getBoundingClientRect();
 
-      const hoverMiddleY =
-        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-
       const clientOffset = monitor.getClientOffset();
 
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+      const hoverClientY = clientOffset.y;
 
-      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+      if (dragIndex < hoverIndex && hoverClientY < hoverBoundingRect.top) {
         return;
       }
 
-      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+      if (dragIndex > hoverIndex && hoverClientY > hoverBoundingRect.bottom) {
         return;
       }
 
-      const myItem = [...constructorItems];
-      myItem.splice(dragIndex, 1, constructorItems[hoverIndex]);
-      myItem.splice(hoverIndex, 1, constructorItems[dragIndex]);
+      const myItems = [...constructorItems];
+      myItems.splice(dragIndex, 1, constructorItems[hoverIndex]);
+      myItems.splice(hoverIndex, 1, constructorItems[dragIndex]);
 
-      dispatch({ type: SORT_INGREDIENTS, newList: myItem });
+      dispatch(sortIngredintsBurgerConstructor(myItems));
 
       item.index = hoverIndex;
     },
@@ -72,9 +69,11 @@ function IngredientsCard({ ingredient, index, id }) {
     item: () => {
       return { id, index };
     },
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
-    }),
+    collect: (monitor) => {
+      return {
+        isDragging: monitor.isDragging(),
+      };
+    },
   });
 
   const opacity = isDragging ? 0 : 1;
@@ -166,17 +165,19 @@ function BurgerConstructor(props) {
             />
           )}
           <ul className={burgerConstructorStyles.ingredientsList}>
-            {data.map(
-              (ingredient, index) =>
+            {data.map((ingredient, index) => {
+              return (
                 ingredient.type !== "bun" && (
                   <IngredientsCard
                     ingredient={ingredient}
-                    key={ingredient._id}
+                    key={ingredient.key}
                     index={index}
                     id={ingredient._id}
+                    visible={ingredient.key}
                   />
                 )
-            )}
+              );
+            })}
           </ul>
           {ingredientTypeBun && (
             <ConstructorElement
@@ -192,7 +193,12 @@ function BurgerConstructor(props) {
 
       <div className={`${burgerConstructorStyles.priceWrapper} mr-4 mt-10`}>
         <FinalPrice />
-        <Button type="primary" size="medium" onClick={props.openPopup}>
+        <Button
+          type="primary"
+          size="medium"
+          disabled={!ingredientTypeBun && true}
+          onClick={props.openPopup}
+        >
           Оформить заказ
         </Button>
       </div>

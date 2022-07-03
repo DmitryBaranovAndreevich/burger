@@ -1,5 +1,6 @@
-import { API_ORDERS } from "../../utils/config";
+import { baseUrl } from "../../utils/config";
 import { checkResponce } from "../../utils/checkResponce";
+import { DELETE_ORDER } from "./burgerConstructor";
 
 export const GET_ORDER_NUMBER_REQUEST = "GET_ORDER_NUMBER_REQUEST";
 export const GET_ORDER_NUMBER = "GET_ORDER_NUMBER";
@@ -8,8 +9,8 @@ export const DELETE_ORDER_NUMBER = "DELETE_ORDER_NUMBER";
 
 export function getOrderNumber(data) {
   return function (dispatch) {
-     dispatch({ type: GET_ORDER_NUMBER_REQUEST });
-    fetch(API_ORDERS, {
+    dispatch({ type: GET_ORDER_NUMBER_REQUEST });
+    fetch(`${baseUrl}/orders`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -20,8 +21,15 @@ export function getOrderNumber(data) {
       .then((dataFromServer) => {
         dispatch({ type: GET_ORDER_NUMBER, data: dataFromServer.order.number });
       })
-      .catch((err) =>{ 
+      .catch((err) => {
         dispatch({ type: GET_ORDER_NUMBER_FAILED });
-        console.log(err)});
+        console.log(err);
+      });
+  };
+}
+
+export function getOrderNumberFailed() {
+  return {
+    type: GET_ORDER_NUMBER_FAILED,
   };
 }

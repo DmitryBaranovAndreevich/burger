@@ -57,7 +57,7 @@ Tabs.propTypes = {
     PropTypes.shape({ current: PropTypes.instanceOf(Element) })
   ).isRequired,
   current: PropTypes.string.isRequired,
-  setCurrent: PropTypes.func.isRequired
+  setCurrent: PropTypes.func.isRequired,
 };
 
 function Ingredient({ onClick, productCard }) {
@@ -65,7 +65,7 @@ function Ingredient({ onClick, productCard }) {
     (store) => store.burgerConstructorList
   );
 
-  const counter = constructorItems.find((el) => el._id === productCard._id);
+  const counter = constructorItems.filter((el) => el._id === productCard._id);
 
   const [, dragRef] = useDrag({
     type: "ingredients",
@@ -80,7 +80,12 @@ function Ingredient({ onClick, productCard }) {
         onClick(productCard);
       }}
     >
-      {counter && <Counter count={counter.count} size="default" />}
+      {counter.length !== 0 && (
+        <Counter
+          count={productCard.type === "bun" ? 2 : counter.length}
+          size="default"
+        />
+      )}
       <img
         src={productCard.image_large}
         alt=""

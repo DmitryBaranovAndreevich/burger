@@ -5,11 +5,12 @@ import {rootReducer} from './services/reducers/index';
 // import { compose,  applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
+import React from 'react';
 
 const store = configureStore({reducer: rootReducer});
 const root = createRoot(document.querySelector('#root'));
 root.render(
-<Provider store={store}>
+<Provider store={store}>  
 <App/>
 </Provider>)
 

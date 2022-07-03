@@ -9,18 +9,20 @@ import OrderDetails from "../orderDetails/orderDetails";
 import { useDispatch, useSelector } from "react-redux";
 import { getItems } from "../../services/actions/burgerIngredients";
 import {
-  GET_ITEMS_BURGER_CONSTRUCTOR,
-  INCREASE_COUNT,
-  CHANGE_INGREDIENT,
+  addItemBurgerConstructor,
+  changeIngredient,
+  deleteOrder,
 } from "../../services/actions/burgerConstructor";
 import { getOrderNumber } from "../../services/actions/orderDetals";
 import {
-  GET_INGREDIENT_DETALS,
-  DELETE_INGREDIENT_DETALS,
+  getIngredientDetals,
+  deleteIngredientDetals,
 } from "../../services/actions/ingredientsDetals";
-import { DELETE_ORDER_NUMBER } from "../../services/actions/orderDetals";
+import { getOrderNumberFailed } from "../../services/actions/orderDetals";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { v4 as uuidv4 } from "uuid";
+import Spinner from "../spinner/spinner";
 
 function App() {
   const [isModal, setModal] = useState(false);
@@ -37,7 +39,9 @@ function App() {
     (store) => store.ingredienDetals
   );
 
-  const { isOpenOrderDetals } = useSelector((store) => store.orderNumber);
+  const { isOpenOrderDetals, getOrderNumberRequest } = useSelector(
+    (store) => store.orderNumber
+  );
 
   const isOpen = () => {
     setModal(true);
@@ -45,12 +49,15 @@ function App() {
 
   const isClose = () => {
     setModal(false);
-    isOpenIngredienDetals && dispatch({ type: DELETE_INGREDIENT_DETALS });
-    isOpenOrderDetals && dispatch({ type: DELETE_ORDER_NUMBER });
+    isOpenIngredienDetals && dispatch(deleteIngredientDetals());
+    if (isOpenOrderDetals) {
+      dispatch(getOrderNumberFailed());
+      dispatch(deleteOrder());
+    }
   };
 
   const isOpenIngredient = (cart) => {
-    dispatch({ type: GET_INGREDIENT_DETALS, data: cart });
+    dispatch(getIngredientDetals(cart));
     isOpen();
   };
 
@@ -64,15 +71,13 @@ function App() {
   }, []);
 
   const handleDrop = (item) => {
+    const newItem = { ...item, ["key"]: uuidv4() };
     const isBun = constructorItems.some((element) => element.type === "bun");
-    if (item.type === "bun" && !isBun)
-      dispatch({ type: GET_ITEMS_BURGER_CONSTRUCTOR, data: item });
-    else if (item.type === "bun" && isBun)
-      dispatch({ type: CHANGE_INGREDIENT, data: item });
-    else if (constructorItems.some((element) => element._id === item._id))
-      dispatch({ type: INCREASE_COUNT, data: item });
-    else dispatch({ type: GET_ITEMS_BURGER_CONSTRUCTOR, data: item });
+    if (item.type === "bun" && !isBun) dispatch(addItemBurgerConstructor(item));
+    else if (item.type === "bun" && isBun) dispatch(changeIngredient(item));
+    else dispatch(addItemBurgerConstructor(newItem));
   };
+  const visible = getOrderNumberRequest?false:true
 
   return (
     <div className={`${appStyles.body} pt-10 pr-10 pl-10`}>
@@ -84,9 +89,13 @@ function App() {
         </DndProvider>
       </div>
       {isModal && (
-        <Modal handelCloseModal={isClose}>
+        <Modal handelCloseModal={isClose} visible={visible}>
           {isOpenIngredienDetals && <IngredientDetails />}
-          {isOpenOrderDetals && <OrderDetails />}
+          {getOrderNumberRequest ? (
+            <Spinner />
+          ) : (
+            isOpenOrderDetals && <OrderDetails />
+          )}
         </Modal>
       )}
     </div>
