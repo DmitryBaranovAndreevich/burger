@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 const data = [
   {
@@ -129,40 +129,36 @@ const data = [
       "https://code.s3.yandex.net/react/code/mineral_rings-large.png",
     __v: 0,
   },
- 
 ];
 
-const test = 
-{
-    _id: "60666c42cc7b410027a1a9b1",
-    name: "Краторная булка N-200i",
-    type: "bun",
-    proteins: 80,
-    fat: 24,
-    carbohydrates: 53,
-    calories: 420,
-    price: 20,
-    image: "https://code.s3.yandex.net/react/code/bun-02.png",
-    image_mobile: "https://code.s3.yandex.net/react/code/bun-02-mobile.png",
-    image_large: "https://code.s3.yandex.net/react/code/bun-02-large.png",
-    __v: 0,
-  }
-
+const test = {
+  _id: "60666c42cc7b410027a1a9b1",
+  name: "Краторная булка N-200i",
+  type: "bun",
+  proteins: 80,
+  fat: 24,
+  carbohydrates: 53,
+  calories: 420,
+  price: 20,
+  image: "https://code.s3.yandex.net/react/code/bun-02.png",
+  image_mobile: "https://code.s3.yandex.net/react/code/bun-02-mobile.png",
+  image_large: "https://code.s3.yandex.net/react/code/bun-02-large.png",
+  __v: 0,
+};
 
 const dataPropTypes = PropTypes.shape({
-     _id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-    proteins: PropTypes.number,
-    fat: PropTypes.number,
-    carbohydrates: PropTypes.number,
-    calories: PropTypes.number,
-    price: PropTypes.number.isRequired,
-    image: PropTypes.string.isRequired,
-    image_mobile: PropTypes.string,
-    image_large: PropTypes.string.isRequired,
-    __v: PropTypes.number,
-  
-})
+  _id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  proteins: PropTypes.number,
+  fat: PropTypes.number,
+  carbohydrates: PropTypes.number,
+  calories: PropTypes.number,
+  price: PropTypes.number.isRequired,
+  image: PropTypes.string.isRequired,
+  image_mobile: PropTypes.string,
+  image_large: PropTypes.string.isRequired,
+  __v: PropTypes.number,
+});
 
-export {data,test,dataPropTypes};
+export { data, test, dataPropTypes };

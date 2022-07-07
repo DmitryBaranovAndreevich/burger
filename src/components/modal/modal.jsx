@@ -23,12 +23,12 @@ function Modal(props) {
   return ReactDOM.createPortal(
     <ModalOverlay closePopup={props.handelCloseModal}>
       <div className={modalStyles.container}>
-        <button
+        {props.visible&&<button
           onClick={props.handelCloseModal}
           className={modalStyles.closeButton}
         >
           <CloseIcon />
-        </button>
+        </button>}
         {props.children}
       </div>
     </ModalOverlay>,
@@ -38,6 +38,7 @@ function Modal(props) {
 
 Modal.propTypes = {
   handelCloseModal: PropTypes.func.isRequired,
+  visible: PropTypes.bool.isRequired
 };
 
 export default Modal;

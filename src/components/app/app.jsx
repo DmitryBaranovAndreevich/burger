@@ -6,72 +6,97 @@ import IngredientDetails from "../ingredientDetails/IngredientDetails";
 import Modal from "../modal/modal";
 import { useEffect, useState } from "react";
 import OrderDetails from "../orderDetails/orderDetails";
-import { Order } from "../../services/order";
-import  {API_INGREDIENTS} from '../../utils/config';
+import { useDispatch, useSelector } from "react-redux";
+import { getItems } from "../../services/actions/burgerIngredients";
+import {
+  addItemBurgerConstructor,
+  changeIngredient,
+  deleteOrder,
+} from "../../services/actions/burgerConstructor";
+import { getOrderNumber } from "../../services/actions/orderDetals";
+import {
+  getIngredientDetals,
+  deleteIngredientDetals,
+} from "../../services/actions/ingredientsDetals";
+import { getOrderNumberFailed } from "../../services/actions/orderDetals";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import Spinner from "../spinner/spinner";
 
 function App() {
-  const [data, setState] = useState(null);
   const [isModal, setModal] = useState(false);
-  const [modalScreen, setModalScreen] = useState(null);
-  const [modalState, setModalState] = useState(null);
 
-  const changeModalState = (data) => {
-    setModalState(data);
-  };
+  const dispatch = useDispatch();
 
-  const isOpen = (data) => {
+  const { itemsFailed } = useSelector((store) => store.ingredientsList);
+
+  const { constructorItems } = useSelector(
+    (store) => store.burgerConstructorList
+  );
+
+  const { isOpenIngredienDetals } = useSelector(
+    (store) => store.ingredienDetals
+  );
+
+  const { isOpenOrderDetals, getOrderNumberRequest } = useSelector(
+    (store) => store.orderNumber
+  );
+
+  const isOpen = () => {
     setModal(true);
-    changeModalState(data);
   };
 
   const isClose = () => {
     setModal(false);
-    changeModalState(null);
+    isOpenIngredienDetals && dispatch(deleteIngredientDetals());
+    if (isOpenOrderDetals) {
+      dispatch(getOrderNumberFailed());
+      dispatch(deleteOrder());
+    }
   };
 
-  const isOpenIngredient = (card) => {
+  const isOpenIngredient = (cart) => {
+    dispatch(getIngredientDetals(cart));
     isOpen();
-    changeModalState(card);
-    setModalScreen("IngredientDetails");
   };
 
-  const isOpenOrder = (data) => {
-    isOpen(data);
-    setModalScreen("OrderDetails");
+  const isOpenOrder = () => {
+    dispatch(getOrderNumber(constructorItems));
+    isOpen();
   };
 
   useEffect(() => {
-    fetch(API_INGREDIENTS)
-      .then((res) => {
-        if (res.ok) return res.json();
-        return Promise.reject(`Ошибка: ${res.status}`);
-      })
-      .then((dataFromServer) => {
-        setState(dataFromServer.data);
-      })
-      .catch((err) => console.log(err));
+    dispatch(getItems());
   }, []);
 
+  const handleDrop = (item) => {
+    const isBun = constructorItems.some((element) => element.type === "bun");
+    if (item.type === "bun" && !isBun) dispatch(addItemBurgerConstructor(item));
+    else if (item.type === "bun" && isBun) dispatch(changeIngredient(item));
+    else dispatch(addItemBurgerConstructor(item));
+  };
+  const visible = getOrderNumberRequest?false:true
+
   return (
-    data && (
-      <div className={`${appStyles.body} pt-10 pr-10 pl-10`}>
-        <AppHeader />
-        <div className={appStyles.main}>
-          <BurgerIngredients cards={data} modalState={isOpenIngredient} />
-          <Order.Provider value={data}>
-            <BurgerConstructor openPopup={isOpenOrder} />
-          </Order.Provider>
-        </div>
-        {isModal && (
-          <Modal handelCloseModal={isClose}>
-            {modalScreen === "IngredientDetails" && (
-              <IngredientDetails {...modalState} />
-            )}
-              {modalScreen === "OrderDetails" && <OrderDetails {...modalState}/>}
-          </Modal>
-        )}
+    <div className={`${appStyles.body} pt-10 pr-10 pl-10`}>
+      <AppHeader />
+      <div className={appStyles.main}>
+        <DndProvider backend={HTML5Backend}>
+          {!itemsFailed && <BurgerIngredients modalState={isOpenIngredient} />}
+          <BurgerConstructor openPopup={isOpenOrder} handleDrop={handleDrop} />
+        </DndProvider>
       </div>
-    )
+      {isModal && (
+        <Modal handelCloseModal={isClose} visible={visible}>
+          {isOpenIngredienDetals && <IngredientDetails />}
+          {getOrderNumberRequest ? (
+            <Spinner />
+          ) : (
+            isOpenOrderDetals && <OrderDetails />
+          )}
+        </Modal>
+      )}
+    </div>
   );
 }
 

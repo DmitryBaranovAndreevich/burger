@@ -1,14 +1,11 @@
 import ingredientDetailsStyles from "./ingredientDetails.module.css";
-import { dataPropTypes } from "../../utils/data.jsx";
+import { useSelector } from "react-redux";
 
-const IngredientDetails = ({
-  name,
-  image,
-  proteins,
-  calories,
-  fat,
-  carbohydrates,
-}) => {
+const IngredientDetails = () => {
+  const { name, image, proteins, calories, fat, carbohydrates } = useSelector(
+    (store) => store.ingredienDetals.ingredient
+  );
+
   return (
     <div className={ingredientDetailsStyles.wrapper}>
       <p
@@ -63,7 +60,5 @@ const IngredientDetails = ({
     </div>
   );
 };
-
-IngredientDetails.propTypes = dataPropTypes.isRequired;
 
 export default IngredientDetails;

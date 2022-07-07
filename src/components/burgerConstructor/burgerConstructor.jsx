@@ -1,21 +1,98 @@
-import React, { useContext } from "react";
 import burgerConstructorStyles from "./burgerConstructor.module.css";
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
 import { DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
-import { Order } from "../../services/order";
-import  {API_ORDERS} from '../../utils/config';
+import { useSelector, useDispatch } from "react-redux";
+import { useDrop, useDrag } from "react-dnd";
+import {
+  deleteIngredientBurgerConstructor,
+  sortIngredintsBurgerConstructor,
+} from "../../services/actions/burgerConstructor";
+import { useRef } from "react";
 
-function IngredientsCard(props) {
+function IngredientsCard({ ingredient, index, id }) {
+  const dispatch = useDispatch();
+  const { constructorItems } = useSelector(
+    (store) => store.burgerConstructorList
+  );
+  const deleteIngredient = () => {
+    dispatch(deleteIngredientBurgerConstructor(ingredient));
+  };
+
+  const ref = useRef(null);
+  const [{ handlerId }, drop] = useDrop({
+    accept: "ingredient",
+    collect(monitor) {
+      return {
+        handlerId: monitor.getHandlerId(),
+      };
+    },
+    hover(item, monitor) {
+      if (!ref.current) {
+        return;
+      }
+      const dragIndex = item.index;
+      const hoverIndex = index;
+
+      if (dragIndex === hoverIndex) {
+        return;
+      }
+
+      const hoverBoundingRect = ref.current?.getBoundingClientRect();
+
+      const clientOffset = monitor.getClientOffset();
+
+      const hoverClientY = clientOffset.y;
+
+      if (dragIndex < hoverIndex && hoverClientY < hoverBoundingRect.top) {
+        return;
+      }
+
+      if (dragIndex > hoverIndex && hoverClientY > hoverBoundingRect.bottom) {
+        return;
+      }
+
+      const myItems = [...constructorItems];
+      myItems.splice(dragIndex, 1, constructorItems[hoverIndex]);
+      myItems.splice(hoverIndex, 1, constructorItems[dragIndex]);
+
+      dispatch(sortIngredintsBurgerConstructor(myItems));
+
+      item.index = hoverIndex;
+    },
+  });
+
+  const [{ isDragging }, drag] = useDrag({
+    type: "ingredient",
+    item: () => {
+      return { id, index };
+    },
+    collect: (monitor) => {
+      return {
+        isDragging: monitor.isDragging(),
+      };
+    },
+  });
+
+  const opacity = isDragging ? 0 : 1;
+
+  drag(drop(ref));
+
   return (
-    <li className={burgerConstructorStyles.ingredient}>
+    <li
+      className={burgerConstructorStyles.ingredient}
+      ref={ref}
+      style={{ opacity }}
+      data-handler-id={handlerId}
+    >
       <DragIcon type="primary" />
       <ConstructorElement
-        text={props.ingredient.name}
-        thumbnail={props.ingredient.image}
-        price={props.ingredient.price}
+        text={ingredient.name}
+        thumbnail={ingredient.image}
+        price={ingredient.price}
+        handleClose={deleteIngredient}
       />
     </li>
   );
@@ -27,75 +104,100 @@ IngredientsCard.propTypes = {
     image: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
   }),
+  index: PropTypes.number.isRequired,
+  id: PropTypes.string.isRequired,
 };
 
 function FinalPrice() {
-  const data = useContext(Order);
-
+  const data = useSelector(
+    (store) => store.burgerConstructorList.constructorItems
+  );
   return (
     <p
       className={`${burgerConstructorStyles.price} text text_type_digits-medium`}
     >
-      {data.reduce((priv, { type, price }) => type === "bun" ? priv + price * 2 : priv + price, 0)}
+      {data.reduce(
+        (priv, { type, price }) =>
+          type === "bun" ? priv + price * 2 : priv + price,
+        0
+      )}
       <CurrencyIcon type="primary" />
     </p>
   );
 }
 
 function BurgerConstructor(props) {
-  const data = useContext(Order);
+  const data = useSelector(
+    (store) => store.burgerConstructorList.constructorItems
+  );
 
-  const buttonOnClick = () => {
-    fetch(API_ORDERS, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ ingredients: data.map((elem) => elem._id) }),
-    })
-      .then((res) => {
-        if (res.ok) return res.json();
-        return Promise.reject(`Ошибка: ${res.status}`);
-      })
-      .then((dataFromServer) => {
-        props.openPopup(dataFromServer.order);
-      })
-      .catch((err) => console.log(err));
-  };
+  const [{ isHover }, dropTarget] = useDrop({
+    accept: "ingredients",
+    drop(item) {
+      props.handleDrop(item);
+    },
+    collect: (monitor) => ({
+      isHover: monitor.isOver(),
+    }),
+  });
+
+  const borderColor = isHover ? "lightgreen" : "transparent";
 
   const ingredientTypeBun = data.find(
     (ingredient) => ingredient.type === "bun"
   );
 
   return (
-    <div className={`${burgerConstructorStyles.container} pl-4 pt-25`}>
-      <div className={burgerConstructorStyles.wrapper}>
-        <ConstructorElement
-          type={"top"}
-          isLocked={true}
-          text={`${ingredientTypeBun.name} (верх)`}
-          thumbnail={ingredientTypeBun.image}
-          price={ingredientTypeBun.price}
-        />
-        <ul className={burgerConstructorStyles.ingredientsList}>
-          {data.map(
-            (ingredient) =>
-              ingredient.type !== "bun" && (
-                <IngredientsCard ingredient={ingredient} key={ingredient._id} />
-              )
+    <div
+      className={`${burgerConstructorStyles.container} pl-4 pt-25`}
+      ref={dropTarget}
+      style={{ borderColor }}
+    >
+      {data.length !== 0 && (
+        <div className={burgerConstructorStyles.wrapper}>
+          {ingredientTypeBun && (
+            <ConstructorElement
+              type={"top"}
+              isLocked={true}
+              text={`${ingredientTypeBun.name} (верх)`}
+              thumbnail={ingredientTypeBun.image}
+              price={ingredientTypeBun.price}
+            />
           )}
-        </ul>
-        <ConstructorElement
-          type={"bottom"}
-          isLocked={true}
-          text={`${ingredientTypeBun.name} (низ)`}
-          thumbnail={ingredientTypeBun.image}
-          price={ingredientTypeBun.price}
-        />
-      </div>
+          <ul className={burgerConstructorStyles.ingredientsList}>
+            {data.map((ingredient, index) => {
+              return (
+                ingredient.type !== "bun" && (
+                  <IngredientsCard
+                    ingredient={ingredient}
+                    key={ingredient.key}
+                    index={index}
+                    id={ingredient._id}
+                  />
+                )
+              );
+            })}
+          </ul>
+          {ingredientTypeBun && (
+            <ConstructorElement
+              type={"bottom"}
+              isLocked={true}
+              text={`${ingredientTypeBun.name} (низ)`}
+              thumbnail={ingredientTypeBun.image}
+              price={ingredientTypeBun.price}
+            />
+          )}
+        </div>
+      )}
+
       <div className={`${burgerConstructorStyles.priceWrapper} mr-4 mt-10`}>
         <FinalPrice />
-        <Button type="primary" size="medium" onClick={buttonOnClick}>
+        <Button
+          type="primary"
+          size="medium"
+          disabled={!ingredientTypeBun && true}
+          onClick={props.openPopup}
+        >
           Оформить заказ
         </Button>
       </div>
@@ -105,6 +207,7 @@ function BurgerConstructor(props) {
 
 BurgerConstructor.propTypes = {
   openPopup: PropTypes.func.isRequired,
+  handleDrop: PropTypes.func.isRequired,
 };
 
 export default BurgerConstructor;
