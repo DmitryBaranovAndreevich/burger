@@ -1,38 +1,29 @@
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import appStyles from "./app.module.css";
 import AppHeader from "../appHeader/appHeader.jsx";
-import BurgerIngredients from "../burgerIngredients/burgerIngredients.jsx";
-import BurgerConstructor from "../burgerConstructor/burgerConstructor";
 import IngredientDetails from "../ingredientDetails/IngredientDetails";
 import Modal from "../modal/modal";
-import { useEffect, useState } from "react";
 import OrderDetails from "../orderDetails/orderDetails";
-import { useDispatch, useSelector } from "react-redux";
+import {
+  MainPage,
+  LoginPage,
+  RegisterPage,
+  PassworRecovery,
+  ChangePassword,
+  Profile,
+} from "../../pages";
 import { getItems } from "../../services/actions/burgerIngredients";
-import {
-  addItemBurgerConstructor,
-  changeIngredient,
-  deleteOrder,
-} from "../../services/actions/burgerConstructor";
-import { getOrderNumber } from "../../services/actions/orderDetals";
-import {
-  getIngredientDetals,
-  deleteIngredientDetals,
-} from "../../services/actions/ingredientsDetals";
+import { deleteOrder } from "../../services/actions/burgerConstructor";
+import { deleteIngredientDetals } from "../../services/actions/ingredientsDetals";
 import { getOrderNumberFailed } from "../../services/actions/orderDetals";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
 import Spinner from "../spinner/spinner";
 
 function App() {
-  const [isModal, setModal] = useState(false);
-
   const dispatch = useDispatch();
 
-  const { itemsFailed } = useSelector((store) => store.ingredientsList);
-
-  const { constructorItems } = useSelector(
-    (store) => store.burgerConstructorList
-  );
+  const [isModal, setModal] = useState(false);
 
   const { isOpenIngredienDetals } = useSelector(
     (store) => store.ingredienDetals
@@ -41,10 +32,6 @@ function App() {
   const { isOpenOrderDetals, getOrderNumberRequest } = useSelector(
     (store) => store.orderNumber
   );
-
-  const isOpen = () => {
-    setModal(true);
-  };
 
   const isClose = () => {
     setModal(false);
@@ -55,37 +42,35 @@ function App() {
     }
   };
 
-  const isOpenIngredient = (cart) => {
-    dispatch(getIngredientDetals(cart));
-    isOpen();
-  };
-
-  const isOpenOrder = () => {
-    dispatch(getOrderNumber(constructorItems));
-    isOpen();
-  };
-
   useEffect(() => {
     dispatch(getItems());
   }, []);
 
-  const handleDrop = (item) => {
-    const isBun = constructorItems.some((element) => element.type === "bun");
-    if (item.type === "bun" && !isBun) dispatch(addItemBurgerConstructor(item));
-    else if (item.type === "bun" && isBun) dispatch(changeIngredient(item));
-    else dispatch(addItemBurgerConstructor(item));
-  };
-  const visible = getOrderNumberRequest?false:true
+  const visible = getOrderNumberRequest ? false : true;
 
   return (
     <div className={`${appStyles.body} pt-10 pr-10 pl-10`}>
-      <AppHeader />
-      <div className={appStyles.main}>
-        <DndProvider backend={HTML5Backend}>
-          {!itemsFailed && <BurgerIngredients modalState={isOpenIngredient} />}
-          <BurgerConstructor openPopup={isOpenOrder} handleDrop={handleDrop} />
-        </DndProvider>
-      </div>
+      <Router>
+        <AppHeader />
+        <Route path="/" exact={true}>
+          <MainPage setModal={setModal} />
+        </Route>
+        <Route path="/login" exact={true}>
+          <LoginPage />
+        </Route>
+        <Route path="/register" exact={true}>
+          <RegisterPage />
+        </Route>
+        <Route path="/forgot-password" exact={true}>
+          <PassworRecovery />
+        </Route>
+        <Route path="/reset-password" exact={true}>
+          <ChangePassword />
+        </Route>
+        <Route path="/profile" exact={true}>
+          <Profile />
+        </Route>
+      </Router>
       {isModal && (
         <Modal handelCloseModal={isClose} visible={visible}>
           {isOpenIngredienDetals && <IngredientDetails />}

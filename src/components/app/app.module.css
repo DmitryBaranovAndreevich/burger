@@ -4,8 +4,3 @@
   align-items: center;
 }
 
-.main {
-  display: flex;
-  justify-content: space-between;
-  gap: 40px;
-}

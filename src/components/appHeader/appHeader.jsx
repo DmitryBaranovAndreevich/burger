@@ -5,44 +5,58 @@ import {
   BurgerIcon,
   ListIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { NavLink } from "react-router-dom";
 import PropTypes from "prop-types";
 
-function Link(props) {
-  return (
-    <a
-      href={props.href}
-      className={`${appHeaderStyles.link} text text_type_main-default
-          text_color_inactive mb-3 mt-4 pb-4 pt-4 pl-5 pr-5 ${props.addClass}`}
-    >
-      {props.children}
-    </a>
-  );
-}
+// function Link(props) {
+//   return (
+//     <a
+//       href={props.href}
+//       className={`${appHeaderStyles.link} text text_type_main-default
+//           text_color_inactive mb-3 mt-4 pb-4 pt-4 pl-5 pr-5 ${props.addClass}`}
+//     >
+//       {props.children}
+//     </a>
+//   );
+// }
 
-Link.propTypes = {
-  href: PropTypes.string.isRequired,
-  addClass: PropTypes.string,
-};
+// Link.propTypes = {
+//   href: PropTypes.string.isRequired,
+//   addClass: PropTypes.string,
+// };
 
 function AppHeader() {
   return (
     <header className={appHeaderStyles.header}>
       <div className={appHeaderStyles.wrapper}>
         <nav className={appHeaderStyles.navigation}>
-          <Link href="#">
+          <NavLink
+            to="/profile/orders/:id"
+            className={`${appHeaderStyles.link} text text_type_main-default
+        text_color_inactive mb-3 mt-4 pb-4 pt-4 pl-5 pr-5 `}
+          >
             <BurgerIcon type="primary" className={appHeaderStyles.icon} />
             Конструктор
-          </Link>
-          <Link href="#">
+          </NavLink>
+          <NavLink
+            to="/profile/orders"
+            className={`${appHeaderStyles.link} text text_type_main-default
+          text_color_inactive mb-3 mt-4 pb-4 pt-4 pl-5 pr-5 `}
+          >
             <ListIcon type="primary" />
             Лента заказов
-          </Link>
+          </NavLink>
         </nav>
         <Logo />
-        <Link addClass={appHeaderStyles.personalAccount} href="#">
+        <NavLink
+          addClass={appHeaderStyles.personalAccount}
+          to="/profile"
+          className={`${appHeaderStyles.link} text text_type_main-default
+           text_color_inactive mb-3 mt-4 pb-4 pt-4 pl-5 pr-5 `}
+        >
           <ProfileIcon type="primary" />
           Личный кабинет
-        </Link>
+        </NavLink>
       </div>
     </header>
   );
