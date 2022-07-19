@@ -10,9 +10,11 @@ import { getIngredientDetals } from "../services/actions/ingredientsDetals";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation} from "react-router-dom";
 
 export const MainPage = ({ setModal }) => {
   const dispatch = useDispatch();
+  
 
   const { constructorItems } = useSelector(
     (store) => store.burgerConstructorList

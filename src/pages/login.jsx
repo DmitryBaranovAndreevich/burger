@@ -1,33 +1,59 @@
 import styles from "./login.module.css";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link } from "react-router-dom";
+import { Link, Redirect, useLocation } from "react-router-dom";
+import { userLogin } from "../services/actions/login";
+import { useDispatch, useSelector } from "react-redux";
 
 export const LoginPage = () => {
   const [emailValue, setEmailValue] = useState("");
   const [passwordValue, setPasswodValue] = useState("");
+  const dispatch = useDispatch();
+  const { isLoadingOn } = useSelector((store) => store.user);
+
+  const login = useCallback(
+    (e) => {
+      e.preventDefault();
+      dispatch(userLogin({ email: emailValue, password: passwordValue }));
+    },
+    [emailValue, passwordValue]
+  );
+
+  useEffect(() => {
+    if (isLoadingOn) {
+      setEmailValue("");
+      setPasswodValue("");
+    }
+  }, [isLoadingOn]);
+  const location = useLocation();
+
+  if (isLoadingOn) {
+    return <Redirect to={location.state?.from || "/"} />;
+  }
 
   return (
-    <div className={styles.wrapper}>
+    <form className={styles.wrapper} onSubmit={login} style={{ maxWidth: 480 }}>
       <h2 className={`${styles.title} text text_type_main-medium`}>Вход</h2>
-      <Input
-        type={"email"}
-        placeholder={"E-mail"}
-        value={emailValue}
-        onChange={(e) => setEmailValue(e.target.value)}
-        size={"default"}
-      />
-      <Input
-        type={"password"}
-        placeholder={"Пароль"}
-        value={passwordValue}
-        onChange={(e) => setPasswodValue(e.target.value)}
-        size={"default"}
-        icon={"ShowIcon"}
-      />
+      <div className={styles.input}>
+        <Input
+          type={"email"}
+          placeholder={"E-mail"}
+          value={emailValue}
+          onChange={(e) => setEmailValue(e.target.value)}
+        />
+      </div>
+      <div className={styles.input}>
+        <Input
+          type={"password"}
+          placeholder={"Пароль"}
+          value={passwordValue}
+          onChange={(e) => setPasswodValue(e.target.value)}
+          icon={"ShowIcon"}
+        />
+      </div>
       <Button size={"large"}>Войти</Button>
       <div className={styles.container}>
         <p
@@ -47,6 +73,6 @@ export const LoginPage = () => {
           </Link>
         </p>
       </div>
-    </div>
+    </form>
   );
 };

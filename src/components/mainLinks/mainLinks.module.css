@@ -9,6 +9,14 @@
   text-decoration: none;
 }
 
+.button {
+  background-color: transparent;
+  border: none;
+  text-align: start;
+  cursor: pointer;
+  margin: 15px 0 0 0;
+}
+
 .comment {
   margin-top: 120px;
 }

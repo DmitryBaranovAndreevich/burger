@@ -1,41 +1,39 @@
 import styles from "./register.module.css";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { SET_DATA_ACCOUNT } from "../utils/config";
+  import { userLogin } from '../services/actions/login';
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 export const RegisterPage = () => {
   const [name, setName] = useState("");
   const [emailValue, setEmailValue] = useState("");
   const [passwordValue, setPasswodValue] = useState("");
+  const dispatch = useDispatch();
+  const {user,isLoadingOn} = useSelector(store => store.user)
 
-  const setAccount = async () => {
-    try {
-      const responce = await fetch(SET_DATA_ACCOUNT, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: emailValue,
-          password: passwordValue,
-          name: name,
-        }),
-      });
+  const userData = {
+    'email' : emailValue,
+    "password": passwordValue, 
+    "name": name
+  }
 
-      const { success } = await responce.json();
-      if (success) {
-        setName("");
-        setEmailValue("");
-        setPasswodValue("");
-      }
-    } catch {
-      console.log("Ошибка при попытке смены пароля");
+  const setAccount = useCallback((e) => {
+    e.preventDefault();
+    dispatch(userLogin(userData))
+  })
+
+  useEffect(() => {
+    if(isLoadingOn) {
+      console.log(user)
+      setName('');
+      setEmailValue('');
+      setPasswodValue('')
     }
-  };
+  },[isLoadingOn])
 
   return (
     <div className={styles.wrapper}>

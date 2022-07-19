@@ -31,7 +31,7 @@ function AppHeader() {
       <div className={appHeaderStyles.wrapper}>
         <nav className={appHeaderStyles.navigation}>
           <NavLink
-            to="/profile/orders/:id"
+            to="/"
             className={`${appHeaderStyles.link} text text_type_main-default
         text_color_inactive mb-3 mt-4 pb-4 pt-4 pl-5 pr-5 `}
           >
@@ -49,7 +49,7 @@ function AppHeader() {
         </nav>
         <Logo />
         <NavLink
-          addClass={appHeaderStyles.personalAccount}
+          addclass={appHeaderStyles.personalAccount}
           to="/profile"
           className={`${appHeaderStyles.link} text text_type_main-default
            text_color_inactive mb-3 mt-4 pb-4 pt-4 pl-5 pr-5 `}

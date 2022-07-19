@@ -1,7 +1,10 @@
 import styles from "./profile.module.css";
 import { MainLinks } from "../components/mainLinks/mainLinks";
 import { useState } from "react";
-import { Input } from "@ya.praktikum/react-developer-burger-ui-components";
+import {
+  Input,
+  Button,
+} from "@ya.praktikum/react-developer-burger-ui-components";
 
 export const Profile = () => {
   const [name, setName] = useState("");
@@ -9,17 +12,20 @@ export const Profile = () => {
   const [passwordValue, setPasswodValue] = useState("");
 
   return (
-    <div className={styles.wrapper}>
+    <form className={styles.wrapper}>
       <MainLinks />
       <div className={styles.inputs}>
+        <div className={styles.input}>
         <Input
           type={"text"}
           placeholder={"Имя"}
           value={name}
           onChange={(e) => setName(e.target.value)}
-          size={"default"}
           icon={"EditIcon"}
+          size={"default"}
         />
+</div>
+<div className={styles.input}>
         <Input
           type={"text"}
           placeholder={"Логин"}
@@ -28,6 +34,8 @@ export const Profile = () => {
           size={"default"}
           icon={"EditIcon"}
         />
+        </div>
+        <div className={styles.input}>
         <Input
           type={"password"}
           placeholder={"Пароль"}
@@ -36,7 +44,12 @@ export const Profile = () => {
           size={"default"}
           icon={"EditIcon"}
         />
+        </div>
+        <div className={styles.buttonContainer}>
+          <Button type="secondary">Отмена</Button>
+          <Button>Сохранить</Button>
+        </div>
       </div>
-    </div>
+    </form>
   );
 };

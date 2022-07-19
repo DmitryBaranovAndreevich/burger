@@ -1,4 +1,5 @@
 .wrapper {
+  
   margin-top: 10vh;
   display: flex;
   flex-direction: column;
@@ -19,4 +20,8 @@
   color: #4c4cff;
   text-decoration: none;
   margin-left: 8px;
+}
+
+.input>div>div{
+ width: 480px;
 }
