@@ -6,11 +6,9 @@ import {
   changeIngredient,
 } from "../services/actions/burgerConstructor";
 import { getOrderNumber } from "../services/actions/orderDetals";
-import { getIngredientDetals } from "../services/actions/ingredientsDetals";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation} from "react-router-dom";
 
 export const MainPage = ({ setModal }) => {
   const dispatch = useDispatch();
@@ -24,11 +22,6 @@ export const MainPage = ({ setModal }) => {
 
   const isOpen = () => {
     setModal(true);
-  };
-
-  const isOpenIngredient = (cart) => {
-    dispatch(getIngredientDetals(cart));
-    isOpen();
   };
 
   const isOpenOrder = () => {
@@ -46,7 +39,7 @@ export const MainPage = ({ setModal }) => {
   return (
     <div className={styles.main}>
       <DndProvider backend={HTML5Backend}>
-        {!itemsFailed && <BurgerIngredients modalState={isOpenIngredient} />}
+        {!itemsFailed && <BurgerIngredients />}
         <BurgerConstructor openPopup={isOpenOrder} handleDrop={handleDrop} />
       </DndProvider>
     </div>

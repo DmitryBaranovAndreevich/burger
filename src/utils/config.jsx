@@ -8,3 +8,4 @@ export const SET_DATA_ACCOUNT = `${baseUrl}/auth/register`;
 export const USER_LOGIN = `${baseUrl}/auth/login`;
 export const GET_USER = `${baseUrl}/auth/user`;
 export const REFRESH_TOKEN = `${baseUrl}/auth/token`;
+export const USER_LOGIN_OUT = `${baseUrl}/auth/logout`

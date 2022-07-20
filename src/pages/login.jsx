@@ -4,6 +4,7 @@ import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import Spinner from '../components/spinner/spinner';
 import { Link, Redirect, useLocation } from "react-router-dom";
 import { userLogin } from "../services/actions/login";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,7 +13,7 @@ export const LoginPage = () => {
   const [emailValue, setEmailValue] = useState("");
   const [passwordValue, setPasswodValue] = useState("");
   const dispatch = useDispatch();
-  const { isLoadingOn } = useSelector((store) => store.user);
+  const { isLoadingOn, isLoadingRequest} = useSelector((store) => store.user);
 
   const login = useCallback(
     (e) => {
@@ -34,7 +35,7 @@ export const LoginPage = () => {
     return <Redirect to={location.state?.from || "/"} />;
   }
 
-  return (
+  return isLoadingRequest?(<Spinner/>):(
     <form className={styles.wrapper} onSubmit={login} style={{ maxWidth: 480 }}>
       <h2 className={`${styles.title} text text_type_main-medium`}>Вход</h2>
       <div className={styles.input}>

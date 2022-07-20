@@ -1,16 +1,21 @@
 import modalStyles from "./modal.module.css";
 import { ModalOverlay } from "../modalOverlay/modalOverlay";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import ReactDOM from "react-dom";
 import { useEffect } from "react";
-import PropTypes from "prop-types";
+import { useHistory } from "react-router-dom";
 
-function Modal(props) {
-  const modalRoot = document.querySelector("#react-modals");
+export function Modal(props) {
+  const history = useHistory();
+
+  const back = (e) => {
+    e.stopPropagation();
+    history.goBack();
+  };
 
   const onKeydown = (e) => {
+     e.stopPropagation();
     if (e.key === "Escape") {
-      props.handelCloseModal();
+      history.goBack();
     }
   };
 
@@ -20,25 +25,17 @@ function Modal(props) {
     return () => document.removeEventListener("keydown", onKeydown);
   }, []);
 
-  return ReactDOM.createPortal(
-    <ModalOverlay closePopup={props.handelCloseModal}>
+  return (
+    <ModalOverlay>
       <div className={modalStyles.container}>
-        {props.visible&&<button
-          onClick={props.handelCloseModal}
+        <button
+          onClick={back}
           className={modalStyles.closeButton}
         >
-          <CloseIcon />
-        </button>}
+          <CloseIcon/>
+        </button>
         {props.children}
       </div>
-    </ModalOverlay>,
-    modalRoot
+    </ModalOverlay>
   );
 }
-
-Modal.propTypes = {
-  handelCloseModal: PropTypes.func.isRequired,
-  visible: PropTypes.bool.isRequired
-};
-
-export default Modal;

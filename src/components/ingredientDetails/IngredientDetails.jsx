@@ -1,10 +1,11 @@
 import ingredientDetailsStyles from "./ingredientDetails.module.css";
 import { useSelector } from "react-redux";
+import { useParams} from "react-router-dom";
 
-const IngredientDetails = () => {
-  const { name, image, proteins, calories, fat, carbohydrates } = useSelector(
-    (store) => store.ingredienDetals.ingredient
-  );
+export const IngredientDetails = () => {
+  const { id } = useParams();
+  const items = useSelector((store) => store.ingredientsList.items); 
+  const { name, image, proteins, calories, fat, carbohydrates } =!!items&&items.find(item => item._id === id);
 
   return (
     <div className={ingredientDetailsStyles.wrapper}>

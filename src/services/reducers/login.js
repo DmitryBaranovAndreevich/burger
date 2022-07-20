@@ -9,11 +9,10 @@ const initialData = {
   user: {},
   isLoadingRequest: false,
   isLoadingOn: false,
-}
+};
 
-export const userLoadingReducer = (state=initialData, action) => {
+export const userLoadingReducer = (state = initialData, action) => {
   switch (action.type) {
-
     case LOGIN_REQUEST:
       return {
         ...state,
@@ -35,11 +34,15 @@ export const userLoadingReducer = (state=initialData, action) => {
         isLoadingRequest: false,
       };
 
-    case LOGIN_OUT :
-      return state = initialData
+    case LOGIN_OUT:
+      return {
+        ...state,
+        user: {},
+        isLoadingRequest: false,
+        isLoadingOn: false,
+      };
 
     default:
       return state;
   }
-}
-
+};

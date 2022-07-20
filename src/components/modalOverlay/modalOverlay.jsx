@@ -1,10 +1,11 @@
 import modalOverlayStyles from "./modalOverlayStyles.module.css";
-import PropTypes from "prop-types";
+import {useHistory} from 'react-router-dom';
 
 function ModalOverlay(props) {
+  const history = useHistory();
   const onClickOverlay = (e) => {
     e.target.classList.contains(modalOverlayStyles.overlay) &&
-      props.closePopup();
+    history.goBack();
   };
 
   return (
@@ -13,9 +14,5 @@ function ModalOverlay(props) {
     </div>
   );
 }
-
-ModalOverlay.propTypes = {
-  closePopup: PropTypes.func.isRequired,
-};
 
 export { ModalOverlay };

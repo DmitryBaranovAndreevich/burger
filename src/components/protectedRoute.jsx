@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 export function ProtectedRoute({children,...rest}) {
   const {isLoadingOn,user} = useSelector(store => store.user);
-
+  console.log(isLoadingOn)
     return( 
     <Route
       {...rest}

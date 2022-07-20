@@ -2,17 +2,22 @@ import styles from './mainLinks.module.css';
 import {NavLink, useHistory } from 'react-router-dom';
 import { userLoginOut } from '../../services/actions/login';
 import { useDispatch } from "react-redux";
-import { eraseCookie } from '../../utils/eraseCookie';
 
 export const MainLinks = () => {
   const dispath = useDispatch();
   const history = useHistory();
+  const tokenToRefresh = localStorage.getItem("refreshToken");
 
-  const logOut = () => {
-    dispath(userLoginOut());
-    localStorage.removeItem('refreshToken');
-    eraseCookie('token')
-    history.replace({pathname: '/login'});
+  const logOut = (e) => {
+    e.preventDefault();
+    dispath(userLoginOut(tokenToRefresh))
+    .then(() => {
+      history.replace({pathname: '/login'});
+    })
+    .catch((err) => {
+      console.log(`Не получилось выйти из аккаунта ${err}`)
+    })
+    
   }
 
   return (

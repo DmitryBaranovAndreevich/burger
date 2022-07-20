@@ -16,3 +16,8 @@
   text-decoration: none;
   margin-left: 8px;
 }
+
+.input>div>div{
+ width: 480px;
+}
+
