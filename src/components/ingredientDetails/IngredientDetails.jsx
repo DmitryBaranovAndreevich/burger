@@ -4,10 +4,10 @@ import { useParams} from "react-router-dom";
 
 export const IngredientDetails = () => {
   const { id } = useParams();
-  const items = useSelector((store) => store.ingredientsList.items); 
+  const items = useSelector((store) => store.ingredientsList.items);
   const { name, image, proteins, calories, fat, carbohydrates } =!!items&&items.find(item => item._id === id);
 
-  return (
+  return !!items&&(
     <div className={ingredientDetailsStyles.wrapper}>
       <p
         className={`${ingredientDetailsStyles.title} text text_type_main-large`}

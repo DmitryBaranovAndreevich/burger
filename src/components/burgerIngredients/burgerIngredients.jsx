@@ -143,7 +143,7 @@ TypesIngredients.propTypes = {
   }).isRequired,
 };
 
-function BurgerIngredients(props) {
+function BurgerIngredients() {
   const [current, setCurrent] = React.useState("one");
   const cards = useSelector((store) => store.ingredientsList.items);
 

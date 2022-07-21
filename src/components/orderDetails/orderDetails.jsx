@@ -1,9 +1,21 @@
 import orderDetailsStyle from "./orderDetails.module.css";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { getOrderNumberFailed } from "../../services/actions/orderDetals";
+import { deleteOrder } from "../../services/actions/burgerConstructor";
+import Spinner from '../spinner/spinner';
 
-const OrderDetails = () => {
-  const { orderNumber } = useSelector((store) => store.orderNumber);
-  return (
+export const OrderDetails = () => {
+  const dispatch = useDispatch();
+  const { orderNumber,getOrderNumberRequest } = useSelector((store) => store.orderNumber);
+
+  useEffect(() => {
+    return () => {
+      dispatch(getOrderNumberFailed());
+      dispatch(deleteOrder());
+    }},[])
+
+  return getOrderNumberRequest?(<Spinner/>):(
     <div className={orderDetailsStyle.wrapper}>
       <h3 className={`${orderDetailsStyle.title} text text_type_digits-large`}>
         {orderNumber}
@@ -20,4 +32,4 @@ const OrderDetails = () => {
   );
 };
 
-export default OrderDetails;
+

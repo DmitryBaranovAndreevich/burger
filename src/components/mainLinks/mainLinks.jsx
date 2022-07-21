@@ -1,25 +1,23 @@
 import styles from './mainLinks.module.css';
 import {NavLink, useHistory } from 'react-router-dom';
-import { userLoginOut } from '../../services/actions/login';
+import { userLoginOut,userLoginOutFailed } from '../../services/actions/login';
 import { useDispatch } from "react-redux";
 
 export const MainLinks = () => {
-  const dispath = useDispatch();
+  const dispatch = useDispatch();
   const history = useHistory();
   const tokenToRefresh = localStorage.getItem("refreshToken");
 
   const logOut = (e) => {
     e.preventDefault();
-    dispath(userLoginOut(tokenToRefresh))
-    .then(() => {
-      history.replace({pathname: '/login'});
-    })
-    .catch((err) => {
-      console.log(`Не получилось выйти из аккаунта ${err}`)
-    })
-    
+    dispatch(userLoginOut(tokenToRefresh))
+    .then(() => {history.replace({pathname: '/login'})})
+     .catch((err) => {
+        dispatch(userLoginOutFailed());
+        console.log(`Не получилось выйти из аккаунта ${err}`);
+      });;  
   }
-
+  
   return (
     <div className={styles.container}>
       <NavLink to='/profile' className={`${styles.link} text text_type_main-medium text_color_inactive`} activeClassName={styles.activeClass}>Профиль</NavLink>

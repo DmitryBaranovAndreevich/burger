@@ -30,8 +30,13 @@
   gap: 8px;
   text-decoration: none;
   border-radius: 40px;
+  color: rgb(133, 133, 173)
 }
 
 .personalAccount {
   justify-self: flex-end;
+}
+
+.activeClass {
+  color: #F2F2F3
 }

@@ -1,17 +1,20 @@
 import styles from "./profile.module.css";
 import { MainLinks } from "../components/mainLinks/mainLinks";
 import { useState } from "react";
+import { useSelector} from 'react-redux'
 import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import Spinner from "../components/spinner/spinner";
 
 export const Profile = () => {
   const [name, setName] = useState("");
   const [login, setLogin] = useState("");
   const [passwordValue, setPasswodValue] = useState("");
+  const {isLoginOutRequest} = useSelector(store => store.user);
 
-  return (
+  return isLoginOutRequest?(<Spinner/>):(
     <form className={styles.wrapper}>
       <MainLinks />
       <div className={styles.inputs}>

@@ -1,4 +1,4 @@
-import appHeaderStyles from "./appHeader.module.css";
+import styles from "./appHeader.module.css";
 import { Logo } from "@ya.praktikum/react-developer-burger-ui-components";
 import {
   ProfileIcon,
@@ -6,42 +6,26 @@ import {
   ListIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { NavLink } from "react-router-dom";
-import PropTypes from "prop-types";
-
-// function Link(props) {
-//   return (
-//     <a
-//       href={props.href}
-//       className={`${appHeaderStyles.link} text text_type_main-default
-//           text_color_inactive mb-3 mt-4 pb-4 pt-4 pl-5 pr-5 ${props.addClass}`}
-//     >
-//       {props.children}
-//     </a>
-//   );
-// }
-
-// Link.propTypes = {
-//   href: PropTypes.string.isRequired,
-//   addClass: PropTypes.string,
-// };
 
 function AppHeader() {
   return (
-    <header className={appHeaderStyles.header}>
-      <div className={appHeaderStyles.wrapper}>
-        <nav className={appHeaderStyles.navigation}>
+    <header className={styles.header}>
+      <div className={styles.wrapper}>
+        <nav className={styles.navigation}>
           <NavLink
-            to="/"
-            className={`${appHeaderStyles.link} text text_type_main-default
-        text_color_inactive mb-3 mt-4 pb-4 pt-4 pl-5 pr-5 `}
+            to="/"   exact={true}
+            className={`${styles.link} text text_type_main-default
+         mb-3 mt-4 pb-4 pt-4 pl-5 pr-5 `}
+            activeClassName={styles.activeClass}
           >
-            <BurgerIcon type="primary" className={appHeaderStyles.icon} />
+            <BurgerIcon type="primary" className={styles.icon} />
             Конструктор
           </NavLink>
           <NavLink
-            to="/profile/orders"
-            className={`${appHeaderStyles.link} text text_type_main-default
-          text_color_inactive mb-3 mt-4 pb-4 pt-4 pl-5 pr-5 `}
+            to="/profile/orders"  exact={true} 
+            className={`${styles.link} text text_type_main-default
+          mb-3 mt-4 pb-4 pt-4 pl-5 pr-5 `}
+            activeClassName={styles.activeClass}
           >
             <ListIcon type="primary" />
             Лента заказов
@@ -49,10 +33,10 @@ function AppHeader() {
         </nav>
         <Logo />
         <NavLink
-          addclass={appHeaderStyles.personalAccount}
-          to="/profile"
-          className={`${appHeaderStyles.link} text text_type_main-default
-           text_color_inactive mb-3 mt-4 pb-4 pt-4 pl-5 pr-5 `}
+          addclass={styles.personalAccount}
+          to="/profile"  exact={true} 
+          className={`${styles.link} text text_type_main-default mb-3 mt-4 pb-4 pt-4 pl-5 pr-5 `}
+          activeClassName={styles.activeClass}
         >
           <ProfileIcon type="primary" />
           Личный кабинет

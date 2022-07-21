@@ -1,5 +1,6 @@
 import { MainPage } from "./main";
 import { IngredientDetails } from "../components/ingredientDetails/IngredientDetails";
+import { OrderDetails } from '../components/orderDetails/orderDetails';
 import { Modal } from "../components/modal/modal";
 import {
   Switch,
@@ -21,11 +22,18 @@ export const ModalSwitch = () => {
         </Route>
       </Switch>
       {modal && (
-        <Route path="/ingredients/:id">
+        <Switch>
+        <Route path="/ingredients/:id" exact={true}>
           <Modal>
             <IngredientDetails/>
           </Modal>
         </Route>
+        <Route path="/order" exact={true}>
+          <Modal>
+            <OrderDetails/>
+          </Modal>
+        </Route>
+        </Switch>
       )}
     </div>
   );

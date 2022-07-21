@@ -1,5 +1,6 @@
 import { API_ORDERS } from "../../utils/config";
 import { checkResponce } from "../../utils/checkResponce";
+import { getCookie } from "../../utils/getCookie";
 
 export const GET_ORDER_NUMBER_REQUEST = "GET_ORDER_NUMBER_REQUEST";
 export const GET_ORDER_NUMBER = "GET_ORDER_NUMBER";
@@ -13,6 +14,7 @@ export function getOrderNumber(data) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: getCookie("token"),
       },
       body: JSON.stringify({ ingredients: data.map((elem) => elem._id) }),
     })

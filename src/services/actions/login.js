@@ -11,12 +11,26 @@ import { eraseCookie } from "../../utils/eraseCookie";
 export const LOGIN_REQUEST = "LOGIN_REQUEST";
 export const LOGIN_SUCCESS = "LOGIN_ON";
 export const LOGIN_FAILED = "LOGIN_FAILED";
+export const LOGIN_OUT_REQUEST = "LOGIN_OUT_REQUEST";
+export const LOGIN_OUT_FAILED = "LOGIN_OUT_FAILED";
 export const LOGIN_OUT = "LOGIN_OUT";
 export const LOGIN_WITH_TOKEN = "LOGIN_WITH_TOKEN";
 
 const userLoginRequest = () => {
   return {
     type: LOGIN_REQUEST,
+  };
+};
+
+const userLoginOutRequest = () => {
+  return {
+    type: LOGIN_OUT_REQUEST,
+  };
+}
+
+export const userLoginOutFailed = () => {
+  return {
+    type: LOGIN_OUT_FAILED,
   };
 };
 
@@ -64,6 +78,7 @@ const userLoginFailed = () => {
 
 export const userLoginOut = (refreshToken) => {
   return function (dispatch) {
+    dispatch(userLoginOutRequest())
     return fetch(USER_LOGIN_OUT, {
       method: "POST",
       headers: {
@@ -78,7 +93,7 @@ export const userLoginOut = (refreshToken) => {
           localStorage.removeItem("refreshToken");
           eraseCookie("token");
         }
-      });
+      })
   };
 };
 
