@@ -4,18 +4,18 @@ import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import Spinner from '../components/spinner/spinner';
+import Spinner from "../components/spinner/spinner";
 import { GET_PASSWORD } from "../utils/config";
-import { Link,Redirect,useHistory } from "react-router-dom";
+import { Link, Redirect, useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 export const PassworRecovery = () => {
   const [email, setEmail] = useState("");
   const history = useHistory();
-  const {isLoadingOn,isLoadingRequest} = useSelector(store => store.user)
-  
+  const { isLoadingOn, isLoadingRequest } = useSelector((store) => store.user);
+
   const getPassword = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
       const responce = await fetch(GET_PASSWORD, {
         method: "POST",
@@ -26,25 +26,31 @@ export const PassworRecovery = () => {
       });
 
       const { success } = await responce.json();
-      if(success) {
-        setEmail('');
-        history.replace({pathname: '/reset-password',state:{from: history.location}})
+      if (success) {
+        setEmail("");
+        history.replace({
+          pathname: "/reset-password",
+          state: { from: history.location },
+        });
       }
     } catch {
       console.log(`Запрос не прошел`);
     }
   };
-  
-  if(isLoadingOn){
-     return (
-    <Redirect
+
+  if (isLoadingOn) {
+    return (
+      <Redirect
         to={{
-          pathname: '/'
+          pathname: "/",
         }}
-      />)
+      />
+    );
   }
 
-  return isLoadingRequest?(<Spinner/>):(
+  return isLoadingRequest ? (
+    <Spinner />
+  ) : (
     <form className={styles.wrapper} onSubmit={getPassword}>
       <h2 className={`${styles.title} text text_type_main-medium`}>
         Восстановление пароля
@@ -58,7 +64,7 @@ export const PassworRecovery = () => {
           size={"default"}
         />
       </div>
-      <Button >Восстановить</Button>
+      <Button>Восстановить</Button>
       <p className={styles.explanations}>
         Вспомнили пароль?
         <Link className={styles.link} to="/login">

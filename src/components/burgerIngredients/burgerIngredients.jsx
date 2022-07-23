@@ -7,7 +7,7 @@ import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components
 import { dataPropTypes } from "../../utils/data.jsx";
 import { useSelector } from "react-redux";
 import { useDrag } from "react-dnd";
-import { Link,useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Tabs = ({ current, links, setCurrent }) => {
   const { linkToBun, container, linkToSauce, linkToMain } = links;
@@ -74,30 +74,19 @@ function Ingredient({ productCard }) {
   });
 
   return (
-    <li
-      ref={dragRef}
-      className={`${styles.card} mt-6`}
-    >
+    <li ref={dragRef} className={`${styles.card} mt-6`}>
       {counter.length !== 0 && (
         <Counter
           count={productCard.type === "bun" ? 2 : counter.length}
           size="default"
         />
       )}
-      <img
-        src={productCard.image_large}
-        alt=""
-        className={styles.cardImage}
-      />
-      <p
-        className={`${styles.price} text text_type_digits-default`}
-      >
+      <img src={productCard.image_large} alt="" className={styles.cardImage} />
+      <p className={`${styles.price} text text_type_digits-default`}>
         {productCard.price}
         <CurrencyIcon type="primary" />
       </p>
-      <p
-        className={`${styles.name} text text_type_main-default`}
-      >
+      <p className={`${styles.name} text text_type_main-default`}>
         {productCard.name}
       </p>
     </li>
@@ -122,10 +111,15 @@ const TypesIngredients = (props) => {
         {props.cards.map(
           (card) =>
             card.type === props.typeIngredients && (
-              <Link to={{pathname: `/ingredients/${card._id}`, state: {modal:location}}} className={styles.link}  key={card._id}>
-                <Ingredient
-                  productCard={card}
-                />
+              <Link
+                to={{
+                  pathname: `/ingredients/${card._id}`,
+                  state: { modal: location },
+                }}
+                className={styles.link}
+                key={card._id}
+              >
+                <Ingredient productCard={card} />
               </Link>
             )
         )}

@@ -1,11 +1,11 @@
 .container {
   max-width: 320px;
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
 }
 
 .link {
-  margin-top: 20px;
+  margin-top: 25px;
   text-decoration: none;
 }
 
@@ -14,13 +14,13 @@
   border: none;
   text-align: start;
   cursor: pointer;
-  margin: 15px 0 0 0;
+  margin: 35px 0 0 0;
 }
 
 .comment {
-  margin-top: 120px;
+  margin-top: 100px;
 }
 
 .activeClass {
-  color: #F2F2F3
+  color: #f2f2f3;
 }

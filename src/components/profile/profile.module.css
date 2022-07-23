@@ -1,20 +1,21 @@
 .wrapper {
-  margin-top: 10vh;
   display: flex;
   gap: 60px;
 }
 
 .inputs {
+  position: relative;
   width: 480px;
   display: flex;
   flex-direction: column;
   gap: 24px;
 }
 
-.input>div>div {
+.input > div > div {
   width: 480px;
 }
 
 .buttonContainer {
-  text-align: end;
+  display: flex;
+  flex-direction: row-reverse;
 }

@@ -16,6 +16,13 @@ export const LOGIN_OUT_FAILED = "LOGIN_OUT_FAILED";
 export const LOGIN_OUT = "LOGIN_OUT";
 export const LOGIN_WITH_TOKEN = "LOGIN_WITH_TOKEN";
 
+export const userLoginOn = (user) => {
+  return {
+    type: LOGIN_SUCCESS,
+    payload: user,
+  };
+};
+
 const userLoginRequest = () => {
   return {
     type: LOGIN_REQUEST,
@@ -26,7 +33,7 @@ const userLoginOutRequest = () => {
   return {
     type: LOGIN_OUT_REQUEST,
   };
-}
+};
 
 export const userLoginOutFailed = () => {
   return {
@@ -34,6 +41,41 @@ export const userLoginOutFailed = () => {
   };
 };
 
+export const loginOut = () => {
+  return {
+    type: LOGIN_OUT,
+  };
+};
+
+const userLoginFailed = () => {
+  return {
+    type: LOGIN_FAILED,
+  };
+};
+
+export const changeUserData = (token, form) => {
+  return function (dispatch) {
+    dispatch(userLoginRequest());
+    fetch(GET_USER, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "Application/json",
+        Authorization: "Bearer " + token,
+      },
+      body: JSON.stringify(form),
+    })
+      .then(checkResponce)
+      .then(({ success, user }) => {
+        if (success) {
+          dispatch(userLoginOn(user));
+          localStorage.setItem("password", form.password);
+        }
+      })
+      .catch((err) => {
+        console.log(`Че-то не так ${err}`);
+      });
+  };
+};
 
 export const loginWithToken = (token) => {
   return function (dispatch) {
@@ -57,28 +99,9 @@ export const loginWithToken = (token) => {
   };
 };
 
-export const userLoginOn = (user) => {
-  return {
-    type: LOGIN_SUCCESS,
-    payload: user,
-  };
-};
-
-export const loginOut = () => {
-  return {
-    type: LOGIN_OUT,
-  };
-};
-
-const userLoginFailed = () => {
-  return {
-    type: LOGIN_FAILED,
-  };
-};
-
 export const userLoginOut = (refreshToken) => {
   return function (dispatch) {
-    dispatch(userLoginOutRequest())
+    dispatch(userLoginOutRequest());
     return fetch(USER_LOGIN_OUT, {
       method: "POST",
       headers: {
@@ -91,9 +114,10 @@ export const userLoginOut = (refreshToken) => {
         if (success) {
           dispatch(loginOut());
           localStorage.removeItem("refreshToken");
+          localStorage.removeItem("password");
           eraseCookie("token");
         }
-      })
+      });
   };
 };
 
@@ -116,6 +140,7 @@ export function userLogin(form) {
         if (success) {
           dispatch(userLoginOn(user));
           saveTokens(refreshToken, accessToken);
+          localStorage.setItem("password", form.password);
         }
       })
       .catch((err) => {

@@ -13,7 +13,8 @@ function AppHeader() {
       <div className={styles.wrapper}>
         <nav className={styles.navigation}>
           <NavLink
-            to="/"   exact={true}
+            to="/"
+            exact={true}
             className={`${styles.link} text text_type_main-default
          mb-3 mt-4 pb-4 pt-4 pl-5 pr-5 `}
             activeClassName={styles.activeClass}
@@ -22,7 +23,8 @@ function AppHeader() {
             Конструктор
           </NavLink>
           <NavLink
-            to="/profile/orders"  exact={true} 
+            to="/profile/orders"
+            exact={true}
             className={`${styles.link} text text_type_main-default
           mb-3 mt-4 pb-4 pt-4 pl-5 pr-5 `}
             activeClassName={styles.activeClass}
@@ -34,7 +36,8 @@ function AppHeader() {
         <Logo />
         <NavLink
           addclass={styles.personalAccount}
-          to="/profile"  exact={true} 
+          to="/profile"
+          exact={true}
           className={`${styles.link} text text_type_main-default mb-3 mt-4 pb-4 pt-4 pl-5 pr-5 `}
           activeClassName={styles.activeClass}
         >

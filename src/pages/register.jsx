@@ -4,9 +4,9 @@ import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import Spinner from '../components/spinner/spinner';
+import Spinner from "../components/spinner/spinner";
 import { userLogin } from "../services/actions/login";
-import { Link,Redirect } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 export const RegisterPage = () => {
@@ -14,7 +14,7 @@ export const RegisterPage = () => {
   const [emailValue, setEmailValue] = useState("");
   const [passwordValue, setPasswodValue] = useState("");
   const dispatch = useDispatch();
-  const { isLoadingOn,isLoadingRequest } = useSelector((store) => store.user);
+  const { isLoadingOn, isLoadingRequest } = useSelector((store) => store.user);
 
   const userData = {
     email: emailValue,
@@ -35,17 +35,19 @@ export const RegisterPage = () => {
     }
   }, [isLoadingOn]);
 
-  if(isLoadingOn) {
+  if (isLoadingOn) {
     return (
       <Redirect
         to={{
-          pathname: '/'
+          pathname: "/",
         }}
       />
-    )
+    );
   }
- 
-  return isLoadingRequest?(<Spinner/>):(
+
+  return isLoadingRequest ? (
+    <Spinner />
+  ) : (
     <form className={styles.wrapper} onSubmit={setAccount}>
       <h2 className={`${styles.title} text text_type_main-medium`}>
         Регистрация
@@ -78,7 +80,7 @@ export const RegisterPage = () => {
           icon={"ShowIcon"}
         />
       </div>
-      <Button >Зарегистрироваться</Button>
+      <Button>Зарегистрироваться</Button>
       <p className={styles.explanations}>
         Уже зарегистрировались?
         <Link className={styles.link} to="/login">

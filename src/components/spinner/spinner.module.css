@@ -1,10 +1,10 @@
 .spinner {
   position: absolute;
-  top: 50%;
+  top: 40%;
   left: 50%;
   width: 5em;
   height: 5em;
-  margin: 50px auto;
+  margin: 0 auto;
   border-radius: 50%;
   display: block;
   z-index: 2;

@@ -1,12 +1,8 @@
 import { MainPage } from "./main";
 import { IngredientDetails } from "../components/ingredientDetails/IngredientDetails";
-import { OrderDetails } from '../components/orderDetails/orderDetails';
+import { OrderDetails } from "../components/orderDetails/orderDetails";
 import { Modal } from "../components/modal/modal";
-import {
-  Switch,
-  Route,
-  useLocation,
-} from "react-router-dom";
+import { Switch, Route, useLocation } from "react-router-dom";
 
 export const ModalSwitch = () => {
   const location = useLocation();
@@ -23,16 +19,16 @@ export const ModalSwitch = () => {
       </Switch>
       {modal && (
         <Switch>
-        <Route path="/ingredients/:id" exact={true}>
-          <Modal>
-            <IngredientDetails/>
-          </Modal>
-        </Route>
-        <Route path="/order" exact={true}>
-          <Modal>
-            <OrderDetails/>
-          </Modal>
-        </Route>
+          <Route path="/ingredients/:id" exact={true}>
+            <Modal>
+              <IngredientDetails />
+            </Modal>
+          </Route>
+          <Route path="/order" exact={true}>
+            <Modal>
+              <OrderDetails />
+            </Modal>
+          </Route>
         </Switch>
       )}
     </div>

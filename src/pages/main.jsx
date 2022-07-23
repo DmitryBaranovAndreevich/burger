@@ -29,7 +29,7 @@ export const MainPage = () => {
     <div className={styles.main}>
       <DndProvider backend={HTML5Backend}>
         {!itemsFailed && <BurgerIngredients />}
-        <BurgerConstructor  handleDrop={handleDrop} />
+        <BurgerConstructor handleDrop={handleDrop} />
       </DndProvider>
     </div>
   );

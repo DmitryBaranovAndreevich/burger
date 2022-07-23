@@ -14,7 +14,6 @@ export const ChangePassword = () => {
   const [passwordValue, setPasswodValue] = useState("");
   const history = useHistory();
   const {isLoadingOn,isLoadingRequest} = useSelector(store => store.user)
-  console.log(history)
   const resetPassword = async (e) => {
     e.preventDefault();
     try {
@@ -44,7 +43,7 @@ export const ChangePassword = () => {
     return (
         <Redirect
         to={{
-          pathname: '/'
+          pathname: '/forgot-password'
         }}
       />
     )

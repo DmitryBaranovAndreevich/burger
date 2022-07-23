@@ -12,7 +12,7 @@ const initialData = {
   isLoadingRequest: false,
   isLoadingOn: false,
   isLoginOutRequest: false,
-  isLoginOutFailed: false
+  isLoginOutFailed: false,
 };
 
 export const userLoadingReducer = (state = initialData, action) => {
@@ -38,11 +38,11 @@ export const userLoadingReducer = (state = initialData, action) => {
         isLoadingRequest: false,
       };
 
-    case LOGIN_OUT_REQUEST :
+    case LOGIN_OUT_REQUEST:
       return {
         ...state,
-        isLoginOutRequest: true
-      }  
+        isLoginOutRequest: true,
+      };
 
     case LOGIN_OUT:
       return {
@@ -53,11 +53,11 @@ export const userLoadingReducer = (state = initialData, action) => {
         isLoginOutRequest: false,
       };
 
-     case LOGIN_OUT_FAILED : 
+    case LOGIN_OUT_FAILED:
       return {
         ...state,
-        isLoginOutFailed: true
-      } 
+        isLoginOutFailed: true,
+      };
 
     default:
       return state;
