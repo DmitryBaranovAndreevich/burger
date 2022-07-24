@@ -1,0 +1,26 @@
+.container {
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+}
+
+.link {
+  margin-top: 25px;
+  text-decoration: none;
+}
+
+.button {
+  background-color: transparent;
+  border: none;
+  text-align: start;
+  cursor: pointer;
+  margin: 35px 0 0 0;
+}
+
+.comment {
+  margin-top: 100px;
+}
+
+.activeClass {
+  color: #f2f2f3;
+}

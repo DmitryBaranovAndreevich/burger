@@ -1,0 +1,7 @@
+.wrapper {
+  max-width: 1250px;
+  width: 100%;
+  margin-top: 10vh;
+  display: flex;
+  gap: 50px;
+}

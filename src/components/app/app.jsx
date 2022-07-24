@@ -1,101 +1,65 @@
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { ProtectedRoute } from "../protectedRoute";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import appStyles from "./app.module.css";
 import AppHeader from "../appHeader/appHeader.jsx";
-import BurgerIngredients from "../burgerIngredients/burgerIngredients.jsx";
-import BurgerConstructor from "../burgerConstructor/burgerConstructor";
-import IngredientDetails from "../ingredientDetails/IngredientDetails";
-import Modal from "../modal/modal";
-import { useEffect, useState } from "react";
-import OrderDetails from "../orderDetails/orderDetails";
-import { useDispatch, useSelector } from "react-redux";
+import {
+  LoginPage,
+  RegisterPage,
+  PassworRecovery,
+  ChangePassword,
+  Profile,
+  ModalSwitch,
+} from "../../pages";
 import { getItems } from "../../services/actions/burgerIngredients";
-import {
-  addItemBurgerConstructor,
-  changeIngredient,
-  deleteOrder,
-} from "../../services/actions/burgerConstructor";
-import { getOrderNumber } from "../../services/actions/orderDetals";
-import {
-  getIngredientDetals,
-  deleteIngredientDetals,
-} from "../../services/actions/ingredientsDetals";
-import { getOrderNumberFailed } from "../../services/actions/orderDetals";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import Spinner from "../spinner/spinner";
+import { loginWithToken } from "../../services/actions/login";
+import { getCookie } from "../../utils/getCookie";
+import { refreshToken } from "../../utils/refreshToken";
+import { AccountUser } from "../../pages/accountUser";
 
 function App() {
-  const [isModal, setModal] = useState(false);
-
   const dispatch = useDispatch();
+  const [token, setToken] = useState(getCookie("token"));
+  const { isLoadingOn, user } = useSelector((store) => store.user);
 
-  const { itemsFailed } = useSelector((store) => store.ingredientsList);
-
-  const { constructorItems } = useSelector(
-    (store) => store.burgerConstructorList
-  );
-
-  const { isOpenIngredienDetals } = useSelector(
-    (store) => store.ingredienDetals
-  );
-
-  const { isOpenOrderDetals, getOrderNumberRequest } = useSelector(
-    (store) => store.orderNumber
-  );
-
-  const isOpen = () => {
-    setModal(true);
-  };
-
-  const isClose = () => {
-    setModal(false);
-    isOpenIngredienDetals && dispatch(deleteIngredientDetals());
-    if (isOpenOrderDetals) {
-      dispatch(getOrderNumberFailed());
-      dispatch(deleteOrder());
+  useEffect(() => {
+    const tokenToRefresh = localStorage.getItem("refreshToken");
+    if (!token && tokenToRefresh) {
+      refreshToken(tokenToRefresh).then(() => setToken(getCookie("token")));
     }
-  };
-
-  const isOpenIngredient = (cart) => {
-    dispatch(getIngredientDetals(cart));
-    isOpen();
-  };
-
-  const isOpenOrder = () => {
-    dispatch(getOrderNumber(constructorItems));
-    isOpen();
-  };
+    if (!isLoadingOn && token && tokenToRefresh) {
+      dispatch(loginWithToken(token));
+    }
+  }, [token]);
 
   useEffect(() => {
     dispatch(getItems());
   }, []);
 
-  const handleDrop = (item) => {
-    const isBun = constructorItems.some((element) => element.type === "bun");
-    if (item.type === "bun" && !isBun) dispatch(addItemBurgerConstructor(item));
-    else if (item.type === "bun" && isBun) dispatch(changeIngredient(item));
-    else dispatch(addItemBurgerConstructor(item));
-  };
-  const visible = getOrderNumberRequest?false:true
-
   return (
     <div className={`${appStyles.body} pt-10 pr-10 pl-10`}>
-      <AppHeader />
-      <div className={appStyles.main}>
-        <DndProvider backend={HTML5Backend}>
-          {!itemsFailed && <BurgerIngredients modalState={isOpenIngredient} />}
-          <BurgerConstructor openPopup={isOpenOrder} handleDrop={handleDrop} />
-        </DndProvider>
-      </div>
-      {isModal && (
-        <Modal handelCloseModal={isClose} visible={visible}>
-          {isOpenIngredienDetals && <IngredientDetails />}
-          {getOrderNumberRequest ? (
-            <Spinner />
-          ) : (
-            isOpenOrderDetals && <OrderDetails />
-          )}
-        </Modal>
-      )}
+      <Router>
+        <AppHeader />
+        <ModalSwitch />
+        <Switch>
+          <ProtectedRoute path="/profile">
+            <AccountUser />
+          </ProtectedRoute>
+          <Route path="/login" exact={true}>
+            <LoginPage />
+          </Route>
+          <Route path="/register" exact={true}>
+            <RegisterPage />
+          </Route>
+          <Route path="/forgot-password" exact={true}>
+            <PassworRecovery />
+          </Route>
+          <Route path="/reset-password" exact={true}>
+            <ChangePassword />
+          </Route>
+        </Switch>
+      </Router>
     </div>
   );
 }

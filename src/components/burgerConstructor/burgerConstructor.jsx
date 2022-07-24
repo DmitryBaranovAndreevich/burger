@@ -10,7 +10,9 @@ import {
   deleteIngredientBurgerConstructor,
   sortIngredintsBurgerConstructor,
 } from "../../services/actions/burgerConstructor";
+import { getOrderNumber } from "../../services/actions/orderDetals";
 import { useRef } from "react";
+import { useHistory, useLocation } from "react-router-dom";
 
 function IngredientsCard({ ingredient, index, id }) {
   const dispatch = useDispatch();
@@ -127,9 +129,13 @@ function FinalPrice() {
 }
 
 function BurgerConstructor(props) {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  let location = useLocation();
   const data = useSelector(
     (store) => store.burgerConstructorList.constructorItems
   );
+  const { isLoadingOn } = useSelector((store) => store.user);
 
   const [{ isHover }, dropTarget] = useDrop({
     accept: "ingredients",
@@ -146,6 +152,15 @@ function BurgerConstructor(props) {
   const ingredientTypeBun = data.find(
     (ingredient) => ingredient.type === "bun"
   );
+
+  const setOrder = () => {
+    if (isLoadingOn) {
+      dispatch(getOrderNumber(data));
+      history.push({ pathname: "/order", state: { modal: location } });
+    } else {
+      history.push({ pathname: "/login" });
+    }
+  };
 
   return (
     <div
@@ -196,7 +211,7 @@ function BurgerConstructor(props) {
           type="primary"
           size="medium"
           disabled={!ingredientTypeBun && true}
-          onClick={props.openPopup}
+          onClick={setOrder}
         >
           Оформить заказ
         </Button>
@@ -206,7 +221,6 @@ function BurgerConstructor(props) {
 }
 
 BurgerConstructor.propTypes = {
-  openPopup: PropTypes.func.isRequired,
   handleDrop: PropTypes.func.isRequired,
 };
 

@@ -6,7 +6,6 @@ import {
 
 const initialData = {
   orderNumber: null,
-  isOpenOrderDetals: false,
   getOrderNumberFailed: false,
   getOrderNumberRequest: false,
 };
@@ -24,7 +23,6 @@ export const orderDetalsReducer = (state = initialData, action) => {
         ...state,
         orderNumber: action.data,
         getOrderNumberRequest: false,
-        isOpenOrderDetals: true,
       };
     }
 
@@ -32,18 +30,10 @@ export const orderDetalsReducer = (state = initialData, action) => {
       return {
         ...state,
         orderNumber: null,
-        isOpenOrderDetals: false,
         getOrderNumberFailed: false,
         getOrderNumberRequest: false,
       };
     }
-    // case DELETE_ORDER_NUMBER: {
-    //   return {
-    //     ...state,
-    //     orderNumber: null,
-
-    //   };
-    // }
     default:
       return state;
   }

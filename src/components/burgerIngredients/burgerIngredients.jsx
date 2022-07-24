@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import burgerIngredientsStyles from "./burgerIngredients.module.css";
+import styles from "./burgerIngredients.module.css";
 import PropTypes from "prop-types";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Counter } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -7,6 +7,7 @@ import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components
 import { dataPropTypes } from "../../utils/data.jsx";
 import { useSelector } from "react-redux";
 import { useDrag } from "react-dnd";
+import { Link, useLocation } from "react-router-dom";
 
 const Tabs = ({ current, links, setCurrent }) => {
   const { linkToBun, container, linkToSauce, linkToMain } = links;
@@ -17,7 +18,7 @@ const Tabs = ({ current, links, setCurrent }) => {
   };
 
   return (
-    <div className={burgerIngredientsStyles.tabContainer}>
+    <div className={styles.tabContainer}>
       <Tab
         value="bun"
         active={current === "one"}
@@ -60,7 +61,7 @@ Tabs.propTypes = {
   setCurrent: PropTypes.func.isRequired,
 };
 
-function Ingredient({ onClick, productCard }) {
+function Ingredient({ productCard }) {
   const { constructorItems } = useSelector(
     (store) => store.burgerConstructorList
   );
@@ -73,33 +74,19 @@ function Ingredient({ onClick, productCard }) {
   });
 
   return (
-    <li
-      ref={dragRef}
-      className={`${burgerIngredientsStyles.card} mt-6`}
-      onClick={() => {
-        onClick(productCard);
-      }}
-    >
+    <li ref={dragRef} className={`${styles.card} mt-6`}>
       {counter.length !== 0 && (
         <Counter
           count={productCard.type === "bun" ? 2 : counter.length}
           size="default"
         />
       )}
-      <img
-        src={productCard.image_large}
-        alt=""
-        className={burgerIngredientsStyles.cardImage}
-      />
-      <p
-        className={`${burgerIngredientsStyles.price} text text_type_digits-default`}
-      >
+      <img src={productCard.image_large} alt="" className={styles.cardImage} />
+      <p className={`${styles.price} text text_type_digits-default`}>
         {productCard.price}
         <CurrencyIcon type="primary" />
       </p>
-      <p
-        className={`${burgerIngredientsStyles.name} text text_type_main-default`}
-      >
+      <p className={`${styles.name} text text_type_main-default`}>
         {productCard.name}
       </p>
     </li>
@@ -108,27 +95,32 @@ function Ingredient({ onClick, productCard }) {
 
 Ingredient.propTypes = {
   productCard: dataPropTypes.isRequired,
-  onClick: PropTypes.func.isRequired,
 };
 
 const TypesIngredients = (props) => {
+  let location = useLocation();
   return (
-    <div className={burgerIngredientsStyles.test}>
+    <div className={styles.test}>
       <h3
         ref={props.link}
-        className={`${burgerIngredientsStyles.ingredientsName} text text_type_main-medium `}
+        className={`${styles.ingredientsName} text text_type_main-medium `}
       >
         {props.translate}
       </h3>
-      <ul className={`${burgerIngredientsStyles.cardsList} pl-4 pr-2`}>
+      <ul className={`${styles.cardsList} pl-4 pr-2`}>
         {props.cards.map(
           (card) =>
             card.type === props.typeIngredients && (
-              <Ingredient
-                productCard={card}
+              <Link
+                to={{
+                  pathname: `/ingredients/${card._id}`,
+                  state: { modal: location },
+                }}
+                className={styles.link}
                 key={card._id}
-                onClick={props.dataForModal}
-              />
+              >
+                <Ingredient productCard={card} />
+              </Link>
             )
         )}
       </ul>
@@ -143,10 +135,9 @@ TypesIngredients.propTypes = {
   link: PropTypes.shape({
     current: PropTypes.instanceOf(Element),
   }).isRequired,
-  dataForModal: PropTypes.func.isRequired,
 };
 
-function BurgerIngredients(props) {
+function BurgerIngredients() {
   const [current, setCurrent] = React.useState("one");
   const cards = useSelector((store) => store.ingredientsList.items);
 
@@ -186,30 +177,27 @@ function BurgerIngredients(props) {
   };
 
   return (
-    <div className={`${burgerIngredientsStyles.wrapper} pt-10`}>
+    <div className={`${styles.wrapper} pt-10`}>
       <h2 className="text text_type_main-large mb-5">Соберите бургер</h2>
       <Tabs links={state} current={current} setCurrent={setCurrent} />
       <div
         ref={scrollContainer}
-        className={`${burgerIngredientsStyles.ingredientsContainer} mt-10`}
+        className={`${styles.ingredientsContainer} mt-10`}
         onScroll={handelScroll}
       >
         <TypesIngredients
-          dataForModal={props.modalState}
           typeIngredients={"bun"}
           translate={"Булки"}
           cards={cards}
           link={refBun}
         />
         <TypesIngredients
-          dataForModal={props.modalState}
           typeIngredients={"sauce"}
           translate={"Соусы"}
           cards={cards}
           link={refSauce}
         />
         <TypesIngredients
-          dataForModal={props.modalState}
           typeIngredients={"main"}
           translate={"Начинка"}
           cards={cards}
@@ -219,9 +207,5 @@ function BurgerIngredients(props) {
     </div>
   );
 }
-
-BurgerIngredients.propTypes = {
-  modalState: PropTypes.func.isRequired,
-};
 
 export default BurgerIngredients;

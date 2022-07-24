@@ -1,48 +1,54 @@
-import appHeaderStyles from "./appHeader.module.css";
+import styles from "./appHeader.module.css";
 import { Logo } from "@ya.praktikum/react-developer-burger-ui-components";
 import {
   ProfileIcon,
   BurgerIcon,
   ListIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from "prop-types";
-
-function Link(props) {
-  return (
-    <a
-      href={props.href}
-      className={`${appHeaderStyles.link} text text_type_main-default
-          text_color_inactive mb-3 mt-4 pb-4 pt-4 pl-5 pr-5 ${props.addClass}`}
-    >
-      {props.children}
-    </a>
-  );
-}
-
-Link.propTypes = {
-  href: PropTypes.string.isRequired,
-  addClass: PropTypes.string,
-};
+import { NavLink } from "react-router-dom";
+import {useHistory,useRouteMatch} from 'react-router-dom';
 
 function AppHeader() {
+  const history = useHistory();
+  const { path } = useRouteMatch();
   return (
-    <header className={appHeaderStyles.header}>
-      <div className={appHeaderStyles.wrapper}>
-        <nav className={appHeaderStyles.navigation}>
-          <Link href="#">
-            <BurgerIcon type="primary" className={appHeaderStyles.icon} />
+    <header className={styles.header}>
+      <div className={styles.wrapper}>
+        <nav className={styles.navigation}>
+          <NavLink
+            to="/"
+            exact={true}
+            className={`${styles.link} text text_type_main-default
+         mb-3 mt-4 pb-4 pt-4 pl-5 pr-5 `}
+            activeClassName={styles.activeClass}
+          >
+            <BurgerIcon type="primary" className={styles.icon}/>
             Конструктор
-          </Link>
-          <Link href="#">
+          </NavLink>
+          <NavLink
+            to="/profile/orders"
+            exact={true}
+            className={`${styles.link} text text_type_main-default
+          mb-3 mt-4 pb-4 pt-4 pl-5 pr-5 `}
+            activeClassName={styles.activeClass}
+          >
             <ListIcon type="primary" />
             Лента заказов
-          </Link>
+          </NavLink>
         </nav>
+        <div onClick={() => history.replace({pathname: `${path}`})}>
         <Logo />
-        <Link addClass={appHeaderStyles.personalAccount} href="#">
+        </div>
+        <NavLink
+          addclass={styles.personalAccount}
+          to="/profile"
+          exact={true}
+          className={`${styles.link} text text_type_main-default mb-3 mt-4 pb-4 pt-4 pl-5 pr-5 `}
+          activeClassName={styles.activeClass}
+        >
           <ProfileIcon type="primary" />
           Личный кабинет
-        </Link>
+        </NavLink>
       </div>
     </header>
   );
