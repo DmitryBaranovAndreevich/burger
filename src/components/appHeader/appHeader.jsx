@@ -6,8 +6,11 @@ import {
   ListIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { NavLink } from "react-router-dom";
+import {useHistory,useRouteMatch} from 'react-router-dom';
 
 function AppHeader() {
+  const history = useHistory();
+  const { path } = useRouteMatch();
   return (
     <header className={styles.header}>
       <div className={styles.wrapper}>
@@ -19,7 +22,7 @@ function AppHeader() {
          mb-3 mt-4 pb-4 pt-4 pl-5 pr-5 `}
             activeClassName={styles.activeClass}
           >
-            <BurgerIcon type="primary" className={styles.icon} />
+            <BurgerIcon type="primary" className={styles.icon}/>
             Конструктор
           </NavLink>
           <NavLink
@@ -33,7 +36,9 @@ function AppHeader() {
             Лента заказов
           </NavLink>
         </nav>
+        <div onClick={() => history.replace({pathname: `${path}`})}>
         <Logo />
+        </div>
         <NavLink
           addclass={styles.personalAccount}
           to="/profile"

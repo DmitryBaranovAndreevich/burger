@@ -15,5 +15,8 @@ export const refreshToken = (refreshToken) => {
       if (success) {
         saveTokens(refreshToken, accessToken);
       }
-    });
+    })
+    .catch(err => {
+      console.log(`Проблемы с заменой  refreshToken ${err}`);
+    })
 };

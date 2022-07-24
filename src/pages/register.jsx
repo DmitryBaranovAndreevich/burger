@@ -1,5 +1,5 @@
 import styles from "./register.module.css";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import {
   Input,
   Button,
@@ -8,30 +8,24 @@ import Spinner from "../components/spinner/spinner";
 import { userLogin } from "../services/actions/login";
 import { Link, Redirect } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { useForm } from "../hooks/useForm";
 
 export const RegisterPage = () => {
-  const [name, setName] = useState("");
-  const [emailValue, setEmailValue] = useState("");
-  const [passwordValue, setPasswodValue] = useState("");
   const dispatch = useDispatch();
+  const initialValue = {email: '',password: '',name: '',};
+ const {values, handleChange, setValues} = useForm(initialValue); 
+ const {name, email, password} = values;
+  
   const { isLoadingOn, isLoadingRequest } = useSelector((store) => store.user);
-
-  const userData = {
-    email: emailValue,
-    password: passwordValue,
-    name: name,
-  };
 
   const setAccount = useCallback((e) => {
     e.preventDefault();
-    dispatch(userLogin(userData));
-  });
+    dispatch(userLogin(values));
+  },[name, email, password]);
 
   useEffect(() => {
     if (isLoadingOn) {
-      setName("");
-      setEmailValue("");
-      setPasswodValue("");
+      setValues(initialValue)
     }
   }, [isLoadingOn]);
 
@@ -54,28 +48,31 @@ export const RegisterPage = () => {
       </h2>
       <div className={styles.input}>
         <Input
+          name={'name'}
           type={"text"}
           placeholder={"Имя"}
           value={name}
-          onChange={(e) => setName(e.target.value)}
+          onChange={handleChange}
           size={"default"}
         />
       </div>
       <div className={styles.input}>
         <Input
+          name={'email'}
           type={"email"}
           placeholder={"E-mail"}
-          value={emailValue}
-          onChange={(e) => setEmailValue(e.target.value)}
+          value={email}
+          onChange={handleChange}
           size={"default"}
         />
       </div>
       <div className={styles.input}>
         <Input
+          name={'password'}
           type={"password"}
           placeholder={"Пароль"}
-          value={passwordValue}
-          onChange={(e) => setPasswodValue(e.target.value)}
+          value={password}
+          onChange={handleChange}
           size={"default"}
           icon={"ShowIcon"}
         />

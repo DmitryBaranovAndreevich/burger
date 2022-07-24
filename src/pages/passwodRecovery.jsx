@@ -1,5 +1,4 @@
 import styles from "./passwordRecovery.module.css";
-import { useState } from "react";
 import {
   Input,
   Button,
@@ -8,10 +7,14 @@ import Spinner from "../components/spinner/spinner";
 import { GET_PASSWORD } from "../utils/config";
 import { Link, Redirect, useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useForm } from "../hooks/useForm";
 
 export const PassworRecovery = () => {
-  const [email, setEmail] = useState("");
   const history = useHistory();
+  const initialValue = {email: ''}
+  const {values, handleChange, setValues} = useForm(initialValue); 
+  const {email} = values;
+ 
   const { isLoadingOn, isLoadingRequest } = useSelector((store) => store.user);
 
   const getPassword = async (e) => {
@@ -22,12 +25,12 @@ export const PassworRecovery = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email: email }),
+        body: JSON.stringify(values),
       });
 
       const { success } = await responce.json();
       if (success) {
-        setEmail("");
+        setValues(initialValue);
         history.replace({
           pathname: "/reset-password",
           state: { from: history.location },
@@ -57,10 +60,11 @@ export const PassworRecovery = () => {
       </h2>
       <div className={styles.input}>
         <Input
+          name={'email'}
           type={"text"}
           placeholder={"Укажите e-mail"}
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={handleChange}
           size={"default"}
         />
       </div>

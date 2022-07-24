@@ -8,11 +8,14 @@ import Spinner from '../components/spinner/spinner';
 import { RESET_PASSWORD } from "../utils/config";
 import { Link,Redirect,useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useForm } from "../hooks/useForm";
 
 export const ChangePassword = () => {
-  const [token, setToken] = useState("");
-  const [passwordValue, setPasswodValue] = useState("");
-  const history = useHistory();
+   const history = useHistory();
+  const initialValue = {token: '',password: ''}
+  const {values, handleChange, setValues} = useForm(initialValue); 
+  const {token, password} = values;
+
   const {isLoadingOn,isLoadingRequest} = useSelector(store => store.user)
   const resetPassword = async (e) => {
     e.preventDefault();
@@ -22,16 +25,12 @@ export const ChangePassword = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          password: passwordValue,
-          token: token,
-        }),
+        body: JSON.stringify(values),
       });
 
       const { success } = await responce.json();
       if (success) {
-        setToken("");
-        setPasswodValue("");
+        setValues(initialValue);
         history.replace({pathname: './login'});
       }
     } catch {
@@ -57,20 +56,22 @@ export const ChangePassword = () => {
       </h2>
       <div className={styles.input}>
         <Input
+          name = {'password'}
           type={"password"}
           placeholder={"Введите новый пароль"}
-          value={passwordValue}
-          onChange={(e) => setPasswodValue(e.target.value)}
+          value={password}
+          onChange={handleChange}
           size={"default"}
           icon={"ShowIcon"}
         />
       </div>
       <div className={styles.input}>
         <Input
+          name={'token'}
           type={"text"}
           placeholder={"Введите код из письма"}
           value={token}
-          onChange={(e) => setToken(e.target.value)}
+          onChange={handleChange}
           size={"default"}
         />
       </div>

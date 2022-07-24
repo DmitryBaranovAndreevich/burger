@@ -2,22 +2,12 @@ import modalStyles from "./modal.module.css";
 import { ModalOverlay } from "../modalOverlay/modalOverlay";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useEffect } from "react";
-import { useHistory } from "react-router-dom";
-import { useSelector } from "react-redux";
 
-export function Modal(props) {
-  const history = useHistory();
-  const { getOrderNumberRequest } = useSelector((store) => store.orderNumber);
-
-  const back = (e) => {
-    e.stopPropagation();
-    history.goBack();
-  };
-
+export function Modal({onClose,children,visible}) {
+ 
   const onKeydown = (e) => {
-    e.stopPropagation();
     if (e.key === "Escape") {
-      history.goBack();
+     onClose(e);
     }
   };
 
@@ -30,12 +20,12 @@ export function Modal(props) {
   return (
     <ModalOverlay>
       <div className={modalStyles.container}>
-        {!getOrderNumberRequest && (
-          <button onClick={back} className={modalStyles.closeButton}>
+        {!visible && (
+          <button onClick={onClose} className={modalStyles.closeButton}>
             <CloseIcon />
           </button>
         )}
-        {props.children}
+        {children}
       </div>
     </ModalOverlay>
   );

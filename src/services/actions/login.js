@@ -117,6 +117,10 @@ export const userLoginOut = (refreshToken) => {
           localStorage.removeItem("password");
           eraseCookie("token");
         }
+      })
+      .catch((err) => {
+        dispatch(userLoginOutFailed());
+        console.log(`Не получилось выйти из аккаунта ${err}`);
       });
   };
 };

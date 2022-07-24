@@ -1,6 +1,6 @@
 import styles from "./mainLinks.module.css";
 import { NavLink, useHistory } from "react-router-dom";
-import { userLoginOut, userLoginOutFailed } from "../../services/actions/login";
+import { userLoginOut } from "../../services/actions/login";
 import { useDispatch } from "react-redux";
 
 export const MainLinks = () => {
@@ -13,11 +13,7 @@ export const MainLinks = () => {
     dispatch(userLoginOut(tokenToRefresh))
       .then(() => {
         history.replace({ pathname: "/login" });
-      })
-      .catch((err) => {
-        dispatch(userLoginOutFailed());
-        console.log(`Не получилось выйти из аккаунта ${err}`);
-      });
+      }) 
   };
 
   return (
