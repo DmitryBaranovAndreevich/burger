@@ -26,7 +26,7 @@ function AppHeader() {
             Конструктор
           </NavLink>
           <NavLink
-            to="/profile/orders"
+            to="/feed"
             exact={true}
             className={`${styles.link} text text_type_main-default
           mb-3 mt-4 pb-4 pt-4 pl-5 pr-5 `}
