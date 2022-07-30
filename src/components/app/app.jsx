@@ -10,14 +10,12 @@ import {
   PassworRecovery,
   ChangePassword,
   ModalSwitch,
-  OrdersList
 } from "../../pages";
 import { getItems } from "../../services/actions/burgerIngredients";
 import { loginWithToken } from "../../services/actions/login";
 import { getCookie } from "../../utils/getCookie";
 import { refreshToken } from "../../utils/refreshToken";
 import { AccountUser } from "../../pages/accountUser";
-import {ModalOrdersList} from "../../pages/modalOrdersList";
 
 function App() {
   const dispatch = useDispatch();
@@ -43,7 +41,6 @@ function App() {
       <Router>
         <AppHeader />
         <ModalSwitch />
-        <ModalOrdersList/>
         <Switch>
           <ProtectedRoute path="/profile">
             <AccountUser />

@@ -7,7 +7,7 @@ import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components
 import { dataPropTypes } from "../../utils/data.jsx";
 import { useSelector } from "react-redux";
 import { useDrag } from "react-dnd";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation,useRouteMatch } from "react-router-dom";
 
 const Tabs = ({ current, links, setCurrent }) => {
   const { linkToBun, container, linkToSauce, linkToMain } = links;
@@ -98,6 +98,7 @@ Ingredient.propTypes = {
 };
 
 const TypesIngredients = (props) => {
+  
   let location = useLocation();
   return (
     <div className={styles.test}>

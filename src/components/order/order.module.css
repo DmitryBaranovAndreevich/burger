@@ -76,3 +76,11 @@
   align-items: center;
   gap: 9px;
 }
+
+.statusDone {
+  color: #00CCCC;
+}
+
+.statusPending {
+  color: red
+}

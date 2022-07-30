@@ -12,7 +12,6 @@ import { useDispatch, useSelector } from "react-redux";
 export const MainPage = () => {
   const dispatch = useDispatch();
   
-
   const { constructorItems } = useSelector(
     (store) => store.burgerConstructorList
   );

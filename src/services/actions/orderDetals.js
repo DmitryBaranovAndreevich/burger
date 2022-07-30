@@ -14,7 +14,7 @@ export function getOrderNumber(data) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: getCookie("token"),
+        Authorization: `Bearer ${getCookie("token")}`,
       },
       body: JSON.stringify({ ingredients: data.map((elem) => elem._id) }),
     })

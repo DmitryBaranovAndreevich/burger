@@ -1,6 +1,6 @@
 import { MainLinks } from "../components/mainLinks/mainLinks";
 import { Profile } from "../components/profile/profile";
-import { OrdersList } from "../components/ordersHistory/ordersHistory";
+import { UserOrdersList } from "../components/ordersHistory/ordersHistory";
 import { Switch, Route, useRouteMatch } from "react-router-dom";
 import styles from "./accountUser.module.css";
 
@@ -15,7 +15,7 @@ export const AccountUser = () => {
           <Profile />
         </Route>
         <Route path={`${path}/orders`}>
-          <OrdersList />
+          <UserOrdersList />
         </Route>
       </Switch>
     </div>

@@ -1,17 +1,34 @@
 import styles from "./order.module.css";
-import { data } from "../../utils/data";
-import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link, useLocation } from "react-router-dom";
+import { createDate } from "../../utils/createDate";
+import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import { Link, useLocation, useRouteMatch } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { ingredientsArrayHandler } from "../../utils/ingredientsArrayHandler";
+import { orderStatusHandleer } from "../../utils/orderStatusHandler";
 
+export const Order = ({
+  createdAt,
+  ingredients,
+  name,
+  number,
+  status,
+  _id,
+}) => {
+  const { path } = useRouteMatch();
+  let location = useLocation();
 
-export const Order = () => {
- 
-  const elementsList = data.map((el, index) => {
+  const { items } = useSelector((store) => store.ingredientsList);
+
+  const { ingredientsCount, ingredientsList, price } = ingredientsArrayHandler(ingredients,items);
+
+  const elementsList = ingredientsList?.map((el, index) => {
     if (index === 0) {
       return (
         <li key={index} className={styles.icon}>
           <img className={styles.image} src={`${el.image_mobile}`} alt="" />
-          {data.length>5&&<p className={styles.counter}>{`+${data.length - 5}`}</p>}
+          {ingredientsList.length > 5 && (
+            <p className={styles.counter}>{`+${ingredientsList.length - 5}`}</p>
+          )}
         </li>
       );
     }
@@ -26,25 +43,30 @@ export const Order = () => {
   });
 
   return (
-    <Link className={styles.wrapper}>
-    {/* <div className={styles.wrapper}> */}
+    <Link
+      className={styles.wrapper}
+      to={{
+        pathname: `${path}/${_id}`,
+        state: { modal: location },
+      }}
+    >
       <div className={styles.container}>
         <p className={`${styles.orderId} text text_type_digits-default`}>
-          #034535
+          {`#0${number}`}
         </p>
         <p className="text text_type_main-default text_color_inactive">
-          Сегодня, 16:20 i-GMT+3
+          {createDate(createdAt)}
         </p>
       </div>
-      <h3 className={`${styles.title} text text_type_main-medium`}>
-        Death Star Starship Main бургер
-      </h3>
-      <p className={`${styles.status} text text_type_main-default`}>Создан</p>
+      <h3 className={`${styles.title} text text_type_main-medium`}>{name}</h3>
+      {orderStatusHandleer(status,styles)}
       <div className={styles.footer}>
         <ul className={styles.iconsList}>{elementsList}</ul>
-        <p className={`${styles.prise} text text_type_digits-default`}>689<CurrencyIcon type="primary"/></p>
+        <p className={`${styles.prise} text text_type_digits-default`}>
+          {price}
+          <CurrencyIcon type="primary" />
+        </p>
       </div>
-    {/* </div> */}
     </Link>
   );
 };
