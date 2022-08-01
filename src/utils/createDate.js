@@ -29,7 +29,8 @@ export const createDate = (createdAt) => {
     }
   };
   const day = setDay(date);
-  const minutes = date.getMinutes()<10?`0${date.getMinutes()}`:date.getMinutes();
+  const minutes =
+    date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
   const hours = date.getHours() < 10 ? `0${date.getHours()}` : date.getHours();
 
   const time = `${hours} : ${minutes}`;

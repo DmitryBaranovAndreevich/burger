@@ -1,25 +1,39 @@
 import styles from "./ordersHistory.module.css";
 import { Order } from "../order/order";
-import { useEffect } from 'react';
-import { useSelector,useDispatch } from 'react-redux';
-import { wsUserConnectionStart } from '../../services/actions/wsActions';
+import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  wsUserConnectionStart,
+  wsConnectionClosed,
+} from "../../services/actions/wsActions";
+import Spinner from "../spinner/spinner";
+import { getCookie } from "../../utils/getCookie";
 
 export const UserOrdersList = () => {
-   const dispatch = useDispatch();
-  const { isLoadingOn } = useSelector((store) => store.user);
-  const {userOrdersList,wsConnected} = useSelector(store => store.ordersList);
-  const {orders,total,totalToday} = userOrdersList;
+  const dispatch = useDispatch();
+  const { userOrdersList, inConnected } = useSelector(
+    (store) => store.ordersList
+  );
+  const { orders } = userOrdersList;
+  const [token] = useState(getCookie("token"));
+  useEffect(() => {
+    dispatch(wsUserConnectionStart(token));
+  }, []);
 
-    useEffect(() => {
-    dispatch(wsUserConnectionStart())
-  },[isLoadingOn])
-
-// console.log(userOrdersList)
   return (
-    <div className={styles.wrapper}>
-      <Order />
-      <Order />
-      <Order />
-    </div>
+    <ul className={styles.wrapper}>
+      {inConnected ? (
+        <Spinner />
+      ) : (
+        orders &&
+        [...orders].reverse().map((el) => {
+          return (
+            <li key={el._id}>
+              <Order {...el} />
+            </li>
+          );
+        })
+      )}
+    </ul>
   );
 };

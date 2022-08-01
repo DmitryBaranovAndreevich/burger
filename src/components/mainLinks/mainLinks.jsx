@@ -10,10 +10,9 @@ export const MainLinks = () => {
 
   const logOut = (e) => {
     e.preventDefault();
-    dispatch(userLoginOut(tokenToRefresh))
-      .then(() => {
-        history.replace({ pathname: "/login" });
-      }) 
+    dispatch(userLoginOut(tokenToRefresh)).then(() => {
+      history.replace({ pathname: "/login" });
+    });
   };
 
   return (

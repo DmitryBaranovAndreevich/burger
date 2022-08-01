@@ -11,10 +11,10 @@ import { useForm } from "../hooks/useForm";
 
 export const PassworRecovery = () => {
   const history = useHistory();
-  const initialValue = {email: ''}
-  const {values, handleChange, setValues} = useForm(initialValue); 
-  const {email} = values;
- 
+  const initialValue = { email: "" };
+  const { values, handleChange, setValues } = useForm(initialValue);
+  const { email } = values;
+
   const { isLoadingOn, isLoadingRequest } = useSelector((store) => store.user);
 
   const getPassword = async (e) => {
@@ -60,7 +60,7 @@ export const PassworRecovery = () => {
       </h2>
       <div className={styles.input}>
         <Input
-          name={'email'}
+          name={"email"}
           type={"text"}
           placeholder={"Укажите e-mail"}
           value={email}

@@ -12,20 +12,23 @@ import { useForm } from "../hooks/useForm";
 
 export const RegisterPage = () => {
   const dispatch = useDispatch();
-  const initialValue = {email: '',password: '',name: '',};
- const {values, handleChange, setValues} = useForm(initialValue); 
- const {name, email, password} = values;
-  
+  const initialValue = { email: "", password: "", name: "" };
+  const { values, handleChange, setValues } = useForm(initialValue);
+  const { name, email, password } = values;
+
   const { isLoadingOn, isLoadingRequest } = useSelector((store) => store.user);
 
-  const setAccount = useCallback((e) => {
-    e.preventDefault();
-    dispatch(userLogin(values));
-  },[name, email, password]);
+  const setAccount = useCallback(
+    (e) => {
+      e.preventDefault();
+      dispatch(userLogin(values));
+    },
+    [name, email, password]
+  );
 
   useEffect(() => {
     if (isLoadingOn) {
-      setValues(initialValue)
+      setValues(initialValue);
     }
   }, [isLoadingOn]);
 
@@ -48,7 +51,7 @@ export const RegisterPage = () => {
       </h2>
       <div className={styles.input}>
         <Input
-          name={'name'}
+          name={"name"}
           type={"text"}
           placeholder={"Имя"}
           value={name}
@@ -58,7 +61,7 @@ export const RegisterPage = () => {
       </div>
       <div className={styles.input}>
         <Input
-          name={'email'}
+          name={"email"}
           type={"email"}
           placeholder={"E-mail"}
           value={email}
@@ -68,7 +71,7 @@ export const RegisterPage = () => {
       </div>
       <div className={styles.input}>
         <Input
-          name={'password'}
+          name={"password"}
           type={"password"}
           placeholder={"Пароль"}
           value={password}

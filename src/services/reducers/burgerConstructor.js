@@ -6,7 +6,6 @@ import {
   DELETE_ORDER,
 } from "../actions/burgerConstructor";
 
-
 const ingredients = {
   constructorItems: [],
   constructorItemsFailed: true,
@@ -20,7 +19,7 @@ export const burgerConstructorReducer = (state = ingredients, action) => {
         constructorItems: [
           ...state.constructorItems,
           {
-            ...action.payload
+            ...action.payload,
           },
         ],
         constructorItemsFailed: false,

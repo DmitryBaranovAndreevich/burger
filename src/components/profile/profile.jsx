@@ -12,7 +12,7 @@ import { getCookie } from "../../utils/getCookie";
 export const Profile = () => {
   const dispatch = useDispatch();
   const token = getCookie("token");
-  const { isLoginOutRequest, user, isLoadingRequest } = useSelector(
+  const { isLoadingOn, user, isLoadingRequest } = useSelector(
     (store) => store.user
   );
   const passwordToken = localStorage.getItem("password");
@@ -48,9 +48,9 @@ export const Profile = () => {
       })
     );
     event.target.focus();
-  });
+  },[token,name.user,login.login,password.password]);
 
-  return isLoginOutRequest ? (
+  return !isLoadingOn ? (
     <Spinner />
   ) : (
     <div className={styles.wrapper}>

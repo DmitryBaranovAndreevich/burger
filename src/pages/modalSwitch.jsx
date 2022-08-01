@@ -30,6 +30,9 @@ export const ModalSwitch = () => {
         <Route path="/feed" exact={true}>
           <OrdersList />
         </Route>
+        <Route path={`/feed/:id`} exact={true}>
+          <OrderContext />
+        </Route>
       </Switch>
       {modal && (
         <Switch>
@@ -40,7 +43,7 @@ export const ModalSwitch = () => {
             <Route path="/order" exact={true}>
               <OrderDetails />
             </Route>
-            <Route path="/feed/:id" exact={true}>
+            <Route path={`/feed/:id`} exact={true}>
               <OrderContext />
             </Route>
           </Modal>

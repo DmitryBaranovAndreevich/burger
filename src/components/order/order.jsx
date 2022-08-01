@@ -19,7 +19,10 @@ export const Order = ({
 
   const { items } = useSelector((store) => store.ingredientsList);
 
-  const { ingredientsCount, ingredientsList, price } = ingredientsArrayHandler(ingredients,items);
+  const { ingredientsList, price } = ingredientsArrayHandler(
+    ingredients,
+    items
+  );
 
   const elementsList = ingredientsList?.map((el, index) => {
     if (index === 0) {
@@ -59,7 +62,7 @@ export const Order = ({
         </p>
       </div>
       <h3 className={`${styles.title} text text_type_main-medium`}>{name}</h3>
-      {orderStatusHandleer(status,styles)}
+      {orderStatusHandleer(status, styles)}
       <div className={styles.footer}>
         <ul className={styles.iconsList}>{elementsList}</ul>
         <p className={`${styles.prise} text text_type_digits-default`}>

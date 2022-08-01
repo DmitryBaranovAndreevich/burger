@@ -4,19 +4,19 @@ import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import Spinner from '../components/spinner/spinner';
+import Spinner from "../components/spinner/spinner";
 import { RESET_PASSWORD } from "../utils/config";
-import { Link,Redirect,useHistory } from "react-router-dom";
+import { Link, Redirect, useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useForm } from "../hooks/useForm";
 
 export const ChangePassword = () => {
-   const history = useHistory();
-  const initialValue = {token: '',password: ''}
-  const {values, handleChange, setValues} = useForm(initialValue); 
-  const {token, password} = values;
+  const history = useHistory();
+  const initialValue = { token: "", password: "" };
+  const { values, handleChange, setValues } = useForm(initialValue);
+  const { token, password } = values;
 
-  const {isLoadingOn,isLoadingRequest} = useSelector(store => store.user)
+  const { isLoadingOn, isLoadingRequest } = useSelector((store) => store.user);
   const resetPassword = async (e) => {
     e.preventDefault();
     try {
@@ -31,32 +31,36 @@ export const ChangePassword = () => {
       const { success } = await responce.json();
       if (success) {
         setValues(initialValue);
-        history.replace({pathname: './login'});
+        history.replace({ pathname: "./login" });
       }
     } catch {
       console.log("Ошибка при попытке смены пароля");
     }
   };
 
-  if(isLoadingOn||history.location.state?.from.pathname !== '/forgot-password') {
+  if (
+    isLoadingOn ||
+    history.location.state?.from.pathname !== "/forgot-password"
+  ) {
     return (
-        <Redirect
+      <Redirect
         to={{
-          pathname: '/forgot-password'
+          pathname: "/forgot-password",
         }}
       />
-    )
+    );
   }
 
-
-  return isLoadingRequest?(<Spinner/>):(
+  return isLoadingRequest ? (
+    <Spinner />
+  ) : (
     <form className={styles.wrapper} onSubmit={resetPassword}>
       <h2 className={`${styles.title} text text_type_main-medium`}>
         Восстановление пароля
       </h2>
       <div className={styles.input}>
         <Input
-          name = {'password'}
+          name={"password"}
           type={"password"}
           placeholder={"Введите новый пароль"}
           value={password}
@@ -67,7 +71,7 @@ export const ChangePassword = () => {
       </div>
       <div className={styles.input}>
         <Input
-          name={'token'}
+          name={"token"}
           type={"text"}
           placeholder={"Введите код из письма"}
           value={token}
@@ -75,7 +79,7 @@ export const ChangePassword = () => {
           size={"default"}
         />
       </div>
-      <Button >Сохранить</Button>
+      <Button>Сохранить</Button>
       <p className={styles.explanations}>
         Вспомнили пароль?
         <Link className={styles.link} to="/login">

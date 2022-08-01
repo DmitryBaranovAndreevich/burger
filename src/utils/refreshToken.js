@@ -14,9 +14,10 @@ export const refreshToken = (refreshToken) => {
     .then(({ success, accessToken, refreshToken }) => {
       if (success) {
         saveTokens(refreshToken, accessToken);
+        return accessToken;
       }
     })
-    .catch(err => {
-      console.log(`Проблемы с заменой  refreshToken ${err}`);
-    })
+    .catch((err) => {
+      console.log(`Проблемы с заменой токенов ${err}`);
+    });
 };

@@ -15,6 +15,7 @@ export const wsActions = {
 export const wsUserConnectionStart = () => {
   return {
     type: WS_USER_CONNECTION_START,
+    token: true,
   };
 };
 
@@ -22,7 +23,7 @@ export const wsConnectionStart = () => {
   return {
     type: WS_CONNECTION_START,
   };
-}
+};
 
 export const wsConnectionSuccess = () => {
   return {
@@ -46,12 +47,12 @@ export const wsGetUserOrderList = (data) => {
   return {
     type: WS_GET_USER_ORDERLIST,
     payload: data,
-  }
-}
+  };
+};
 
 export const wsGetOrdersList = (data) => {
   return {
     type: WS_GET_ORDERSLIST,
     payload: data,
   };
-}
+};

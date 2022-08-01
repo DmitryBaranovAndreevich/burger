@@ -9,13 +9,10 @@ import {
   wsActions,
   wsGetUserOrderList,
   wsGetOrdersList,
-  WS_CONNECTION_START,
-  WS_USER_CONNECTION_START,
+  wsConnectionStart,
+  wsUserConnectionStart,
 } from "./services/actions/wsActions";
 import { GET_ORDERS_LIST, GET_USER_ORDERS_LIST } from "./utils/config";
-import { getCookie } from "./utils/getCookie";
-
-const token = getCookie("token");
 
 const store = configureStore({
   reducer: rootReducer,
@@ -24,15 +21,15 @@ const store = configureStore({
       .concat(
         socketMiddleware(
           GET_ORDERS_LIST,
-          WS_CONNECTION_START,
+          wsConnectionStart(),
           wsActions,
           wsGetOrdersList
         )
       )
       .concat(
         socketMiddleware(
-          `${GET_USER_ORDERS_LIST}?token=${token}`,
-          WS_USER_CONNECTION_START,
+          GET_USER_ORDERS_LIST,
+          wsUserConnectionStart(),
           wsActions,
           wsGetUserOrderList
         )
