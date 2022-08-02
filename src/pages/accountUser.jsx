@@ -24,7 +24,7 @@ export const AccountUser = () => {
   };
 
   return (
-    <div>
+    <div className="test">
       <Switch location={modal || location}>
         <Route path={`${path}`} exact={true}>
           <div className={styles.wrapper}>
@@ -42,7 +42,7 @@ export const AccountUser = () => {
           <OrderContext />
         </Route>
       </Switch>
-      {modal && (
+      {location.state?.position === 'accountUser' && (
         <Switch>
           <Modal onClose={back}>
             <Route path={`${path}/orders/:id`} exact={true}>

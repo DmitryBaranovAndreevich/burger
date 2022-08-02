@@ -34,7 +34,7 @@ export const ModalSwitch = () => {
           <OrderContext />
         </Route>
       </Switch>
-      {modal && (
+      {location.state?.position === 'modalSwitch' && (
         <Switch>
           <Modal onClose={back} visible={getOrderNumberRequest}>
             <Route path="/ingredients/:id" exact={true}>

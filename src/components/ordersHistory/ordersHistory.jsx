@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   wsUserConnectionStart,
-  wsConnectionClosed,
 } from "../../services/actions/wsActions";
 import Spinner from "../spinner/spinner";
 import { getCookie } from "../../utils/getCookie";
@@ -29,7 +28,7 @@ export const UserOrdersList = () => {
         [...orders].reverse().map((el) => {
           return (
             <li key={el._id}>
-              <Order {...el} />
+              <Order {...el} position={'accountUser'}/>
             </li>
           );
         })

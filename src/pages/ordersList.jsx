@@ -32,7 +32,7 @@ export const OrdersList = () => {
           {orders?.map((el) => {
             return (
               <li key={el._id}>
-                <Order {...el} />
+                <Order {...el} position={'modalSwitch'}/>
               </li>
             );
           })}

@@ -114,7 +114,7 @@ const TypesIngredients = (props) => {
               <Link
                 to={{
                   pathname: `/ingredients/${card._id}`,
-                  state: { modal: location },
+                  state: { modal: location, position: 'modalSwitch' },
                 }}
                 className={styles.link}
                 key={card._id}

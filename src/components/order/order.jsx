@@ -13,6 +13,7 @@ export const Order = ({
   number,
   status,
   _id,
+  position
 }) => {
   const { path } = useRouteMatch();
   let location = useLocation();
@@ -50,7 +51,7 @@ export const Order = ({
       className={styles.wrapper}
       to={{
         pathname: `${path}/${_id}`,
-        state: { modal: location },
+        state: { modal: location,position: position },
       }}
     >
       <div className={styles.container}>

@@ -1,5 +1,4 @@
 import { getCookie } from "../../utils/getCookie";
-import { WS_CONNECTION_CLOSED } from "../actions/wsActions";
 import { refreshToken } from "../../utils/refreshToken";
 export const socketMiddleware = (
   wsUrl,
@@ -10,7 +9,7 @@ export const socketMiddleware = (
   return (store) => {
     let socket;
     return (next) => (action) => {
-      const { dispatch, getState } = store;
+      const { dispatch } = store;
       const { type } = action;
       const { onOpen, onClose, onError } = wsActions;
 
@@ -66,7 +65,7 @@ export const socketMiddleware = (
         })();
       }
 
-      if (action.type === WS_CONNECTION_CLOSED && socket) {
+      if (action.type === onClose && socket) {
         socket.close(1000);
       }
       next(action);
