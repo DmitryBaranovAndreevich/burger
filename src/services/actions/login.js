@@ -7,6 +7,7 @@ import {
 import { checkResponce } from "../../utils/checkResponce";
 import { saveTokens } from "../../utils/saveTokens";
 import { eraseCookie } from "../../utils/eraseCookie";
+import { fetchWithToken } from "../../utils/fetchWitchToken";
 
 export const LOGIN_REQUEST = "LOGIN_REQUEST";
 export const LOGIN_SUCCESS = "LOGIN_ON";
@@ -56,7 +57,7 @@ const userLoginFailed = () => {
 export const changeUserData = (token, form) => {
   return function (dispatch) {
     dispatch(userLoginRequest());
-    fetch(GET_USER, {
+    fetchWithToken(GET_USER, {
       method: "PATCH",
       headers: {
         "Content-Type": "Application/json",
@@ -80,7 +81,7 @@ export const changeUserData = (token, form) => {
 export const loginWithToken = (token) => {
   return function (dispatch) {
     dispatch(userLoginRequest());
-    fetch(GET_USER, {
+    fetchWithToken(GET_USER, {
       method: "GET",
       headers: {
         "Content-Type": "Application/json",

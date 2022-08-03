@@ -12,10 +12,10 @@ import { useForm } from "../hooks/useForm";
 
 export const LoginPage = () => {
   const dispatch = useDispatch();
-  const initialValue = {email: '',password: ''}
-  const {values, handleChange, setValues} = useForm(initialValue); 
-  const {email, password} = values;
-  
+  const initialValue = { email: "", password: "" };
+  const { values, handleChange, setValues } = useForm(initialValue);
+  const { email, password } = values;
+
   const { isLoadingOn, isLoadingRequest } = useSelector((store) => store.user);
 
   const login = useCallback(
@@ -28,7 +28,7 @@ export const LoginPage = () => {
 
   useEffect(() => {
     if (isLoadingOn) {
-      setValues(initialValue)
+      setValues(initialValue);
     }
   }, [isLoadingOn]);
   const location = useLocation();
@@ -44,7 +44,7 @@ export const LoginPage = () => {
       <h2 className={`${styles.title} text text_type_main-medium`}>Вход</h2>
       <div className={styles.input}>
         <Input
-        name={'email'}
+          name={"email"}
           type={"email"}
           placeholder={"E-mail"}
           value={email}
@@ -53,7 +53,7 @@ export const LoginPage = () => {
       </div>
       <div className={styles.input}>
         <Input
-        name={'password'}
+          name={"password"}
           type={"password"}
           placeholder={"Пароль"}
           value={password}

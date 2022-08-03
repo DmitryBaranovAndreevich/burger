@@ -5,3 +5,4 @@ export {PassworRecovery} from './passwodRecovery';
 export {ChangePassword} from './setPassword';
 export {Profile} from '../components/profile/profile';
 export {ModalSwitch} from './modalSwitch';
+export {OrdersList} from './ordersList';

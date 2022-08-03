@@ -3,11 +3,10 @@ import { ModalOverlay } from "../modalOverlay/modalOverlay";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useEffect } from "react";
 
-export function Modal({onClose,children,visible}) {
- 
+export function Modal({ onClose, children, visible }) {
   const onKeydown = (e) => {
     if (e.key === "Escape") {
-     onClose(e);
+      onClose(e);
     }
   };
 

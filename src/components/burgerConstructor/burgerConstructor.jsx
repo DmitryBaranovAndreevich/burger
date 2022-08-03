@@ -156,7 +156,7 @@ function BurgerConstructor(props) {
   const setOrder = () => {
     if (isLoadingOn) {
       dispatch(getOrderNumber(data));
-      history.push({ pathname: "/order", state: { modal: location } });
+      history.push({ pathname: "/order", state: { modal: location, position: 'modalSwitch' } });
     } else {
       history.push({ pathname: "/login" });
     }

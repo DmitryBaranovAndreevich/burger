@@ -9,7 +9,6 @@ import {
   RegisterPage,
   PassworRecovery,
   ChangePassword,
-  Profile,
   ModalSwitch,
 } from "../../pages";
 import { getItems } from "../../services/actions/burgerIngredients";
@@ -21,7 +20,7 @@ import { AccountUser } from "../../pages/accountUser";
 function App() {
   const dispatch = useDispatch();
   const [token, setToken] = useState(getCookie("token"));
-  const { isLoadingOn, user } = useSelector((store) => store.user);
+  const { isLoadingOn } = useSelector((store) => store.user);
 
   useEffect(() => {
     const tokenToRefresh = localStorage.getItem("refreshToken");
@@ -31,7 +30,7 @@ function App() {
     if (!isLoadingOn && token && tokenToRefresh) {
       dispatch(loginWithToken(token));
     }
-  }, [token]);
+  }, [isLoadingOn, token]);
 
   useEffect(() => {
     dispatch(getItems());
