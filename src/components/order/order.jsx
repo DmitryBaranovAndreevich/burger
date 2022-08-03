@@ -29,7 +29,7 @@ export const Order = ({
     if (index === 0) {
       return (
         <li key={index} className={styles.icon}>
-          <img className={styles.image} src={`${el.image_mobile}`} alt="" />
+          <img className={styles.image} src={`${el?.image_mobile}`} alt="" />
           {ingredientsList.length > 5 && (
             <p className={styles.counter}>{`+${ingredientsList.length - 5}`}</p>
           )}
