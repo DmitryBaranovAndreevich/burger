@@ -38,7 +38,7 @@ function App() {
 
   return (
     <div className={`${appStyles.body} pt-10 pr-10 pl-10`}>
-      <Router>
+      <Router basename={process.env.PUBLIC_URL}>
         <AppHeader />
         <ModalSwitch />
         <Switch>
