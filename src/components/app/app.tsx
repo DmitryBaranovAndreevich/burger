@@ -17,10 +17,18 @@ import { getCookie } from "../../utils/getCookie";
 import { refreshToken } from "../../utils/refreshToken";
 import { AccountUser } from "../../pages/accountUser";
 
+interface IStore {
+  ingredientsList : {items: null|[],itemsFailed: boolean,itemsRequest: boolean};
+  burgerConstructorList: {constructorItems: [],constructorItemsFailed: boolean}
+  orderNumber: {orderNumber: null|number,getOrderNumberFailed: boolean,getOrderNumberRequest: boolean};
+  user : {user: object,isLoadingRequest: boolean,isLoadingOn: boolean,isLoginOutRequest: boolean,isLoginOutFailed: boolean};
+  ordersList: {wsConnected: boolean,inConnected: boolean,ordersList: object,userOrdersList: [],}
+}
+
 function App() {
   const dispatch = useDispatch();
-  const [token, setToken] = useState(getCookie("token"));
-  const { isLoadingOn } = useSelector((store) => store.user);
+  const [token, setToken] = useState<string|undefined>(getCookie("token"));
+  const { isLoadingOn } = useSelector((store : IStore) => store.user);
 
   useEffect(() => {
     const tokenToRefresh = localStorage.getItem("refreshToken");

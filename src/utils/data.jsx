@@ -146,6 +146,22 @@ const test = {
   __v: 0,
 };
 
+export interface IIngredient {
+ readonly _id: string;
+ readonly name: string;
+ readonly type: string;
+ readonly proteins: number;
+ readonly fat: string;
+ readonly carbohydrates: string;
+ readonly calories: string;
+ readonly price: string;
+ readonly image: string;
+ readonly image_mobile: string;
+ readonly image_large: string;
+ readonly __v: string;
+ readonly key? : number
+}
+
 const dataPropTypes = PropTypes.shape({
   _id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,

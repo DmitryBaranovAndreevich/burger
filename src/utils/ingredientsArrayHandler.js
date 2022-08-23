@@ -11,12 +11,10 @@ export const ingredientsArrayHandler = (ingredientsArray, allIngredients) => {
       allIngredients.find((card) => card._id === el)
     );
 
-    // console.log(ingredientsList);
 
   const price =
     ingredientsList &&
     ingredientsList.reduce((priv, el) => {
-      console.log(el)
       return el?.type === "bun"
         ? priv + el?.price * 2
         : priv + el?.price * ingredientsCount[el?._id];

@@ -22,7 +22,7 @@ function AppHeader() {
          mb-3 mt-4 pb-4 pt-4 pl-5 pr-5 `}
             activeClassName={styles.activeClass}
           >
-            <BurgerIcon type="primary" className={styles.icon} />
+            <BurgerIcon type="primary" />
             Конструктор
           </NavLink>
           <NavLink

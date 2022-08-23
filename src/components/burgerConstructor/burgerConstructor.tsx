@@ -11,10 +11,18 @@ import {
   sortIngredintsBurgerConstructor,
 } from "../../services/actions/burgerConstructor";
 import { getOrderNumber } from "../../services/actions/orderDetals";
-import { useRef } from "react";
+import { useRef, FunctionComponent} from "react";
 import { useHistory, useLocation } from "react-router-dom";
+import { IIngredient} from '../../utils/data';
 
-function IngredientsCard({ ingredient, index, id }) {
+interface IngredientsCardProps {
+  ingredient: IIngredient;
+  index: number;
+  id: string
+}
+
+
+const IngredientsCard: FunctionComponent<IngredientsCardProps> = ({ ingredient, index, id }) => {
   const dispatch = useDispatch();
   const { constructorItems } = useSelector(
     (store) => store.burgerConstructorList
@@ -31,7 +39,7 @@ function IngredientsCard({ ingredient, index, id }) {
         handlerId: monitor.getHandlerId(),
       };
     },
-    hover(item, monitor) {
+    hover(item , monitor) {
       if (!ref.current) {
         return;
       }
@@ -150,7 +158,7 @@ function BurgerConstructor(props) {
   const borderColor = isHover ? "lightgreen" : "transparent";
 
   const ingredientTypeBun = data.find(
-    (ingredient) => ingredient.type === "bun"
+    (ingredient:IIngredient ) => ingredient.type === "bun"
   );
 
   const setOrder = () => {
@@ -180,7 +188,7 @@ function BurgerConstructor(props) {
             />
           )}
           <ul className={burgerConstructorStyles.ingredientsList}>
-            {data.map((ingredient, index) => {
+            {data.map((ingredient: IIngredient, index) => {
               return (
                 ingredient.type !== "bun" && (
                   <IngredientsCard
@@ -210,7 +218,7 @@ function BurgerConstructor(props) {
         <Button
           type="primary"
           size="medium"
-          disabled={!ingredientTypeBun && true}
+          disabled={!ingredientTypeBun}
           onClick={setOrder}
         >
           Оформить заказ
