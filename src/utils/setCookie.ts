@@ -1,9 +1,8 @@
 type TProps = {
-[name: string] : boolean|string|Date|number
-}
+  [name: string]: boolean | string | Date | number;
+};
 
-
-export function setCookie(name: string, value: string, props: TProps ) {
+export function setCookie(name: string, value: string, props: TProps) {
   props = props || {};
   let exp = props.expires;
   if (typeof exp == "number" && exp) {

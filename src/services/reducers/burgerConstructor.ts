@@ -9,8 +9,8 @@ import {
 import { IIngredientConstructor } from "../../utils/data";
 
 type TBurgerConstructorState = {
-  constructorItems: Array<IIngredientConstructor>;
-  constructorItemsFailed: boolean;
+   constructorItems: Array<IIngredientConstructor>;
+   constructorItemsFailed: boolean;
 };
 
 const ingredients: TBurgerConstructorState = {

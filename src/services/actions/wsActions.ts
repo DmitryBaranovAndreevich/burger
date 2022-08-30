@@ -14,18 +14,18 @@ export interface IWsActions {
 }
 
 type TOrder = {
-  ingredients: Array<string>;
-  _id: string;
-  status: string;
-  number: number;
-  createdAt: string;
-  updatedAt: string;
+ readonly ingredients: Array<string>;
+ readonly _id: string;
+ readonly status: string;
+ readonly number: number;
+ readonly createdAt: string;
+ readonly updatedAt: string;
 };
 
 export type TWsResponce = {
-  orders: Array<TOrder> | [];
-  total: number;
-  totalToday: number;
+ readonly orders: Array<TOrder> | [];
+ readonly total: number;
+ readonly totalToday: number;
 };
 
 export interface IWsUserConnectionStart {

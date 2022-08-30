@@ -16,7 +16,7 @@ export const createDate = (createdAt: string) => {
   const today = new Date();
   const date = new Date(createdAt);
 
-  const setDay = (date : Date) => {
+  const setDay = (date: Date) => {
     switch (today.getDay() - date.getDay()) {
       case 0:
         return "Сегодня";

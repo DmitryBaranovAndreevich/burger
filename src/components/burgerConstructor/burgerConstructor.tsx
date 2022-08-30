@@ -15,14 +15,14 @@ import { useHistory, useLocation } from "react-router-dom";
 import { IIngredient, IIngredientConstructor } from "../../utils/data";
 
 interface IngredientsCardProps {
-  ingredient: IIngredientConstructor;
-  index: number;
-  id: string;
+  readonly ingredient: IIngredientConstructor;
+  readonly index: number;
+  readonly id: string;
 }
 
 type MyType = {
   index: number;
-  id: string;
+  readonly id: string;
 };
 
 const IngredientsCard: FunctionComponent<IngredientsCardProps> = ({

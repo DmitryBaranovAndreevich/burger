@@ -4,10 +4,10 @@ import { REFRESH_TOKEN } from "./config";
 import { checkResponce, IOptions } from "./checkResponce";
 
 type TResFromServer = {
-  success: boolean;
-  accessToken: string;
-  refreshToken: string
-}
+ readonly success: boolean;
+ readonly accessToken: string;
+ readonly refreshToken: string;
+};
 
 export async function fetchWithToken(url: string, options: IOptions) {
   const tokenToRefresh = localStorage.getItem("refreshToken");

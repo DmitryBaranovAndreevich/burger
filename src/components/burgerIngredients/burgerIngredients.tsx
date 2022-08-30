@@ -9,9 +9,9 @@ import { Link, useLocation } from "react-router-dom";
 import { IIngredient } from "../../utils/data";
 
 type TTabs = {
-  current: string;
-  links: { [name: string]: RefObject<HTMLElement> };
-  setCurrent: (arg: string) => void;
+  readonly current: string;
+  readonly links: { [name: string]: RefObject<HTMLElement> };
+  readonly setCurrent: (arg: string) => void;
 };
 
 const Tabs = ({ current, links, setCurrent }: TTabs) => {
@@ -62,11 +62,11 @@ const Tabs = ({ current, links, setCurrent }: TTabs) => {
   );
 };
 
-type TIngredien = {
-  productCard: IIngredient;
+type TIngredient = {
+  readonly productCard: IIngredient;
 };
 
-const Ingredient = ({ productCard }: TIngredien) => {
+const Ingredient = ({ productCard }: TIngredient) => {
   const { constructorItems } = useSelector(
     (store) => store.burgerConstructorList
   );
@@ -101,10 +101,10 @@ const Ingredient = ({ productCard }: TIngredien) => {
 };
 
 type TIngredients = {
-  typeIngredients: string;
-  translate: string;
-  cards: Array<IIngredient> | null;
-  link: RefObject<HTMLHeadingElement>;
+  readonly typeIngredients: string;
+  readonly translate: string;
+  readonly cards: Array<IIngredient> | null;
+  readonly link: RefObject<HTMLHeadingElement>;
 };
 
 const TypesIngredients = (props: TIngredients) => {

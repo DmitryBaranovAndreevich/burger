@@ -4,9 +4,9 @@ import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import React, { ReactNode, useEffect } from "react";
 
 type TModal = {
-  onClose: (e: React.MouseEvent | KeyboardEvent) => void;
-  children: ReactNode;
-  visible?: boolean;
+  readonly onClose: (e: React.MouseEvent | KeyboardEvent) => void;
+  readonly children: ReactNode;
+  readonly visible?: boolean;
 };
 
 export function Modal({ onClose, children, visible }: TModal) {
