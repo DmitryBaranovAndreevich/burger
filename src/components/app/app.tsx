@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { ProtectedRoute } from "../protectedRoute";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "../../hooks/types";
 import appStyles from "./app.module.css";
-import AppHeader from "../appHeader/appHeader.jsx";
+import AppHeader from "../appHeader/appHeader";
 import {
   LoginPage,
   RegisterPage,
@@ -17,23 +17,17 @@ import { getCookie } from "../../utils/getCookie";
 import { refreshToken } from "../../utils/refreshToken";
 import { AccountUser } from "../../pages/accountUser";
 
-interface IStore {
-  ingredientsList : {items: null|[],itemsFailed: boolean,itemsRequest: boolean};
-  burgerConstructorList: {constructorItems: [],constructorItemsFailed: boolean}
-  orderNumber: {orderNumber: null|number,getOrderNumberFailed: boolean,getOrderNumberRequest: boolean};
-  user : {user: object,isLoadingRequest: boolean,isLoadingOn: boolean,isLoginOutRequest: boolean,isLoginOutFailed: boolean};
-  ordersList: {wsConnected: boolean,inConnected: boolean,ordersList: object,userOrdersList: [],}
-}
-
 function App() {
   const dispatch = useDispatch();
-  const [token, setToken] = useState<string|undefined>(getCookie("token"));
-  const { isLoadingOn } = useSelector((store : IStore) => store.user);
+  const [token, setToken] = useState(getCookie("token") as string);
+  const { isLoadingOn } = useSelector((store) => store.user);
 
   useEffect(() => {
     const tokenToRefresh = localStorage.getItem("refreshToken");
     if (!token && tokenToRefresh) {
-      refreshToken(tokenToRefresh).then(() => setToken(getCookie("token")));
+      refreshToken(tokenToRefresh).then(() =>
+        setToken(getCookie("token") as string)
+      );
     }
     if (!isLoadingOn && token && tokenToRefresh) {
       dispatch(loginWithToken(token));

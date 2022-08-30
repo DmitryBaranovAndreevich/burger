@@ -3,26 +3,33 @@ import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-comp
 import { DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from "prop-types";
-import { useSelector, useDispatch } from "react-redux";
-import { useDrop, useDrag } from "react-dnd";
+import { useSelector, useDispatch } from "../../hooks/types";
+import { useDrop, useDrag, XYCoord } from "react-dnd";
 import {
   deleteIngredientBurgerConstructor,
   sortIngredintsBurgerConstructor,
 } from "../../services/actions/burgerConstructor";
 import { getOrderNumber } from "../../services/actions/orderDetals";
-import { useRef, FunctionComponent} from "react";
+import { useRef, FunctionComponent } from "react";
 import { useHistory, useLocation } from "react-router-dom";
-import { IIngredient} from '../../utils/data';
+import { IIngredient, IIngredientConstructor } from "../../utils/data";
 
 interface IngredientsCardProps {
-  ingredient: IIngredient;
+  ingredient: IIngredientConstructor;
   index: number;
-  id: string
+  id: string;
 }
 
+type MyType = {
+  index: number;
+  id: string;
+};
 
-const IngredientsCard: FunctionComponent<IngredientsCardProps> = ({ ingredient, index, id }) => {
+const IngredientsCard: FunctionComponent<IngredientsCardProps> = ({
+  ingredient,
+  index,
+  id,
+}) => {
   const dispatch = useDispatch();
   const { constructorItems } = useSelector(
     (store) => store.burgerConstructorList
@@ -31,7 +38,7 @@ const IngredientsCard: FunctionComponent<IngredientsCardProps> = ({ ingredient, 
     dispatch(deleteIngredientBurgerConstructor(ingredient));
   };
 
-  const ref = useRef(null);
+  const ref = useRef<HTMLLIElement>(null);
   const [{ handlerId }, drop] = useDrop({
     accept: "ingredient",
     collect(monitor) {
@@ -39,11 +46,13 @@ const IngredientsCard: FunctionComponent<IngredientsCardProps> = ({ ingredient, 
         handlerId: monitor.getHandlerId(),
       };
     },
-    hover(item , monitor) {
+    hover(item, monitor) {
       if (!ref.current) {
         return;
       }
-      const dragIndex = item.index;
+
+      const dragIndex = (item as MyType).index;
+
       const hoverIndex = index;
 
       if (dragIndex === hoverIndex) {
@@ -54,7 +63,7 @@ const IngredientsCard: FunctionComponent<IngredientsCardProps> = ({ ingredient, 
 
       const clientOffset = monitor.getClientOffset();
 
-      const hoverClientY = clientOffset.y;
+      const hoverClientY = (clientOffset as XYCoord).y;
 
       if (dragIndex < hoverIndex && hoverClientY < hoverBoundingRect.top) {
         return;
@@ -70,7 +79,7 @@ const IngredientsCard: FunctionComponent<IngredientsCardProps> = ({ ingredient, 
 
       dispatch(sortIngredintsBurgerConstructor(myItems));
 
-      item.index = hoverIndex;
+      (item as MyType).index = hoverIndex;
     },
   });
 
@@ -106,16 +115,6 @@ const IngredientsCard: FunctionComponent<IngredientsCardProps> = ({ ingredient, 
       />
     </li>
   );
-}
-
-IngredientsCard.propTypes = {
-  ingredient: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-  }),
-  index: PropTypes.number.isRequired,
-  id: PropTypes.string.isRequired,
 };
 
 function FinalPrice() {
@@ -127,7 +126,7 @@ function FinalPrice() {
       className={`${burgerConstructorStyles.price} text text_type_digits-medium`}
     >
       {data.reduce(
-        (priv, { type, price }) =>
+        (priv: number, { type, price }: IIngredient) =>
           type === "bun" ? priv + price * 2 : priv + price,
         0
       )}
@@ -136,7 +135,7 @@ function FinalPrice() {
   );
 }
 
-function BurgerConstructor(props) {
+function BurgerConstructor(props: { handleDrop: (args: IIngredient) => void }) {
   const dispatch = useDispatch();
   const history = useHistory();
   let location = useLocation();
@@ -148,7 +147,7 @@ function BurgerConstructor(props) {
   const [{ isHover }, dropTarget] = useDrop({
     accept: "ingredients",
     drop(item) {
-      props.handleDrop(item);
+      props.handleDrop(item as IIngredient);
     },
     collect: (monitor) => ({
       isHover: monitor.isOver(),
@@ -158,13 +157,16 @@ function BurgerConstructor(props) {
   const borderColor = isHover ? "lightgreen" : "transparent";
 
   const ingredientTypeBun = data.find(
-    (ingredient:IIngredient ) => ingredient.type === "bun"
+    (ingredient: IIngredientConstructor) => ingredient.type === "bun"
   );
 
   const setOrder = () => {
     if (isLoadingOn) {
       dispatch(getOrderNumber(data));
-      history.push({ pathname: "/order", state: { modal: location, position: 'modalSwitch' } });
+      history.push({
+        pathname: "/order",
+        state: { modal: location, position: "modalSwitch" },
+      });
     } else {
       history.push({ pathname: "/login" });
     }
@@ -188,7 +190,7 @@ function BurgerConstructor(props) {
             />
           )}
           <ul className={burgerConstructorStyles.ingredientsList}>
-            {data.map((ingredient: IIngredient, index) => {
+            {data.map((ingredient: IIngredientConstructor, index: number) => {
               return (
                 ingredient.type !== "bun" && (
                   <IngredientsCard
@@ -227,9 +229,5 @@ function BurgerConstructor(props) {
     </div>
   );
 }
-
-BurgerConstructor.propTypes = {
-  handleDrop: PropTypes.func.isRequired,
-};
 
 export default BurgerConstructor;
