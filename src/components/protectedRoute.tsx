@@ -1,7 +1,12 @@
-import { Redirect, Route } from "react-router-dom";
-import { useSelector } from "react-redux";
+import React from "react";
+import { Redirect, Route, RouteProps } from "react-router-dom";
+import { useSelector } from '../hooks/types';
 
-export function ProtectedRoute({ children, ...rest }) {
+export type TProtectedRouteProps = RouteProps&{
+    children: React.ReactNode;
+}
+
+export const ProtectedRoute: React.FC<TProtectedRouteProps> = ({ children, ...rest }) => {
   const { isLoadingOn } = useSelector((store) => store.user);
   return (
     <Route

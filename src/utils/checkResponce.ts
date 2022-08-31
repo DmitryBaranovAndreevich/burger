@@ -1,9 +1,3 @@
-interface ITypeResponce<P> {
- readonly ok: boolean;
-  json(): Promise<P>;
- readonly status: number;
-}
-
 export interface IOptions {
  readonly method: string;
  readonly headers: {
@@ -13,7 +7,7 @@ export interface IOptions {
  readonly body?: string;
 }
 
-export function checkResponce<P>(res: ITypeResponce<P>) {
+export function checkResponce(res: Response) {
   if (res.ok) return res.json();
   return Promise.reject(`Ошибка: ${res.status}`);
 }

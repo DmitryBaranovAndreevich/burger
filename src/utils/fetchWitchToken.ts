@@ -3,12 +3,6 @@ import { saveTokens } from "./saveTokens";
 import { REFRESH_TOKEN } from "./config";
 import { checkResponce, IOptions } from "./checkResponce";
 
-type TResFromServer = {
- readonly success: boolean;
- readonly accessToken: string;
- readonly refreshToken: string;
-};
-
 export async function fetchWithToken(url: string, options: IOptions) {
   const tokenToRefresh = localStorage.getItem("refreshToken");
   const token = getCookie("token");
@@ -26,7 +20,7 @@ export async function fetchWithToken(url: string, options: IOptions) {
         success,
         accessToken,
         refreshToken: tokenRefresh,
-      } = await checkResponce<TResFromServer>(res);
+      } = await checkResponce(res);
       if (success) {
         saveTokens(tokenRefresh, accessToken);
         if ("Authorization" in options.headers) {

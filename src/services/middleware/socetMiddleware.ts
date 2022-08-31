@@ -1,4 +1,4 @@
-import { Dispatch } from "react";
+import { Middleware, MiddlewareAPI } from "redux";
 import { getCookie } from "../../utils/getCookie";
 import { refreshToken } from "../../utils/refreshToken";
 import {
@@ -8,15 +8,15 @@ import {
   IWsUserConnectionStart,
   IWsConnectionStart,
 } from "../actions/wsActions";
-import { TApplicationActions } from "../types";
+import { AppDispatch, RootState } from "../types";
 
 export const socketMiddleware = (
   wsUrl: string,
   wsInitActions: IWsUserConnectionStart | IWsConnectionStart,
   wsActions: IWsActions,
   wsActionsGetData: { (data: TWsResponce): TWsActions }
-) => {
-  return (store: { dispatch: Dispatch<TApplicationActions> }) => {
+): Middleware => {
+  return (store: MiddlewareAPI<AppDispatch, RootState>) => {
     let socket: WebSocket;
     return (next: (arg0: TWsActions) => void) => (action: TWsActions) => {
       const { dispatch } = store;

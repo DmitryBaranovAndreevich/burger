@@ -8,7 +8,7 @@ import { checkResponce } from "../../utils/checkResponce";
 import { saveTokens } from "../../utils/saveTokens";
 import { eraseCookie } from "../../utils/eraseCookie";
 import { fetchWithToken } from "../../utils/fetchWitchToken";
-import { AppDispatch, AppThunk } from "../types";
+import { AppThunk } from "../types";
 
 export const LOGIN_REQUEST = "LOGIN_REQUEST";
 export const LOGIN_SUCCESS = "LOGIN_ON";
@@ -96,7 +96,7 @@ const userLoginFailed = (): TLoginActions => {
 };
 
 export const changeUserData: AppThunk = (token: string, form: TForm) => {
-  return function (dispatch: AppDispatch) {
+  return function (dispatch) {
     dispatch(userLoginRequest());
     fetchWithToken(GET_USER, {
       method: "PATCH",
@@ -120,7 +120,7 @@ export const changeUserData: AppThunk = (token: string, form: TForm) => {
 };
 
 export const loginWithToken: AppThunk = (token: string) => {
-  return function (dispatch: AppDispatch) {
+  return function (dispatch) {
     dispatch(userLoginRequest());
     fetchWithToken(GET_USER, {
       method: "GET",
@@ -142,7 +142,7 @@ export const loginWithToken: AppThunk = (token: string) => {
 };
 
 export const userLoginOut: AppThunk = (refreshToken: string) => {
-  return function (dispatch: AppDispatch) {
+  return function (dispatch) {
     dispatch(userLoginOutRequest());
     return fetch(USER_LOGIN_OUT, {
       method: "POST",
@@ -172,7 +172,7 @@ export const userLogin: AppThunk = (form: TForm & TUser) => {
   let URL: typeof USER_LOGIN | typeof SET_DATA_ACCOUNT;
   if (dataSize === 2) URL = USER_LOGIN;
   if (dataSize === 3) URL = SET_DATA_ACCOUNT;
-  return function (dispatch: AppDispatch) {
+  return function (dispatch) {
     dispatch(userLoginRequest());
     fetch(URL, {
       method: "POST",

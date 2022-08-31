@@ -20,11 +20,11 @@ export const IngredientDetails = () => {
           </p>
           <img
             className={ingredientDetailsStyles.image}
-            src={(itemProduct as IIngredient).image}
+            src={(itemProduct as IIngredient)?.image}
             alt=""
           />
           <p className="text text_type_main-medium mt-7">
-            {(itemProduct as IIngredient).name}
+            {(itemProduct as IIngredient)?.name}
           </p>
           <div className={ingredientDetailsStyles.container}>
             <div className={ingredientDetailsStyles.component}>
@@ -34,7 +34,7 @@ export const IngredientDetails = () => {
               <p
                 className={`${ingredientDetailsStyles.value} text text_type_digits-default  text_color_inactive`}
               >
-                {(itemProduct as IIngredient).calories}
+                {(itemProduct as IIngredient)?.calories}
               </p>
             </div>
             <div className={ingredientDetailsStyles.component}>
@@ -44,7 +44,7 @@ export const IngredientDetails = () => {
               <p
                 className={`${ingredientDetailsStyles.value} text text_type_digits-default  text_color_inactive`}
               >
-                {(itemProduct as IIngredient).proteins}
+                {(itemProduct as IIngredient)?.proteins}
               </p>
             </div>
             <div className={ingredientDetailsStyles.component}>
@@ -54,7 +54,7 @@ export const IngredientDetails = () => {
               <p
                 className={`${ingredientDetailsStyles.value} text text_type_digits-default  text_color_inactive`}
               >
-                {(itemProduct as IIngredient).fat}
+                {(itemProduct as IIngredient)?.fat}
               </p>
             </div>
             <div className={ingredientDetailsStyles.component}>
@@ -64,7 +64,7 @@ export const IngredientDetails = () => {
               <p
                 className={`${ingredientDetailsStyles.value} text text_type_digits-default  text_color_inactive`}
               >
-                {(itemProduct as IIngredient).carbohydrates}
+                {(itemProduct as IIngredient)?.carbohydrates}
               </p>
             </div>
           </div>

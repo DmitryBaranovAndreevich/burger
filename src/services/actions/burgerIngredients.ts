@@ -1,7 +1,7 @@
 import { API_INGREDIENTS } from "../../utils/config";
 import { checkResponce } from "../../utils/checkResponce";
 import { IIngredient } from "../../utils/data";
-import { AppDispatch, AppThunk } from "../types";
+import { AppThunk } from "../types";
 
 export const GET_ITEMS_REQUEST = "GET_ITEMS_REQUEST";
 export const GET_ITEMS_SUCCESS = "GET_ITEMS_SUCCESS";
@@ -9,7 +9,6 @@ export const GET_ITEMS_FAILED = "GET_ITEMS_FAILED";
 
 export interface IGetItemRequest {
   readonly type: typeof GET_ITEMS_REQUEST;
-  readonly itemsRequest: boolean;
 }
 
 export interface IGetItemSuccess {
@@ -27,7 +26,7 @@ export type TBurgerIngredientsActions =
   | IGetItemFailed;
 
 export const getItems: AppThunk = () => {
-  return function (dispatch: AppDispatch) {
+  return function (dispatch) {
     dispatch({ type: GET_ITEMS_REQUEST });
     fetch(API_INGREDIENTS)
       .then(checkResponce)

@@ -3,7 +3,7 @@ import { checkResponce } from "../../utils/checkResponce";
 import { fetchWithToken } from "../../utils/fetchWitchToken";
 import { getCookie } from "../../utils/getCookie";
 import { IIngredientConstructor } from "../../utils/data";
-import { AppDispatch, AppThunk } from "../types";
+import { AppThunk } from "../types";
 
 export const GET_ORDER_NUMBER_REQUEST = "GET_ORDER_NUMBER_REQUEST";
 export const GET_ORDER_NUMBER = "GET_ORDER_NUMBER";
@@ -34,7 +34,7 @@ export type TOrderDetailsAction =
   | IDeleteOrderNumber;
 
 export const getOrderNumber: AppThunk =
-  (data: Array<IIngredientConstructor>) => (dispatch: AppDispatch) => {
+  (data: Array<IIngredientConstructor>) => (dispatch) => {
     dispatch({ type: GET_ORDER_NUMBER_REQUEST });
     fetchWithToken(API_ORDERS, {
       method: "POST",

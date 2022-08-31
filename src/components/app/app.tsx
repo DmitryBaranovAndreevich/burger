@@ -17,6 +17,12 @@ import { getCookie } from "../../utils/getCookie";
 import { refreshToken } from "../../utils/refreshToken";
 import { AccountUser } from "../../pages/accountUser";
 
+declare module 'react' {
+  interface FunctionComponent<P = {}> {
+    (props: PropsWithChildren<P>, context?: any): ReactElement<any, any> | null;
+  }
+}
+
 function App() {
   const dispatch = useDispatch();
   const [token, setToken] = useState(getCookie("token") as string);
